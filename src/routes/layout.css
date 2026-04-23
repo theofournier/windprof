@@ -1,2 +1,72 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+/* ─────────────────────────────────────
+   THEME (Tailwind v4 design tokens)
+───────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-bg: #F2EDE3;
+  --color-ink: #0E1A2B;
+  --color-dark: #07101C;
+  --color-accent: #E8724C;
+  --color-accent-soft: #F2B544;
+  --color-muted: #6F7785;
+  --color-line: rgba(14, 26, 43, 0.14);
+  --color-success: #6FD29A;
+
+  /* Semantic aliases (recommended) */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-secondary: var(--color-dark);
+  --color-border: var(--color-line);
+
+  /* Typography */
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-display: Archivo, Inter, sans-serif;
+  --font-serif: Fraunces, serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Radius */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.25);
+
+  /* Spacing (aligned with your layout) */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+
+  /* Typography tweaks */
+  --tracking-tight: -0.035em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.12em;
+  --tracking-widest: 0.16em;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3 {
+    @apply font-display font-black tracking-tight uppercase;
+  }
+}
