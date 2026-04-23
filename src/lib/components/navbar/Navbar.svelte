@@ -4,13 +4,15 @@
 	let { loggedIn = false, isProf = false } = $props();
 </script>
 
-<nav
-	class="fixed z-10 flex items-center justify-between bg-ink px-14 py-6"
->
-	<div class="flex items-center gap-2">
-		<img src={logo} alt="Logo de Windprof" class="h-8 w-8" />
-		<span class="font-display text-2xl font-black tracking-tight uppercase text-white">Windprof</span>
-	</div>
+<nav class="z-10 flex items-center justify-between bg-ink px-14 py-6">
+	<a href="/">
+		<div class="flex items-center gap-2">
+			<img src={logo} alt="Logo de Windprof" class="h-8 w-8" />
+			<span class="font-display text-2xl font-black tracking-tight text-white uppercase"
+				>Windprof</span
+			>
+		</div></a
+	>
 	<div class="flex items-center gap-9 font-display text-sm font-semibold text-white/85 uppercase">
 		<a href="/profs">Moniteurs</a>
 		<a href="/sports">Disciplines</a>

@@ -1,1 +1,5 @@
-<h1>Welcome to Windprof</h1>
+<script>
+	import Hero from '$lib/components/homepage/Hero.svelte';
+</script>
+
+<Hero />
