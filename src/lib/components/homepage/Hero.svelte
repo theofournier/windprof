@@ -5,9 +5,7 @@
 <section></section>
 
 <section class="section relative">
-	<div class="hero-grid absolute inset-0 opacity-40"></div>
-	<div class="hero-wind absolute inset-0 opacity-50"></div>
-	<div class="px-14 py-16">
+	<div class="px-14 py-16 z-10 relative">
 		<h1 class="mb-2 max-w-300 font-display text-[140px]/[0.92] text-white uppercase">
 			Chase the wind.
 		</h1>
@@ -33,8 +31,10 @@
 	<img
 		src={compass}
 		alt="Illustration d'une boussole"
-		class="absolute -left-10 -bottom-10 h-55 w-55 opacity-80"
+		class="absolute -bottom-10 -left-10 h-55 w-55 opacity-80"
 	/>
+	<div class="hero-grid absolute inset-0 opacity-40"></div>
+	<div class="hero-wind absolute inset-0 opacity-50"></div>
 </section>
 
 <style>
