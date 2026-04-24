@@ -5,7 +5,7 @@
 <section></section>
 
 <section class="section relative">
-	<div class="px-14 py-16 z-10 relative">
+	<div class="relative z-10 px-14 py-16 mx-auto max-w-360">
 		<h1 class="mb-2 max-w-300 font-display text-[140px]/[0.92] text-white uppercase">
 			Chase the wind.
 		</h1>

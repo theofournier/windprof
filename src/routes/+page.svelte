@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Description from '$lib/components/homepage/Description.svelte';
 	import Hero from '$lib/components/homepage/Hero.svelte';
+	import ProfDescription from '$lib/components/homepage/ProfDescription.svelte';
 	import Profs from '$lib/components/homepage/Profs.svelte';
 	import Sports from '$lib/components/homepage/Sports.svelte';
 	import type { PageProps } from './$types';
@@ -8,8 +10,10 @@
 
 <div>
 	<Hero />
-	<div class="my-20 flex flex-col gap-12 px-14">
+	<div class="mx-auto my-20 flex max-w-360 flex-col gap-12 px-14">
 		<Sports />
 		<Profs profs={data.profs} />
+		<Description />
+		<ProfDescription />
 	</div>
 </div>
