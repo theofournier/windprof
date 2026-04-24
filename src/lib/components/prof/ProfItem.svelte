@@ -1,6 +1,6 @@
 <script lang="ts">
 	let {
-        id,
+		id,
 		name,
 		isVerified = false,
 		location,
@@ -10,7 +10,7 @@
 		price,
 		certifications
 	}: {
-        id: string;
+		id: string;
 		name: string;
 		isVerified?: boolean;
 		location: string;
@@ -32,7 +32,7 @@
 			</h3>
 			{#if isVerified}
 				<span
-					class="absolute top-4 left-4 rounded-sm bg-ink px-2 py-1 font-mono text-[10px] font-bold tracking-wider text-white"
+					class="absolute top-4 left-4 rounded-sm bg-ink px-2 py-1 font-mono text-micro font-bold tracking-wider text-white"
 					>Vérifié</span
 				>
 			{/if}
@@ -51,7 +51,7 @@
 			<div class="mb-4 flex flex-wrap gap-1.5">
 				{#each sports as sport}
 					<span
-						class="rounded-[4px] bg-bg-dark px-2 py-1 font-mono text-[11px] font-semibold tracking-[0.04em] uppercase"
+						class="rounded-[4px] bg-bg-dark px-2 py-1 font-mono text-label font-semibold tracking-[0.04em] uppercase"
 					>
 						{sport}
 					</span>
@@ -60,12 +60,12 @@
 			<div class="mb-4 border-t border-t-ink/14"></div>
 			<div class="flex items-center justify-between">
 				<div>
-					<div class="font-mono text-[10px] tracking-wider text-muted uppercase">À partir de</div>
+					<div class="font-mono text-micro tracking-wider text-muted uppercase">À partir de</div>
 					<div class="mt-0.5 font-display text-[26px] font-black tracking-tight">{price}€/h</div>
 				</div>
 				<div class="text-right">
-					<div class="font-mono text-[10px] tracking-wider text-muted uppercase">Diplômes</div>
-					<div class="mt-1 text-[12px] font-semibold">{certifications.join(' · ')}</div>
+					<div class="font-mono text-micro tracking-wider text-muted uppercase">Diplômes</div>
+					<div class="mt-1 text-caption font-semibold">{certifications.join(' · ')}</div>
 				</div>
 			</div>
 		</div>
@@ -79,6 +79,6 @@
 			rgba(0, 0, 0, 0.06) 0 1px,
 			transparent 1px 10px
 		);
-		background-color: #d9d4cb;
+		background-color: var(--color-bg-card);
 	}
 </style>

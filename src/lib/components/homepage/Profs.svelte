@@ -9,7 +9,7 @@
 <section>
 	<div class="mb-9 flex items-end justify-between">
 		<div>
-			<span class="mb-3.5 font-mono text-[10px] tracking-wider text-accent uppercase">
+			<span class="mb-3.5 font-mono text-micro tracking-wider text-accent uppercase">
 				↳ LINEUP
 			</span>
 			<h2 class="font-display text-6xl font-black tracking-tight uppercase">

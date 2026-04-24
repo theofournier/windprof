@@ -4,13 +4,13 @@
 	>
 		<div class="section-bg absolute inset-0"></div>
 		<div class="relative">
-			<div class="mb-4.5 font-mono text-[11px] tracking-widest text-accent uppercase">
+			<div class="mb-4.5 font-mono text-label tracking-widest text-accent uppercase">
 				↳ VOUS ÊTES MONITEUR
 			</div>
 			<h2 class="mb-5.5 text-[76px] leading-[0.92] tracking-tight">
 				Votre expertise,<br />visible par tous.
 			</h2>
-			<p class="mb-8 max-w-120 text-[17px] leading-[1.55] text-muted">
+			<p class="mb-8 max-w-120 text-[17px] leading-body text-muted">
 				Indépendant BPJEPS, DE, IKO ou VDWS ? Créez votre fiche en 10 minutes. Listing gratuit à
 				vie. Vos coordonnées, visibles. <b class="text-ink">Aucune commission</b>, jamais.
 			</p>
@@ -28,7 +28,7 @@
 					<div class="mb-1.5 font-display text-[52px] leading-none text-accent">
 						{stat.value}
 					</div>
-					<div class="text-[13px] leading-[1.45] text-muted">
+					<div class="text-body-sm leading-[1.45] text-muted">
 						{stat.label}
 					</div>
 				</div>

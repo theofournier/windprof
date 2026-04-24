@@ -11,7 +11,7 @@
 		</p>
 		<div class="flex items-end justify-between">
 			<div>
-				<p class="font-mono text-[10px] tracking-wider text-white/55 uppercase">Vent typique</p>
+				<p class="font-mono text-micro tracking-wider text-white/55 uppercase">Vent typique</p>
 				<p class="mt-1 font-display text-[22px] font-black tracking-tight text-accent-soft">
 					{windMin}-{windMax}kt
 				</p>

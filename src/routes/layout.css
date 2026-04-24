@@ -8,6 +8,7 @@
   /* Colors */
   --color-bg: #F2EDE3;
   --color-bg-dark: #E6DFD0;
+  --color-bg-card: #D9D4CB;
   --color-ink: #0E1A2B;
   --color-dark: #07101C;
   --color-accent: #E8724C;
@@ -16,18 +17,36 @@
   --color-line: rgba(14, 26, 43, 0.14);
   --color-success: #6FD29A;
 
-  /* Semantic aliases (recommended) */
+  /* Semantic aliases */
   --color-background: var(--color-bg);
   --color-foreground: var(--color-ink);
   --color-primary: var(--color-ink);
   --color-secondary: var(--color-dark);
   --color-border: var(--color-line);
 
-  /* Typography */
+  /* Font families */
   --font-sans: Inter, system-ui, sans-serif;
   --font-display: Archivo, Inter, sans-serif;
   --font-serif: Fraunces, serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  /* Text sizes */
+  --text-micro: 10px;
+  --text-label: 11px;
+  --text-caption: 12px;
+  --text-body-sm: 13px;
+
+  /* Leading */
+  --leading-body: 1.55;
+
+  /* Letter spacing */
+  --tracking-snug: -0.02em;
+  --tracking-tight: -0.035em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.12em;
+  --tracking-label: 0.14em;
+  --tracking-loose: 0.1em;
+  --tracking-widest: 0.16em;
 
   /* Radius */
   --radius-sm: 3px;
@@ -36,11 +55,11 @@
   --radius-xl: 22px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.06);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,.25);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, .06);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .25);
 
-  /* Spacing (aligned with your layout) */
+  /* Spacing */
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;
@@ -54,12 +73,6 @@
   --spacing-16: 64px;
   --spacing-20: 80px;
   --spacing-24: 96px;
-
-  /* Typography tweaks */
-  --tracking-tight: -0.035em;
-  --tracking-wide: 0.08em;
-  --tracking-wider: 0.12em;
-  --tracking-widest: 0.16em;
 }
 
 @layer base {
@@ -67,7 +80,9 @@
     @apply bg-background text-foreground font-sans;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     @apply font-display font-black tracking-tight uppercase;
   }
 }

@@ -5,11 +5,11 @@
 <section></section>
 
 <section class="section relative">
-	<div class="relative z-10 px-14 py-16 mx-auto max-w-360">
+	<div class="relative z-10 mx-auto max-w-360 px-14 py-16">
 		<h1 class="mb-2 max-w-300 font-display text-[140px]/[0.92] text-white uppercase">
 			Chase the wind.
 		</h1>
-		<p class="mb-8 font-serif text-4xl font-normal tracking-[-0.02em] text-accent italic">
+		<p class="mb-8 font-serif text-4xl font-normal tracking-snug text-accent italic">
 			Et trouve le moniteur qui va avec.
 		</p>
 		<p class="mb-10 max-w-130 text-lg/normal text-white/70">
@@ -22,7 +22,7 @@
 			class="rounded-md bg-accent px-6 py-4 font-display text-sm font-bold text-white uppercase"
 			>Chercher votre moniteur idéal →</a
 		>
-		<div class="mt-12 flex gap-9 font-mono text-[12px] text-white/55 uppercase">
+		<div class="mt-12 flex gap-9 font-mono text-caption text-white/55 uppercase">
 			<span>↳ 247 moniteurs</span>
 			<span>↳ 60 spots</span>
 			<span>↳ 3 disciplines</span>
