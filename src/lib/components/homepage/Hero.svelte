@@ -5,24 +5,26 @@
 <section></section>
 
 <section class="section relative">
-	<div class="relative z-10 mx-auto max-w-360 px-14 py-16">
-		<h1 class="mb-2 max-w-300 font-display text-[140px]/[0.92] text-white uppercase">
+	<div class="relative z-10 mx-auto max-w-360 px-5 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+		<h1
+			class="mb-2 max-w-300 font-display text-[52px]/[0.92] text-white uppercase sm:text-[90px] lg:text-[140px]"
+		>
 			Chase the wind.
 		</h1>
-		<p class="mb-8 font-serif text-4xl font-normal tracking-snug text-accent italic">
+		<p class="mb-6 font-serif text-2xl font-normal tracking-snug text-accent italic sm:text-3xl lg:text-4xl">
 			Et trouve le moniteur qui va avec.
 		</p>
-		<p class="mb-10 max-w-130 text-lg/normal text-white/70">
+		<p class="mb-8 max-w-130 text-base/normal text-white/70 sm:text-lg">
 			Windmatch croise les <b class="text-white">prévisions de vent</b> et l'annuaire des
 			<b class="text-white">moniteurs indépendants</b> diplômés BPJEPS, DE, IKO et VDWS. Contact direct,
 			zéro commission.
 		</p>
 		<a
 			href="/profs"
-			class="rounded-md bg-accent px-6 py-4 font-display text-sm font-bold text-white uppercase"
+			class="inline-block rounded-md bg-accent px-6 py-4 font-display text-sm font-bold text-white uppercase"
 			>Chercher votre moniteur idéal →</a
 		>
-		<div class="mt-12 flex gap-9 font-mono text-caption text-white/55 uppercase">
+		<div class="mt-10 flex flex-wrap gap-5 font-mono text-caption text-white/55 uppercase sm:gap-9">
 			<span>↳ 247 moniteurs</span>
 			<span>↳ 60 spots</span>
 			<span>↳ 3 disciplines</span>
@@ -31,7 +33,7 @@
 	<img
 		src={compass}
 		alt="Illustration d'une boussole"
-		class="absolute -bottom-10 -left-10 h-55 w-55 opacity-80"
+		class="absolute -bottom-10 -left-10 hidden h-55 w-55 opacity-80 lg:block"
 	/>
 	<div class="hero-grid absolute inset-0 opacity-40"></div>
 	<div class="hero-wind absolute inset-0 opacity-50"></div>

@@ -7,12 +7,12 @@
 </script>
 
 <section>
-	<div class="mb-9 flex items-end justify-between">
+	<div class="mb-9 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 		<div>
 			<span class="mb-3.5 font-mono text-micro tracking-wider text-accent uppercase">
 				↳ LINEUP
 			</span>
-			<h2 class="font-display text-6xl font-black tracking-tight uppercase">
+			<h2 class="font-display text-4xl font-black tracking-tight uppercase sm:text-5xl lg:text-6xl">
 				Cette semaine sur la côte
 			</h2>
 		</div>
@@ -22,7 +22,7 @@
 			>Voir tous les moniteurs →</a
 		>
 	</div>
-	<div class="grid grid-cols-3 gap-5">
+	<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 		{#each displayedProfs as prof}
 			<ProfItem
 				id={prof.id}

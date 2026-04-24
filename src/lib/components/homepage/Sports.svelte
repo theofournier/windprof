@@ -3,7 +3,7 @@
 </script>
 
 <section>
-	<div class="grid grid-cols-3 gap-4">
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 		<SportItem
 			name="Kitesurf"
 			profsCount={10}

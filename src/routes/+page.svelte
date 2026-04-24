@@ -10,7 +10,7 @@
 
 <div>
 	<Hero />
-	<div class="mx-auto my-20 flex max-w-360 flex-col gap-12 px-14">
+	<div class="mx-auto my-10 flex max-w-360 flex-col gap-8 px-5 sm:my-16 sm:gap-10 sm:px-10 lg:my-20 lg:gap-12 lg:px-14">
 		<Sports />
 		<Profs profs={data.profs} />
 		<Description />

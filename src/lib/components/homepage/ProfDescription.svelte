@@ -1,13 +1,13 @@
 <section>
 	<div
-		class="relative grid grid-cols-[1.1fr_1fr] items-center gap-16 rounded-[14px] border border-line bg-bg-dark px-9 py-12"
+		class="relative grid grid-cols-1 items-center gap-10 rounded-[14px] border border-line bg-bg-dark px-6 py-10 sm:gap-12 sm:px-9 sm:py-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16"
 	>
 		<div class="section-bg absolute inset-0"></div>
 		<div class="relative">
 			<div class="mb-4.5 font-mono text-label tracking-widest text-accent uppercase">
 				↳ VOUS ÊTES MONITEUR
 			</div>
-			<h2 class="mb-5.5 text-[76px] leading-[0.92] tracking-tight">
+			<h2 class="mb-5.5 text-[48px] leading-[0.92] tracking-tight sm:text-[60px] lg:text-[76px]">
 				Votre expertise,<br />visible par tous.
 			</h2>
 			<p class="mb-8 max-w-120 text-[17px] leading-body text-muted">
@@ -25,7 +25,7 @@
 		<div class="relative grid grid-cols-2 gap-3">
 			{#each [{ value: '0%', label: 'de commission sur vos cours' }, { value: '10 min', label: 'pour créer votre fiche' }, { value: '6 mois', label: 'Premium offerts aux 20 premiers' }, { value: '∞', label: 'avis et contacts reçus' }] as stat (stat.value)}
 				<div class="rounded-[8px] border border-line bg-white px-5.5 py-6.5">
-					<div class="mb-1.5 font-display text-[52px] leading-none text-accent">
+					<div class="mb-1.5 font-display text-[40px] leading-none text-accent sm:text-[52px]">
 						{stat.value}
 					</div>
 					<div class="text-body-sm leading-[1.45] text-muted">
