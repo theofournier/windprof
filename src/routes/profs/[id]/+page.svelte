@@ -10,7 +10,6 @@
 	import ProfReviews from '$lib/components/prof/ProfReviews.svelte';
 	import ProfAtAGlance from '$lib/components/prof/ProfAtAGlance.svelte';
 	import ProfWindForecast from '$lib/components/prof/ProfWindForecast.svelte';
-	import ProfSidebarLinks from '$lib/components/prof/ProfSidebarLinks.svelte';
 
 	let { data }: PageProps = $props();
 </script>
@@ -24,7 +23,9 @@
 	]}
 />
 
-<section class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-7 pb-12 sm:px-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:px-14">
+<section
+	class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-7 pb-12 sm:px-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:px-14"
+>
 	<ProfGallery name="Julien Mercier" windDirection="N/NE" windRange="12–28 kt" photoCount={4} />
 	<ProfHero
 		name="Julien Mercier"
@@ -50,7 +51,9 @@
 	]}
 />
 
-<section class="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14">
+<section
+	class="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14"
+>
 	<div>
 		<ProfPricing
 			items={[
@@ -111,7 +114,7 @@
 		/>
 	</div>
 
-	<aside class="order-first flex flex-col gap-4.5 lg:order-0 lg:sticky lg:top-5 lg:self-start">
+	<aside class="order-first flex flex-col gap-4.5 lg:sticky lg:top-5 lg:order-0 lg:self-start">
 		<ProfAtAGlance
 			details={[
 				{ label: 'Disciplines', value: 'Kitesurf · Wingfoil' },
@@ -134,6 +137,5 @@
 			threshold={12}
 			profFirstName="Julien"
 		/>
-		<ProfSidebarLinks />
 	</aside>
 </section>
