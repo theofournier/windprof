@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Prof } from '$lib/data/types';
-	import ProfItem from '../prof/ProfItem.svelte';
+	import ProfItem from '../profs/ProfItem.svelte';
 	let { profs }: { profs: Prof[] } = $props();
 
 	let displayedProfs = $derived(profs.slice(0, 3));

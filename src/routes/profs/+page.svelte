@@ -1,10 +1,10 @@
 <script lang="ts">
-	import ProfItem from '$lib/components/prof/ProfItem.svelte';
-	import ProfsActiveFilter from '$lib/components/prof/ProfsActiveFilter.svelte';
-	import ProfSearch from '$lib/components/prof/ProfSearch.svelte';
-	import ProfsFilter from '$lib/components/prof/ProfsFilter.svelte';
-	import ProfsHeader from '$lib/components/prof/ProfsHeader.svelte';
-	import ProfsPaginator from '$lib/components/prof/ProfsPaginator.svelte';
+	import ProfItem from '$lib/components/profs/ProfItem.svelte';
+	import ProfsActiveFilter from '$lib/components/profs/ProfsActiveFilter.svelte';
+	import ProfSearch from '$lib/components/profs/ProfSearch.svelte';
+	import ProfsFilter from '$lib/components/profs/ProfsFilter.svelte';
+	import ProfsHeader from '$lib/components/profs/ProfsHeader.svelte';
+	import ProfsPaginator from '$lib/components/profs/ProfsPaginator.svelte';
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
 	let showFilter = $state(false);
