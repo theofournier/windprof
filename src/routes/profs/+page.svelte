@@ -1,8 +1,13 @@
 <script lang="ts">
+	import ProfSearch from '$lib/components/prof/ProfSearch.svelte';
 	import type { PageProps } from './$types';
 	let { data }: PageProps = $props();
 </script>
 
+<div class="mx-auto flex flex-col gap-4 px-14 pt-5 pb-9">
+	<ProfSearch />
+	
+</div>
 <h1>Profs</h1>
 <ul>
 	{#each data.profs as prof}
