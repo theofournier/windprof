@@ -24,7 +24,7 @@
 	]}
 />
 
-<section class="mx-auto grid max-w-360 grid-cols-[1.2fr_1fr] gap-10 px-14 pt-7 pb-12">
+<section class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-7 pb-12 sm:px-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:px-14">
 	<ProfGallery name="Julien Mercier" windDirection="N/NE" windRange="12–28 kt" photoCount={4} />
 	<ProfHero
 		name="Julien Mercier"
@@ -50,7 +50,7 @@
 	]}
 />
 
-<section class="mx-auto grid max-w-[1440px] grid-cols-[1.5fr_1fr] gap-10 px-14 pt-4 pb-16">
+<section class="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14">
 	<div>
 		<ProfPricing
 			items={[
@@ -111,7 +111,7 @@
 		/>
 	</div>
 
-	<aside class="sticky top-5 flex flex-col gap-4.5 self-start">
+	<aside class="order-first flex flex-col gap-4.5 lg:order-0 lg:sticky lg:top-5 lg:self-start">
 		<ProfAtAGlance
 			details={[
 				{ label: 'Disciplines', value: 'Kitesurf · Wingfoil' },

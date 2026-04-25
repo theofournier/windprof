@@ -45,7 +45,7 @@
 		{/if}
 	</div>
 
-	<h1 class="mb-2 mt-4.5 text-[58px] leading-[0.95]">{name}</h1>
+	<h1 class="mb-2 mt-4.5 text-[38px] leading-[0.95] lg:text-[58px]">{name}</h1>
 
 	<div class="mb-5 text-base text-[#4A5260]">{location}</div>
 

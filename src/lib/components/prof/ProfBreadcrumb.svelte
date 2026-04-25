@@ -6,7 +6,7 @@
 	} = $props();
 </script>
 
-<div class="mx-auto max-w-360 px-14 pt-4.5">
+<div class="mx-auto max-w-360 overflow-x-auto px-4 pt-4.5 sm:px-8 lg:px-14">
 	<nav class="font-mono text-label tracking-loose text-muted">
 		{#each segments as seg, i (i)}
 			{#if i > 0}

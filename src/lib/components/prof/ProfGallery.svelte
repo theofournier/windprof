@@ -12,7 +12,7 @@
 	} = $props();
 </script>
 
-<div class="grid h-140 grid-cols-[2fr_1fr] grid-rows-2 gap-2.5">
+<div class="grid h-72 grid-cols-[2fr_1fr] grid-rows-2 gap-2.5 sm:h-96 lg:h-140">
 	<!-- Main photo -->
 	<div class="relative row-span-2 rounded-2.5 bg-bg-dark">
 		<span
