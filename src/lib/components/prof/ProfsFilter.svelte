@@ -1,4 +1,4 @@
-<aside class="sticky top-5 self-start rounded-[10px] border border-ink/14 bg-white px-6 py-5.5">
+<aside class="rounded-[10px] border border-ink/14 bg-white px-6 py-5.5 lg:sticky lg:top-5 lg:self-start">
 	<div class="mb-1 flex items-center justify-between">
 		<h3 class="m-0 text-lg">Trier</h3>
 		<button

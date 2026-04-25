@@ -1,5 +1,5 @@
 <div
-	class="grid grid-cols-[2fr_1fr_1fr_auto] items-stretch gap-1 rounded-md bg-white p-2 shadow-[0px_20px_50px_-20px_rgba(0,0,0,0.5)]"
+	class="grid grid-cols-1 items-stretch gap-1 rounded-md bg-white p-2 shadow-[0px_20px_50px_-20px_rgba(0,0,0,0.5)] sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto]"
 >
 	<div class="flex cursor-pointer flex-col gap-0.75 rounded-sm bg-bg px-4.5 py-3.5">
 		<span class="font-mono text-micro font-semibold tracking-label text-muted uppercase">SPOT</span>
@@ -14,7 +14,7 @@
 		<span class="text-[15px] font-semibold text-ink">Intermédiaire</span>
 	</div>
 	<button
-		class="inline-flex cursor-pointer items-center gap-2.5 rounded-sm border-0 bg-accent px-6 py-3.5 font-display text-body-sm font-bold tracking-[0.04em] text-white uppercase"
+		class="inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-sm border-0 bg-accent px-6 py-3.5 font-display text-body-sm font-bold tracking-[0.04em] text-white uppercase sm:col-span-2 lg:col-span-1"
 	>
 		Chercher →
 	</button>
