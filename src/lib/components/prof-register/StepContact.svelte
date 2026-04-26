@@ -17,7 +17,7 @@
 	</div>
 
 	<!-- Phone + email -->
-	<div class="grid grid-cols-2 gap-3.5">
+	<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 		<div>
 			<label for="phone" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
 				↳ TÉLÉPHONE
@@ -55,12 +55,12 @@
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ VISIBILITÉ DES COORDONNÉES
 		</div>
-		<div class="grid grid-cols-3 gap-2.5">
+		<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
 			{#each [
 				{ n: 'Téléphone + email', d: 'Recommandé', on: true },
 				{ n: 'Email seulement', d: 'Si tu préfères filtrer', on: false },
 				{ n: 'Téléphone seulement', d: 'Réponse plus rapide', on: false }
-			] as opt}
+			] as opt (opt.n)}
 				<div class="cursor-pointer rounded-[10px] border p-4 {opt.on ? 'border-ink bg-white' : 'border-line bg-bg-card'}">
 					<div class="mb-1 flex items-center gap-2">
 						<span class="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white {opt.on ? 'bg-accent' : 'border-[1.5px] border-line bg-transparent'}">

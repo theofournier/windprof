@@ -22,7 +22,7 @@
 	</div>
 
 	<!-- Recap grid -->
-	<div class="grid grid-cols-2 gap-3.5">
+	<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 		<!-- Diplômes -->
 		<div class="rounded-[10px] border border-line bg-white px-5.5 py-5">
 			<div class="mb-3 flex items-center justify-between">

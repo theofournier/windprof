@@ -54,17 +54,19 @@
 	<ProfRegisterHeader />
 
 	<div
-		class="mx-auto grid items-start gap-12 px-14 pt-10 pb-20"
-		style="max-width: 1320px; grid-template-columns: 280px 1fr"
+		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:grid lg:items-start lg:gap-12 lg:px-14 lg:pt-10 lg:pb-20 lg:grid-cols-[280px_1fr]"
+		style="max-width: 1320px"
 	>
-		<ProfRegisterSidebar />
+		<div class="hidden lg:block">
+			<ProfRegisterSidebar />
+		</div>
 
 		<main class="min-w-0">
 			<div class="mb-2.5 font-mono text-[11px] font-semibold tracking-widest text-accent uppercase">
 				↳ ÉTAPE {stepNumbers[step]} / 07
 			</div>
 			<h1
-				class="m-0 mb-3 font-display text-[54px] leading-[0.95] font-black tracking-tight uppercase"
+				class="m-0 mb-3 font-display text-[36px] leading-[0.95] font-black tracking-tight uppercase sm:text-[44px] lg:text-[54px]"
 			>
 				{stepTitles[step]}
 			</h1>

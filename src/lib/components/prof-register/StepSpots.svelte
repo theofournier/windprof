@@ -1,6 +1,6 @@
 <div class="grid gap-5.5">
 	<!-- City + region -->
-	<div class="grid grid-cols-2 gap-3.5">
+	<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 		<div>
 			<label for="city" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
 				↳ VILLE D'ENSEIGNEMENT PRINCIPALE *
@@ -42,7 +42,7 @@
 				{ name: 'Leucate — La Franqui', primary: true },
 				{ name: 'La Palme', primary: false },
 				{ name: 'Gruissan', primary: false }
-			] as spot, i}
+			] as spot, i (spot.name)}
 				<div
 					class="grid items-center gap-3.5 rounded-lg border border-line bg-white px-4.5 py-3.5"
 					style="grid-template-columns: auto 1fr auto auto"
@@ -79,7 +79,7 @@
 		<div class="mb-2 font-mono text-[10.5px] tracking-wide text-muted">
 			Si non, le rider amène son propre matériel
 		</div>
-		<div class="mb-2.5 grid grid-cols-2 gap-2.5">
+		<div class="mb-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
 			<div class="cursor-pointer rounded-[10px] border border-ink bg-white p-4.5">
 				<div class="mb-1.5 flex items-center gap-2.5">
 					<span class="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-accent text-label font-bold text-white">●</span>

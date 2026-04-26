@@ -16,8 +16,8 @@
 		<div class="mb-3 font-mono text-label tracking-loose text-muted uppercase">
 			⌥ Tarifs négociables en direct — Windmatch ne prend aucune commission
 		</div>
-		<div class="overflow-hidden rounded-[10px] border border-line">
-			{#each prices as row, i}
+		<div class="overflow-x-auto overflow-hidden rounded-[10px] border border-line">
+			{#each prices as row, i (row.d)}
 				<div
 					class="grid items-center gap-3 px-5 py-3.5 {i < prices.length - 1 ? 'border-b border-line' : ''}"
 					style="grid-template-columns: 2fr 1fr 1fr auto"
@@ -59,7 +59,7 @@
 		<div class="mb-2 font-mono text-[10.5px] tracking-wide text-muted">
 			Optionnel — affiché en bas de ta fiche publique
 		</div>
-		<div class="grid grid-cols-2 gap-3.5">
+		<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 			<input
 				type="text"
 				value="https://julien-kite.com"

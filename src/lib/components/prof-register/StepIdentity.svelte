@@ -1,4 +1,4 @@
-<div class="grid items-start gap-8" style="grid-template-columns: 220px 1fr">
+<div class="grid items-start gap-8 grid-cols-1 sm:grid-cols-[220px_1fr]">
 	<!-- Photo upload -->
 	<div>
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
@@ -22,7 +22,7 @@
 	<!-- Fields -->
 	<div class="grid gap-4.5">
 		<!-- Name row -->
-		<div class="grid grid-cols-2 gap-3.5">
+		<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 			<div>
 				<label for="prenom" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
 					↳ PRÉNOM *
@@ -83,7 +83,7 @@
 					{ l: 'Deutsch', on: false },
 					{ l: 'Italiano', on: false },
 					{ l: 'Nederlands', on: false }
-				] as lang}
+				] as lang (lang.l)}
 					<span class="inline-flex cursor-pointer items-center gap-1.5 rounded-[4px] px-2.5 py-1 font-mono text-label font-semibold tracking-[0.04em] uppercase {lang.on ? 'bg-ink text-white' : 'border border-line bg-transparent'}">
 						{lang.on ? '✓ ' : ''}{lang.l}
 					</span>

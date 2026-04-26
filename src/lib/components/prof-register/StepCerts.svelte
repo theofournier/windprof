@@ -8,15 +8,12 @@
 			{#each [
 				{ n: 'BPJEPS · Glisses Aérotractées', y: '2013', s: 'verified', f: 'bpjeps_julien_2013.pdf' },
 				{ n: 'IKO — Level 3 Senior Instructor', y: '2017', s: 'pending', f: 'iko_l3_certificate.pdf' }
-			] as cert}
-				<div
-					class="grid items-center gap-4 rounded-[10px] border border-line bg-white px-5 py-4"
-					style="grid-template-columns: 40px 1fr auto auto"
-				>
-					<div class="flex h-10 w-10 items-center justify-center rounded-md bg-bg-dark font-mono text-label font-bold">
+			] as cert (cert.n)}
+				<div class="flex flex-wrap items-center gap-3 rounded-[10px] border border-line bg-white px-5 py-4">
+					<div class="flex h-10 w-10 flex-none items-center justify-center rounded-md bg-bg-dark font-mono text-label font-bold">
 						PDF
 					</div>
-					<div>
+					<div class="min-w-0 flex-1">
 						<div class="text-[14px] font-bold">{cert.n}</div>
 						<div class="mt-0.5 font-mono text-label tracking-wide text-muted uppercase">
 							OBTENU EN {cert.y} · {cert.f}
@@ -44,7 +41,7 @@
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ AJOUTER UN DIPLÔME
 		</div>
-		<div class="mb-3.5 grid grid-cols-2 gap-3">
+		<div class="mb-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
 			<div>
 				<label for="cert-type" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
 					↳ TYPE DE DIPLÔME
