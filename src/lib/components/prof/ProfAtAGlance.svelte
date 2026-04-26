@@ -7,7 +7,7 @@
 </script>
 
 <div class="rounded-2.5 border border-ink/14 bg-white px-6 py-5.5">
-	<div class="mb-3.5 font-mono text-label tracking-label text-muted uppercase">
+	<div class="mb-3.5 font-mono text-label tracking-label text-accent uppercase">
 		↳ EN UN COUP D'ŒIL
 	</div>
 	<div class="flex flex-col gap-3.5">

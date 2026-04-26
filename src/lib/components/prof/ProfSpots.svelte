@@ -9,7 +9,7 @@
 </script>
 
 <div class="mb-11">
-	<div class="mb-2.5 font-mono text-label tracking-label text-muted uppercase">↳ SPOTS HABITUELS</div>
+	<div class="mb-2.5 font-mono text-label tracking-label text-accent uppercase">↳ SPOTS HABITUELS</div>
 	<h2 class="mb-4.5 text-[38px]">Là où {profName} enseigne</h2>
 
 	<div class="overflow-hidden rounded-2.5 border border-ink/14 bg-white">

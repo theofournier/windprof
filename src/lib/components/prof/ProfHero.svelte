@@ -36,9 +36,9 @@
 <div>
 	<!-- Status pill -->
 	<div
-		class="inline-flex items-center gap-1.5 rounded-full border border-ink/14 bg-transparent px-3 py-1.5 font-mono text-label tracking-loose text-muted"
+		class="inline-flex items-center gap-2 rounded-full border border-ink/14 bg-white px-3 py-1.5 font-mono text-label tracking-wider text-muted"
 	>
-		<span class="inline-block h-1.5 w-1.5 rounded-full bg-success"></span>
+		<span class="status-dot inline-block h-1.75 w-1.75 rounded-full bg-accent"></span>
 		{#if isOnline}
 			EN LIGNE · RÉPOND EN ≈{responseTime}
 		{:else}
@@ -93,3 +93,15 @@
 	<ProfContactCard {name} {phone} {email} />
 	<ProfSidebarLinks />
 </div>
+
+<style>
+	.status-dot {
+		box-shadow: 0 0 0 4px rgba(232, 114, 76, 0.22);
+		animation: pulse 2s ease-in-out infinite;
+	}
+	@keyframes pulse {
+		50% {
+			box-shadow: 0 0 0 7px rgba(232, 114, 76, 0.05);
+		}
+	}
+</style>

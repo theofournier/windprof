@@ -12,7 +12,7 @@
 
 <div class="relative overflow-hidden rounded-2.5 bg-ink px-6 py-5.5 text-white">
 	<div class="relative">
-		<div class="mb-3.5 font-mono text-micro tracking-label text-white/50 uppercase">
+		<div class="mb-3.5 font-mono text-micro tracking-label text-accent uppercase">
 			↳ CONTACT DIRECT · ZÉRO COMMISSION
 		</div>
 

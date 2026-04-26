@@ -18,7 +18,7 @@
 
 <div class="relative overflow-hidden rounded-2.5 border border-ink bg-ink px-6 py-5.5 text-white">
 	<div class="relative">
-		<div class="font-mono text-label tracking-label text-white/50 uppercase">↳ VENT · PROCHAINS 5J</div>
+		<div class="font-mono text-label tracking-label text-accent uppercase">↳ VENT · PROCHAINS 5J</div>
 		<div class="mt-3.5 grid grid-cols-5 gap-1.5">
 			{#each days as day (day.day)}
 				<div class="rounded-md border border-white/6 bg-white/5 px-1 py-3 text-center">

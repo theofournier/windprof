@@ -15,7 +15,7 @@
 <div>
 	<div class="mb-4.5 flex items-end justify-between">
 		<div>
-			<div class="mb-2.5 font-mono text-label tracking-label text-muted uppercase">
+			<div class="mb-2.5 font-mono text-label tracking-label text-accent uppercase">
 				↳ AVIS DES RIDERS
 			</div>
 			<h2 class="m-0 text-[38px]">★ {averageRating} · {totalReviews} avis</h2>

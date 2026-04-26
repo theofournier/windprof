@@ -7,7 +7,7 @@
 </script>
 
 <div class="mb-11">
-	<div class="mb-2.5 font-mono text-label tracking-label text-muted uppercase">
+	<div class="mb-2.5 font-mono text-label tracking-label text-accent uppercase">
 		↳ DIPLÔMES &amp; CERTIFICATIONS
 	</div>
 	<h2 class="mb-4.5 text-[38px]">Vérifié à la main</h2>
