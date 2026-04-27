@@ -1,9 +1,54 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
+	import { authClient } from '$lib/auth.client';
 
-	let { loggedIn = false, isProf = false } = $props();
+	type NavUser = {
+		name: string;
+		email: string;
+		image?: string | null;
+		type?: string | null;
+	} | null;
+
+	let { user = null }: { user?: NavUser } = $props();
 
 	let menuOpen = $state(false);
+	let dropdownOpen = $state(false);
+
+	let loggedIn = $derived(user !== null);
+	let isProf = $derived(user?.type === 'prof');
+	let initials = $derived(
+		user?.name
+			? user.name
+					.trim()
+					.split(/\s+/)
+					.slice(0, 2)
+					.map((w) => w[0])
+					.join('')
+					.toUpperCase()
+			: '?'
+	);
+
+	async function signOut() {
+		await authClient.signOut({
+			fetchOptions: {
+				onSuccess: () => {
+					location.href = '/';
+				}
+			}
+		});
+	}
+
+	function clickOutside() {
+		return (node: HTMLElement) => {
+			const handler = (e: MouseEvent) => {
+				if (!node.contains(e.target as Node)) dropdownOpen = false;
+			};
+			document.addEventListener('click', handler, true);
+			return () => {
+				document.removeEventListener('click', handler, true);
+			};
+		};
+	}
 </script>
 
 <nav class="relative z-20 bg-ink">
@@ -17,28 +62,68 @@
 			</div>
 		</a>
 
-		<div class="hidden items-center gap-9 font-display text-sm font-semibold text-white/85 uppercase sm:flex">
+		<div
+			class="hidden items-center gap-9 font-display text-sm font-semibold text-white/85 uppercase sm:flex"
+		>
 			<a href="/profs">Moniteurs</a>
 			<a href="/sports">Disciplines</a>
 			<a href="/spots">Spots</a>
 			<a href="/prof-register">Devenir moniteur</a>
 		</div>
 
+		<!-- Desktop auth section -->
 		<div class="hidden sm:flex">
 			{#if loggedIn}
-				{#if isProf}
-					<a
-						href="/prof-account"
-						class="rounded-md border-2 bg-white px-4 py-2 font-display text-sm font-bold text-ink uppercase"
-						>Mon compte moniteur</a
+				<!-- Avatar button + dropdown -->
+				<div class="relative" {@attach clickOutside()}>
+					<button
+						class="flex h-9.5 w-9.5 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-accent font-bold text-white"
+						onclick={() => (dropdownOpen = !dropdownOpen)}
+						aria-label="Menu utilisateur"
+						aria-expanded={dropdownOpen}
 					>
-				{:else}
-					<a
-						href="/account"
-						class="rounded-md border-2 bg-white px-4 py-2 font-display text-sm font-bold text-ink uppercase"
-						>Mon compte</a
-					>
-				{/if}
+						{#if user?.image}
+							<img
+								src={user.image}
+								alt={user?.name ?? 'Avatar'}
+								class="h-full w-full object-cover"
+							/>
+						{:else}
+							<span class="text-sm">{initials}</span>
+						{/if}
+					</button>
+
+					{#if dropdownOpen}
+						<div
+							class="absolute top-full right-0 z-50 mt-2 min-w-50 rounded-xl border border-line bg-white shadow-lg"
+						>
+							<!-- Header -->
+							<div class="px-4 py-3">
+								<p class="font-display text-sm font-semibold text-ink">{user?.name}</p>
+								<p class="text-xs text-ink/50">{user?.email}</p>
+							</div>
+
+							<hr class="border-line" />
+
+							<!-- Account link -->
+							<a
+								href={isProf ? '/prof-account' : '/account'}
+								onclick={() => (dropdownOpen = false)}
+								class="block px-4 py-2.5 font-display text-sm font-semibold text-ink uppercase hover:bg-ink/5"
+							>
+								{isProf ? 'Mon compte moniteur' : 'Mon compte'}
+							</a>
+
+							<!-- Sign out -->
+							<button
+								onclick={signOut}
+								class="w-full cursor-pointer px-4 py-2.5 text-left font-display text-sm font-semibold text-red-500 uppercase hover:bg-ink/5"
+							>
+								Se déconnecter
+							</button>
+						</div>
+					{/if}
+				</div>
 			{:else}
 				<div class="flex items-center gap-4">
 					<a href="/login" class="font-display text-sm font-semibold text-white/85 uppercase"
@@ -88,23 +173,23 @@
 				class="border-b border-white/10 py-3.5 font-display text-sm font-semibold text-white/85 uppercase"
 				>Devenir moniteur</a
 			>
+
+			<!-- Mobile auth section -->
 			<div class="mt-5">
 				{#if loggedIn}
-					{#if isProf}
-						<a
-							href="/prof-account"
-							onclick={() => (menuOpen = false)}
-							class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
-							>Mon compte moniteur</a
-						>
-					{:else}
-						<a
-							href="/account"
-							onclick={() => (menuOpen = false)}
-							class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
-							>Mon compte</a
-						>
-					{/if}
+					<a
+						href={isProf ? '/prof-account' : '/account'}
+						onclick={() => (menuOpen = false)}
+						class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
+					>
+						{isProf ? 'Mon compte moniteur' : 'Mon compte'}
+					</a>
+					<button
+						onclick={signOut}
+						class="mt-3 w-full cursor-pointer rounded-md border-2 border-red-500 px-4 py-3 text-center font-display text-sm font-bold text-red-500 uppercase"
+					>
+						Se déconnecter
+					</button>
 				{:else}
 					<div class="flex flex-col gap-3">
 						<a

@@ -1,9 +1,10 @@
 import { getProfs } from '$lib/server/mockData';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async () => {
+export const load: LayoutServerLoad = async (event) => {
     const profs = await getProfs();
     return {
-        profs
+        profs,
+        user: event.locals.user ?? null,
     };
 };

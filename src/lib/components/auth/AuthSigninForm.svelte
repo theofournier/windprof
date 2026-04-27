@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
+	type FormResult = { error?: string; email?: string } | null;
+	let { form = null }: { form?: FormResult } = $props();
+
 	let showPassword = $state(false);
 	let rememberMe = $state(true);
-	let email = $state('');
-	let password = $state('');
+	let submitting = $state(false);
 </script>
 
 <div class="mx-auto w-full max-w-[440px] pt-10">
@@ -71,7 +75,17 @@
 		<div class="h-px flex-1 bg-line"></div>
 	</div>
 
-	<form method="POST" class="flex flex-col gap-4">
+	<form
+		method="POST"
+		class="flex flex-col gap-4"
+		use:enhance={() => {
+			submitting = true;
+			return async ({ update }) => {
+				await update();
+				submitting = false;
+			};
+		}}
+	>
 		<!-- Email -->
 		<div>
 			<label
@@ -84,7 +98,7 @@
 				id="email"
 				type="email"
 				name="email"
-				bind:value={email}
+				value={form?.email ?? ''}
 				placeholder="julien@exemple.fr"
 				autocomplete="email"
 				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -112,7 +126,6 @@
 					id="password"
 					type={showPassword ? 'text' : 'password'}
 					name="password"
-					bind:value={password}
 					placeholder="••••••••••"
 					autocomplete="current-password"
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 pr-16 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -143,12 +156,23 @@
 			<span class="text-[13px] text-muted">Garder ma session active sur ce navigateur</span>
 		</label>
 
+		<!-- Error banner -->
+		{#if form?.error}
+			<div
+				class="rounded-md border border-red-200 bg-red-50 px-4 py-3 font-sans text-[13px] text-red-700"
+				role="alert"
+			>
+				{form.error}
+			</div>
+		{/if}
+
 		<!-- Submit CTA -->
 		<button
 			type="submit"
-			class="mt-7 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-md bg-accent px-5.5 py-4 font-display text-[13.5px] font-bold tracking-wide text-white uppercase transition-colors hover:bg-accent/90"
+			disabled={submitting}
+			class="mt-7 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-md bg-accent px-5.5 py-4 font-display text-[13.5px] font-bold tracking-wide text-white uppercase transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
 		>
-			Se connecter →
+			{submitting ? 'Connexion…' : 'Se connecter →'}
 		</button>
 	</form>
 

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import AuthVisualPanel from '$lib/components/auth/AuthVisualPanel.svelte';
 	import AuthSigninForm from '$lib/components/auth/AuthSigninForm.svelte';
+	import type { ActionData } from './$types';
+
+	let { form }: { form: ActionData } = $props();
 </script>
 
 <svelte:head>
@@ -15,6 +18,6 @@
 
 	<!-- Right: signin form -->
 	<main class="flex items-start justify-center bg-bg px-6 py-14 md:px-18">
-		<AuthSigninForm />
+		<AuthSigninForm {form} />
 	</main>
 </div>

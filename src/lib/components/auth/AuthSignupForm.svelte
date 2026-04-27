@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
+	type FormResult = { error?: string; email?: string; firstName?: string; lastName?: string } | null;
 	type Role = 'moniteur' | 'rider';
 
 	const roles: { k: Role; n: string; d: string; icon: string }[] = [
@@ -6,14 +9,13 @@
 		{ k: 'rider', n: 'Rider', d: 'Je cherche un coach', icon: '◇' }
 	];
 
+	let { form = null }: { form?: FormResult } = $props();
+
 	let role: Role = $state('moniteur');
 	let showPassword = $state(false);
 	let acceptCgu = $state(true);
 	let newsletter = $state(false);
-	let firstName = $state('');
-	let lastName = $state('');
-	let email = $state('');
-	let password = $state('');
+	let submitting = $state(false);
 </script>
 
 <div class="mx-auto w-full max-w-[480px]">
@@ -115,7 +117,19 @@
 		<div class="h-px flex-1 bg-line"></div>
 	</div>
 
-	<form method="POST" class="flex flex-col gap-[14px]">
+	<form
+		method="POST"
+		class="flex flex-col gap-3.5"
+		use:enhance={() => {
+			submitting = true;
+			return async ({ update }) => {
+				await update();
+				submitting = false;
+			};
+		}}
+	>
+		<input type="hidden" name="role" value={role} />
+
 		<!-- First name + Last name -->
 		<div class="grid grid-cols-2 gap-3">
 			<div>
@@ -129,7 +143,7 @@
 					id="firstName"
 					type="text"
 					name="firstName"
-					bind:value={firstName}
+					value={form?.firstName ?? ''}
 					placeholder="Julien"
 					autocomplete="given-name"
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -146,7 +160,7 @@
 					id="lastName"
 					type="text"
 					name="lastName"
-					bind:value={lastName}
+					value={form?.lastName ?? ''}
 					placeholder="Mercier"
 					autocomplete="family-name"
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -166,7 +180,7 @@
 				id="email"
 				type="email"
 				name="email"
-				bind:value={email}
+				value={form?.email ?? ''}
 				placeholder="julien@exemple.fr"
 				autocomplete="email"
 				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -186,7 +200,6 @@
 					id="password"
 					type={showPassword ? 'text' : 'password'}
 					name="password"
-					bind:value={password}
 					placeholder="••••••••••"
 					autocomplete="new-password"
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 pr-16 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
@@ -257,12 +270,26 @@
 			</span>
 		</label>
 
+		<!-- Error banner -->
+		{#if form?.error}
+			<div
+				class="rounded-md border border-red-200 bg-red-50 px-4 py-3 font-sans text-sm text-red-700"
+			>
+				{form.error}
+			</div>
+		{/if}
+
 		<!-- Submit CTA -->
 		<button
 			type="submit"
-			class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-md bg-accent px-5 py-4 font-display text-[13.5px] font-bold tracking-wide text-white uppercase transition-colors hover:bg-accent/90"
+			disabled={submitting}
+			class="mt-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-md bg-accent px-5 py-4 font-display text-[13.5px] font-bold tracking-wide text-white uppercase transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
 		>
-			{role === 'moniteur' ? 'Créer mon compte → étape suivante' : 'Créer mon compte rider →'}
+			{#if submitting}
+				Création...
+			{:else}
+				{role === 'moniteur' ? 'Créer mon compte → étape suivante' : 'Créer mon compte rider →'}
+			{/if}
 		</button>
 	</form>
 
