@@ -6,7 +6,7 @@ declare global {
 		}
 		interface Platform {
 			env: {
-				DB: D1Database;
+				windprof_db: D1Database;
 			};
 		}
 	}
