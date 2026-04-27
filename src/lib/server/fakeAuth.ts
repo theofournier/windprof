@@ -10,6 +10,12 @@ export default betterAuth({
     baseURL: env.ORIGIN,
     secret: env.BETTER_AUTH_SECRET,
     emailAndPassword: { enabled: true },
+    socialProviders: {
+        google: {
+            clientId: env.GOOGLE_CLIENT_ID as string,
+            clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+        },
+    },
     experimental: { joins: true },
     plugins: [
         admin(),

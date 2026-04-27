@@ -16,6 +16,12 @@ export function getAuth(db: DrizzleClient) {
 		}),
 		experimental: { joins: true },
 		emailAndPassword: { enabled: true },
+		socialProviders: {
+			google: {
+				clientId: env.GOOGLE_CLIENT_ID as string,
+				clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+			},
+		},
 		plugins: [
 			admin(),
 			sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
