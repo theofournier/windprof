@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { authClient } from '$lib/auth.client';
 
 	type FormResult = { error?: string; email?: string; firstName?: string; lastName?: string } | null;
 	type Role = 'moniteur' | 'rider';
@@ -16,6 +17,12 @@
 	let acceptCgu = $state(true);
 	let newsletter = $state(false);
 	let submitting = $state(false);
+	let googleLoading = $state(false);
+
+	async function signInWithGoogle() {
+		googleLoading = true;
+		await authClient.signIn.social({ provider: 'google', callbackURL: '/' });
+	}
 </script>
 
 <div class="mx-auto w-full max-w-[480px]">
@@ -68,7 +75,9 @@
 	<div class="mb-6 grid grid-cols-2 gap-2.5">
 		<button
 			type="button"
-			class="flex cursor-pointer items-center justify-center gap-2.5 rounded-md border border-line bg-white px-4 py-3 font-sans text-[13px] font-semibold text-ink transition-colors hover:border-ink"
+			onclick={signInWithGoogle}
+			disabled={googleLoading}
+			class="flex cursor-pointer items-center justify-center gap-2.5 rounded-md border border-line bg-white px-4 py-3 font-sans text-[13px] font-semibold text-ink transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-60"
 		>
 			<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 				<path

@@ -87,6 +87,7 @@
 								src={user.image}
 								alt={user?.name ?? 'Avatar'}
 								class="h-full w-full object-cover"
+								referrerpolicy="no-referrer"
 							/>
 						{:else}
 							<span class="text-sm">{initials}</span>
