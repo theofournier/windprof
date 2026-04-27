@@ -1,15 +1,19 @@
-import type { DrizzleClient } from "$lib/server/db";
+import type { User, Session } from 'better-auth/minimal';
+import type { DrizzleClient } from '$lib/server/db';
+import type { BetterAuth } from "$lib/auth";
+
 declare global {
 	namespace App {
 		interface Locals {
-			db: DrizzleClient
+			db: DrizzleClient;
+			auth: BetterAuth;
+			user?: User;
+			session?: Session;
 		}
 		interface Platform {
-			env: {
-				windprof_db: D1Database;
-			};
+			env: { windprof_db: D1Database };
 		}
 	}
 }
 
-export {};
+export { };

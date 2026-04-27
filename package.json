@@ -21,6 +21,7 @@
 		"cf-typegen": "wrangler types && mv worker-configuration.d.ts src/"
 	},
 	"devDependencies": {
+		"@better-auth/cli": "~1.4.21",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@libsql/client": "^0.17.3",
@@ -31,6 +32,7 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.2",
 		"@types/node": "^24",
+		"better-auth": "~1.4.21",
 		"drizzle-kit": "^0.31.10",
 		"drizzle-orm": "^0.45.2",
 		"eslint": "^10.2.0",
