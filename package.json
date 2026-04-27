@@ -18,7 +18,8 @@
 		"db:studio": "drizzle-kit studio",
 		"d1:migrate-local": "wrangler d1 migrations apply windprof-db",
 		"d1:migrate-remote": "wrangler d1 migrations apply windprof-db --remote",
-		"cf-typegen": "wrangler types && mv worker-configuration.d.ts src/"
+		"cf-typegen": "wrangler types && mv worker-configuration.d.ts src/",
+		"auth:schema": "better-auth generate --config src/lib/server/fakeAuth.ts --output src/lib/server/db/auth.schema.ts --yes"
 	},
 	"devDependencies": {
 		"@better-auth/cli": "~1.4.21",
