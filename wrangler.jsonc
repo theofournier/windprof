@@ -8,5 +8,13 @@
     "assets": {
         "binding": "ASSETS",
         "directory": ".svelte-kit/cloudflare"
-    }
+    },
+    "d1_databases": [
+        {
+            "binding": "windprof_db",
+            "database_name": "windprof-db",
+            "database_id": "02688f0c-1cfa-4383-9c0b-e156345ea539",
+            "migrations_dir": "./drizzle"
+        }
+    ]
 }
