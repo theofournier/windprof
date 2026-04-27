@@ -10,6 +10,7 @@ export default betterAuth({
     baseURL: env.ORIGIN,
     secret: env.BETTER_AUTH_SECRET,
     emailAndPassword: { enabled: true },
+    experimental: { joins: true },
     plugins: [
         admin(),
         sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
@@ -21,9 +22,9 @@ export default betterAuth({
     user: {
         additionalFields: {
             type: {
-                type: ["user", "prof"],
+                type: ["rider", "prof"],
                 required: false,
-                defaultValue: "user",
+                defaultValue: "rider",
             }
         },
     },

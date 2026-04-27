@@ -14,6 +14,7 @@ export function getAuth(db: DrizzleClient) {
 			provider: "sqlite",
 			usePlural: true,
 		}),
+		experimental: { joins: true },
 		emailAndPassword: { enabled: true },
 		plugins: [
 			admin(),
@@ -22,9 +23,9 @@ export function getAuth(db: DrizzleClient) {
 		user: {
 			additionalFields: {
 				type: {
-					type: ["user", "prof"],
+					type: ["rider", "prof"],
 					required: false,
-					defaultValue: "user",
+					defaultValue: "rider",
 				}
 			},
 		},
