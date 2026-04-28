@@ -1,3 +1,9 @@
+<script lang="ts">
+	import { getRiderRegisterCtx } from './context';
+
+	const ctx = getRiderRegisterCtx();
+</script>
+
 <div class="grid items-start gap-8" style="grid-template-columns: 180px 1fr">
 	<!-- Photo upload -->
 	<div>
@@ -33,7 +39,7 @@
 					id="rider-prenom"
 					type="text"
 					placeholder="Léa"
-					value="Léa"
+					bind:value={ctx.data.firstName}
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 			</div>
@@ -51,7 +57,7 @@
 					id="rider-nom"
 					type="text"
 					placeholder="Berthet"
-					value="Berthet"
+					bind:value={ctx.data.lastName}
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 			</div>
@@ -71,11 +77,12 @@
 				</label>
 				<select
 					id="rider-birth"
+					bind:value={ctx.data.birthYear}
 					class="w-full appearance-none rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 					style="background-image: linear-gradient(45deg, transparent 50%, #6F7785 50%), linear-gradient(135deg, #6F7785 50%, transparent 50%); background-position: calc(100% - 18px) 18px, calc(100% - 13px) 18px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 38px;"
 				>
 					{#each Array.from({ length: 60 }, (_, i) => 2010 - i) as year (year)}
-						<option value={year} selected={year === 1995}>{year}</option>
+						<option value={year}>{year}</option>
 					{/each}
 				</select>
 			</div>
@@ -90,7 +97,7 @@
 					id="rider-city"
 					type="text"
 					placeholder="Montpellier"
-					value="Montpellier"
+					bind:value={ctx.data.city}
 					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 			</div>
@@ -114,9 +121,9 @@
 				id="rider-bio"
 				rows={3}
 				placeholder="Pratique régulière, en famille, en stage l'été…"
+				bind:value={ctx.data.bio}
 				class="w-full resize-y rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] leading-body text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
-				>Je ride depuis 4 ans en wing, plutôt en mode vacances. Cette année je veux passer le cap du foil propre.</textarea
-			>
+			></textarea>
 		</div>
 	</div>
 </div>

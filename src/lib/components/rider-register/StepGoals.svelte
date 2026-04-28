@@ -1,3 +1,45 @@
+<script lang="ts">
+	import { getRiderRegisterCtx, type RiderFormData } from './context';
+
+	const ctx = getRiderRegisterCtx();
+
+	const GOALS = [
+		{ n: 'Découvrir le sport', d: 'Première session, prendre les bases' },
+		{ n: 'Solidifier les bases', d: 'Bords, virements, départ planning' },
+		{ n: 'Passer au foil', d: 'Premier vol, transitions au foil' },
+		{ n: 'Apprendre à sauter', d: 'Premier saut, hauteur, atterrissage' },
+		{ n: 'Faire de la vague', d: 'Lecture vague, virages engagés' },
+		{ n: 'Tricks / freestyle', d: 'Rotations, slides, figures' },
+		{ n: 'Reprendre en sécurité', d: 'Après une pause, redevenir confiant' },
+		{ n: 'Juste rider ensemble', d: 'Coach session sans objectif précis' }
+	];
+
+	const FORMATS = [
+		{ value: 'individual', label: 'Cours individuel', desc: '1-1, max attention' },
+		{ value: 'duo', label: 'Duo (2 riders)', desc: 'Avec un·e proche' },
+		{ value: 'small_group', label: 'Petit groupe (3)', desc: 'Plus économique' },
+		{ value: 'stage', label: 'Stage / week-end', desc: 'Progression intense' }
+	];
+
+	const EQUIPMENT: Array<{ value: RiderFormData['equipmentPreference']; label: string; desc: string }> = [
+		{ value: 'own', label: "J'ai mon matériel", desc: 'Je viens avec' },
+		{ value: 'provided', label: 'Matériel à fournir', desc: 'Le moniteur prête' },
+		{ value: 'any', label: 'Peu importe', desc: "Je m'adapte" }
+	];
+
+	function toggleGoal(name: string) {
+		const idx = ctx.data.goals.indexOf(name);
+		if (idx >= 0) ctx.data.goals.splice(idx, 1);
+		else ctx.data.goals.push(name);
+	}
+
+	function toggleFormat(value: string) {
+		const idx = ctx.data.formatPreferences.indexOf(value);
+		if (idx >= 0) ctx.data.formatPreferences.splice(idx, 1);
+		else ctx.data.formatPreferences.push(value);
+	}
+</script>
+
 <div class="grid gap-6">
 	<!-- Goals -->
 	<div>
@@ -8,28 +50,25 @@
 			</span>
 		</div>
 		<div class="grid grid-cols-2 gap-2.5">
-			{#each [
-				{ n: 'Découvrir le sport', d: 'Première session, prendre les bases', on: false },
-				{ n: 'Solidifier les bases', d: 'Bords, virements, départ planning', on: false },
-				{ n: 'Passer au foil', d: 'Premier vol, transitions au foil', on: true },
-				{ n: 'Apprendre à sauter', d: 'Premier saut, hauteur, atterrissage', on: false },
-				{ n: 'Faire de la vague', d: 'Lecture vague, virages engagés', on: false },
-				{ n: 'Tricks / freestyle', d: 'Rotations, slides, figures', on: false },
-				{ n: 'Reprendre en sécurité', d: 'Après une pause, redevenir confiant', on: true },
-				{ n: 'Juste rider ensemble', d: 'Coach session sans objectif précis', on: false }
-			] as g (g.n)}
+			{#each GOALS as g (g.n)}
+				{@const on = ctx.data.goals.includes(g.n)}
 				<div
-					class="grid cursor-pointer items-start rounded-[10px] border p-4 {g.on
+					role="checkbox"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => toggleGoal(g.n)}
+					onkeydown={(e) => e.key === 'Enter' && toggleGoal(g.n)}
+					class="grid cursor-pointer items-start rounded-[10px] border p-4 {on
 						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 						: 'border-line bg-bg-card'}"
 					style="grid-template-columns: auto 1fr; gap: 12px"
 				>
 					<span
-						class="mt-0.5 flex h-5 w-5 items-center justify-center rounded-[4px] text-caption font-bold text-white {g.on
+						class="mt-0.5 flex h-5 w-5 items-center justify-center rounded-[4px] text-caption font-bold text-white {on
 							? 'bg-accent'
 							: 'border-[1.5px] border-line bg-transparent'}"
 					>
-						{g.on ? '✓' : ''}
+						{on ? '✓' : ''}
 					</span>
 					<div>
 						<div class="text-[14px] font-bold">{g.n}</div>
@@ -49,28 +88,29 @@
 			</span>
 		</div>
 		<div class="grid grid-cols-4 gap-2.5">
-			{#each [
-				{ n: 'Cours individuel', d: '1-1, max attention', on: true },
-				{ n: 'Duo (2 riders)', d: 'Avec un·e proche', on: false },
-				{ n: 'Petit groupe (3)', d: 'Plus économique', on: false },
-				{ n: 'Stage / week-end', d: 'Progression intense', on: true }
-			] as f (f.n)}
+			{#each FORMATS as f (f.value)}
+				{@const on = ctx.data.formatPreferences.includes(f.value)}
 				<div
-					class="cursor-pointer rounded-[10px] border p-3.5 {f.on
+					role="checkbox"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => toggleFormat(f.value)}
+					onkeydown={(e) => e.key === 'Enter' && toggleFormat(f.value)}
+					class="cursor-pointer rounded-[10px] border p-3.5 {on
 						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 						: 'border-line bg-bg-card'}"
 				>
 					<div class="mb-1 flex items-center gap-2">
 						<span
-							class="flex h-4 w-4 items-center justify-center rounded-[4px] text-[10px] font-bold text-white {f.on
+							class="flex h-4 w-4 items-center justify-center rounded-[4px] text-micro font-bold text-white {on
 								? 'bg-accent'
 								: 'border-[1.5px] border-line bg-transparent'}"
 						>
-							{f.on ? '✓' : ''}
+							{on ? '✓' : ''}
 						</span>
-						<span class="text-body-sm font-bold">{f.n}</span>
+						<span class="text-body-sm font-bold">{f.label}</span>
 					</div>
-					<div class="pl-6 text-[11.5px] text-muted">{f.d}</div>
+					<div class="pl-6 text-[11.5px] text-muted">{f.desc}</div>
 				</div>
 			{/each}
 		</div>
@@ -85,27 +125,29 @@
 			</span>
 		</div>
 		<div class="grid grid-cols-3 gap-2.5">
-			{#each [
-				{ n: "J'ai mon matériel", d: 'Je viens avec', on: false },
-				{ n: 'Matériel à fournir', d: 'Le moniteur prête', on: true },
-				{ n: 'Peu importe', d: "Je m'adapte", on: false }
-			] as m (m.n)}
+			{#each EQUIPMENT as m (m.value)}
+				{@const on = ctx.data.equipmentPreference === m.value}
 				<div
-					class="cursor-pointer rounded-[10px] border p-3.5 {m.on
+					role="radio"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => (ctx.data.equipmentPreference = m.value)}
+					onkeydown={(e) => e.key === 'Enter' && (ctx.data.equipmentPreference = m.value)}
+					class="cursor-pointer rounded-[10px] border p-3.5 {on
 						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 						: 'border-line bg-bg-card'}"
 				>
 					<div class="mb-1 flex items-center gap-2">
 						<span
-							class="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white {m.on
+							class="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white {on
 								? 'bg-accent'
 								: 'border-[1.5px] border-line bg-transparent'}"
 						>
-							{m.on ? '●' : ''}
+							{on ? '●' : ''}
 						</span>
-						<span class="text-body-sm font-bold">{m.n}</span>
+						<span class="text-body-sm font-bold">{m.label}</span>
 					</div>
-					<div class="pl-6 text-[11.5px] text-muted">{m.d}</div>
+					<div class="pl-6 text-[11.5px] text-muted">{m.desc}</div>
 				</div>
 			{/each}
 		</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { enhance } from '$app/forms';
+	import { setRiderRegisterCtx } from '$lib/components/rider-register/context';
 	import RiderRegisterHeader from '$lib/components/rider-register/RiderRegisterHeader.svelte';
 	import RiderRegisterSidebar from '$lib/components/rider-register/RiderRegisterSidebar.svelte';
 	import RiderRegisterNav from '$lib/components/rider-register/RiderRegisterNav.svelte';
@@ -9,13 +10,40 @@
 	import StepPreferences from '$lib/components/rider-register/StepPreferences.svelte';
 	import StepReview from '$lib/components/rider-register/StepReview.svelte';
 
+	const { form } = $props<{ form: { error?: string } | null }>();
+
 	const TOTAL_STEPS = 5;
 
 	let step = $state(0);
 
-	setContext('riderRegister', {
+	import type { RiderFormData } from '$lib/components/rider-register/context';
+
+	let formData: RiderFormData = $state({
+		firstName: '',
+		lastName: '',
+		birthYear: new Date().getFullYear() - 25,
+		city: '',
+		bio: '',
+		sports: [],
+		goals: [],
+		formatPreferences: [],
+		equipmentPreference: '',
+		spots: [],
+		maxDistanceKm: 60,
+		availabilityDays: [],
+		availabilitySlots: [],
+		budgetRanges: [],
+	});
+
+	setRiderRegisterCtx({
 		get step() {
 			return step;
+		},
+		get data() {
+			return formData;
+		},
+		goTo(n: number) {
+			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
 		},
 		next() {
 			step = Math.min(TOTAL_STEPS - 1, step + 1);
@@ -66,19 +94,29 @@
 				{stepIntros[step]}
 			</p>
 
-			{#if step === 0}
-				<StepProfile />
-			{:else if step === 1}
-				<StepDisciplines />
-			{:else if step === 2}
-				<StepGoals />
-			{:else if step === 3}
-				<StepPreferences />
-			{:else if step === 4}
-				<StepReview />
+			{#if form?.error}
+				<div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700">
+					{form.error}
+				</div>
 			{/if}
 
-			<RiderRegisterNav />
+			<form method="POST" use:enhance>
+				<input type="hidden" name="formData" value={JSON.stringify(formData)} />
+
+				{#if step === 0}
+					<StepProfile />
+				{:else if step === 1}
+					<StepDisciplines />
+				{:else if step === 2}
+					<StepGoals />
+				{:else if step === 3}
+					<StepPreferences />
+				{:else if step === 4}
+					<StepReview />
+				{/if}
+
+				<RiderRegisterNav />
+			</form>
 		</main>
 	</div>
 </div>

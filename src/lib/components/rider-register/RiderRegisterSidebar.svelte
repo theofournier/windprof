@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getRiderRegisterCtx } from './context';
 
-	const ctx = getContext<{ step: number }>('riderRegister');
+	const ctx = getRiderRegisterCtx();
 
 	const steps = [
 		{ n: '01', t: 'Profil', s: 'Photo, prénom, ville' },
@@ -16,7 +16,7 @@
 	<div class="mb-3.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 		↳ ÉTAPES · 5
 	</div>
-	<div class="font-display text-[32px] font-black leading-none tracking-tight uppercase">
+	<div class="font-display text-[32px] leading-none font-black tracking-tight uppercase">
 		Dis-nous<br />qui tu es.
 	</div>
 	<p class="mt-3.5 mb-5.5 text-[13.5px] leading-body text-muted">

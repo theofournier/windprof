@@ -1,3 +1,22 @@
+<script lang="ts">
+	import { getProfRegisterCtx, type ContactVisibility, type ResponseTime } from './context';
+
+	const ctx = getProfRegisterCtx();
+
+	const VISIBILITY: Array<{ value: ContactVisibility; label: string; desc: string }> = [
+		{ value: 'phone_email', label: 'Téléphone + email', desc: 'Recommandé' },
+		{ value: 'email_only', label: 'Email seulement', desc: 'Si tu préfères filtrer' },
+		{ value: 'phone_only', label: 'Téléphone seulement', desc: 'Réponse plus rapide' }
+	];
+
+	const RESPONSE_TIMES: Array<{ value: ResponseTime; label: string }> = [
+		{ value: '30min', label: '≈ 30 min' },
+		{ value: '2h', label: '≈ 2 h' },
+		{ value: 'same_day', label: 'Dans la journée' },
+		{ value: 'within_24h', label: 'Sous 24 h' }
+	];
+</script>
+
 <div class="grid gap-5.5">
 	<!-- Info card -->
 	<div class="relative overflow-hidden rounded-[10px] bg-ink px-5.5 py-4.5">
@@ -19,7 +38,10 @@
 	<!-- Phone + email -->
 	<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 		<div>
-			<label for="phone" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
+			<label
+				for="phone"
+				class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase"
+			>
 				↳ TÉLÉPHONE
 			</label>
 			<div class="mb-1.5 font-mono text-[10.5px] tracking-wide text-muted">
@@ -28,13 +50,16 @@
 			<input
 				id="phone"
 				type="tel"
-				value="06 12 34 56 42"
 				placeholder="06 12 34 56 78"
+				bind:value={ctx.data.phone}
 				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 			/>
 		</div>
 		<div>
-			<label for="contact-email" class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase">
+			<label
+				for="contact-email"
+				class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase"
+			>
 				↳ EMAIL DE CONTACT
 			</label>
 			<div class="mb-1.5 font-mono text-[10.5px] tracking-wide text-muted">
@@ -43,8 +68,8 @@
 			<input
 				id="contact-email"
 				type="email"
-				value="julien.mercier@leucate-kite.fr"
 				placeholder="contact@…"
+				bind:value={ctx.data.contactEmail}
 				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 			/>
 		</div>
@@ -56,19 +81,29 @@
 			↳ VISIBILITÉ DES COORDONNÉES
 		</div>
 		<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-			{#each [
-				{ n: 'Téléphone + email', d: 'Recommandé', on: true },
-				{ n: 'Email seulement', d: 'Si tu préfères filtrer', on: false },
-				{ n: 'Téléphone seulement', d: 'Réponse plus rapide', on: false }
-			] as opt (opt.n)}
-				<div class="cursor-pointer rounded-[10px] border p-4 {opt.on ? 'border-ink bg-white' : 'border-line bg-bg-card'}">
+			{#each VISIBILITY as opt (opt.value)}
+				{@const on = ctx.data.contactVisibility === opt.value}
+				<div
+					role="radio"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => (ctx.data.contactVisibility = opt.value)}
+					onkeydown={(e) => e.key === 'Enter' && (ctx.data.contactVisibility = opt.value)}
+					class="cursor-pointer rounded-[10px] border p-4 {on
+						? 'border-ink bg-white'
+						: 'border-line bg-bg-card'}"
+				>
 					<div class="mb-1 flex items-center gap-2">
-						<span class="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white {opt.on ? 'bg-accent' : 'border-[1.5px] border-line bg-transparent'}">
-							{opt.on ? '●' : ''}
+						<span
+							class="flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white {on
+								? 'bg-accent'
+								: 'border-[1.5px] border-line bg-transparent'}"
+						>
+							{on ? '●' : ''}
 						</span>
-						<span class="text-[13.5px] font-bold">{opt.n}</span>
+						<span class="text-[13.5px] font-bold">{opt.label}</span>
 					</div>
-					<div class="pl-6 text-[11.5px] text-muted">{opt.d}</div>
+					<div class="pl-6 text-[11.5px] text-muted">{opt.desc}</div>
 				</div>
 			{/each}
 		</div>
@@ -83,14 +118,19 @@
 			Indication affichée à côté du dot 'en ligne' — incite les riders à appeler
 		</div>
 		<div class="flex flex-wrap gap-2">
-			{#each [
-				{ t: '≈ 30 min', on: false },
-				{ t: '≈ 2 h', on: true },
-				{ t: 'Dans la journée', on: false },
-				{ t: 'Sous 24 h', on: false }
-			] as opt}
-				<span class="inline-flex cursor-pointer items-center gap-1.5 rounded-[4px] px-3.5 py-2 font-mono text-label font-semibold tracking-[0.04em] uppercase {opt.on ? 'bg-ink text-white' : 'border border-line bg-transparent'}">
-					{opt.t}
+			{#each RESPONSE_TIMES as opt (opt.value)}
+				{@const on = ctx.data.responseTime === opt.value}
+				<span
+					role="radio"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => (ctx.data.responseTime = opt.value)}
+					onkeydown={(e) => e.key === 'Enter' && (ctx.data.responseTime = opt.value)}
+					class="inline-flex cursor-pointer items-center gap-1.5 rounded-[4px] px-3.5 py-2 font-mono text-label font-semibold tracking-[0.04em] uppercase {on
+						? 'bg-ink text-white'
+						: 'border border-line bg-transparent'}"
+				>
+					{opt.label}
 				</span>
 			{/each}
 		</div>

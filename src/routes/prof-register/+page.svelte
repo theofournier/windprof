@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { enhance } from '$app/forms';
+	import { setProfRegisterCtx } from '$lib/components/prof-register/context';
+	import type { ProfFormData } from '$lib/components/prof-register/context';
 	import ProfRegisterHeader from '$lib/components/prof-register/ProfRegisterHeader.svelte';
 	import ProfRegisterSidebar from '$lib/components/prof-register/ProfRegisterSidebar.svelte';
 	import ProfRegisterNav from '$lib/components/prof-register/ProfRegisterNav.svelte';
@@ -11,13 +13,41 @@
 	import StepContact from '$lib/components/prof-register/StepContact.svelte';
 	import StepReview from '$lib/components/prof-register/StepReview.svelte';
 
+	const { form } = $props<{ form: { error?: string } | null }>();
+
 	const TOTAL_STEPS = 7;
 
 	let step = $state(0);
 
-	setContext('profRegister', {
+	let formData: ProfFormData = $state({
+		firstName: '',
+		lastName: '',
+		bio: '',
+		languages: [],
+		sports: [],
+		certifications: [],
+		city: '',
+		region: '',
+		spots: [],
+		equipmentProvided: true,
+		equipmentNote: '',
+		prices: [],
+		websites: ['', ''],
+		phone: '',
+		contactEmail: '',
+		contactVisibility: 'phone_email',
+		responseTime: '',
+	});
+
+	setProfRegisterCtx({
 		get step() {
 			return step;
+		},
+		get data() {
+			return formData;
+		},
+		goTo(n: number) {
+			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
 		},
 		next() {
 			step = Math.min(TOTAL_STEPS - 1, step + 1);
@@ -74,23 +104,33 @@
 				{stepIntros[step]}
 			</p>
 
-			{#if step === 0}
-				<StepIdentity />
-			{:else if step === 1}
-				<StepDisciplines />
-			{:else if step === 2}
-				<StepCerts />
-			{:else if step === 3}
-				<StepSpots />
-			{:else if step === 4}
-				<StepPrices />
-			{:else if step === 5}
-				<StepContact />
-			{:else if step === 6}
-				<StepReview />
+			{#if form?.error}
+				<div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700">
+					{form.error}
+				</div>
 			{/if}
 
-			<ProfRegisterNav />
+			<form method="POST" use:enhance>
+				<input type="hidden" name="formData" value={JSON.stringify(formData)} />
+
+				{#if step === 0}
+					<StepIdentity />
+				{:else if step === 1}
+					<StepDisciplines />
+				{:else if step === 2}
+					<StepCerts />
+				{:else if step === 3}
+					<StepSpots />
+				{:else if step === 4}
+					<StepPrices />
+				{:else if step === 5}
+					<StepContact />
+				{:else if step === 6}
+					<StepReview />
+				{/if}
+
+				<ProfRegisterNav />
+			</form>
 		</main>
 	</div>
 </div>

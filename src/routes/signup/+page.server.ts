@@ -48,6 +48,6 @@ export const actions: Actions = {
 			throw err;
 		}
 
-		redirect(303, '/');
+		redirect(303, type === 'prof' ? '/prof-register' : '/rider-register');
 	}
 };

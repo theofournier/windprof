@@ -1,3 +1,60 @@
+<script lang="ts">
+	import { getProfRegisterCtx, type ProfSport } from './context';
+
+	const ctx = getProfRegisterCtx();
+
+	const DISCIPLINES: Array<{ sport: ProfSport; label: string; desc: string }> = [
+		{
+			sport: 'kitesurf',
+			label: 'Kitesurf',
+			desc: 'Aile de traction et planche, le grand classique du vent. Toutes glisses associées (twin-tip, foil, strapless).'
+		},
+		{
+			sport: 'wingfoil',
+			label: 'Wingfoil',
+			desc: "Wing à la main et planche à foil. La discipline qui explose, accessible à partir de 12 kt."
+		},
+		{
+			sport: 'windsurf',
+			label: 'Windsurf',
+			desc: 'Voile + planche, école historique. Du slalom au freestyle en passant par la vague.'
+		}
+	];
+
+	const LEVELS = [
+		{ value: 'beginner', label: 'Débutant', desc: 'Première session ou base à consolider' },
+		{ value: 'intermediate', label: 'Intermédiaire', desc: 'Bords assurés, départ planning, premiers sauts' },
+		{ value: 'advanced', label: 'Avancé', desc: 'Tricks, foil, vagues, perfectionnement spécifique' },
+		{ value: 'all', label: 'Tous niveaux', desc: "Je m'adapte à toute la pyramide" }
+	];
+
+	function toggleSport(sport: ProfSport) {
+		const idx = ctx.data.sports.findIndex((s) => s.sport === sport);
+		if (idx >= 0) {
+			ctx.data.sports.splice(idx, 1);
+		} else {
+			ctx.data.sports.push({ sport, acceptedLevels: [] });
+		}
+	}
+
+	function isSelected(sport: ProfSport): boolean {
+		return ctx.data.sports.some((s) => s.sport === sport);
+	}
+
+	function toggleLevel(sport: ProfSport, level: string) {
+		const entry = ctx.data.sports.find((s) => s.sport === sport);
+		if (!entry) return;
+		const idx = entry.acceptedLevels.indexOf(level);
+		if (idx >= 0) entry.acceptedLevels.splice(idx, 1);
+		else entry.acceptedLevels.push(level);
+	}
+
+	function hasLevel(sport: ProfSport, level: string): boolean {
+		const entry = ctx.data.sports.find((s) => s.sport === sport);
+		return entry?.acceptedLevels.includes(level) ?? false;
+	}
+</script>
+
 <div class="grid gap-8">
 	<!-- Disciplines -->
 	<div>
@@ -8,61 +65,64 @@
 			</span>
 		</div>
 		<div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-			{#each [
-				{ n: 'Kitesurf', d: "Aile de traction et planche, le grand classique du vent. Toutes glisses associées (twin-tip, foil, strapless).", on: true },
-				{ n: 'Wingfoil', d: "Wing à la main et planche à foil. La discipline qui explose, accessible à partir de 12 kt.", on: true },
-				{ n: 'Windsurf', d: "Voile + planche, école historique. Du slalom au freestyle en passant par la vague.", on: false }
-			] as d (d.n)}
-				<div class="relative cursor-pointer rounded-[10px] border p-5 {d.on ? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]' : 'border-line bg-bg-card'}">
-					{#if d.on}
-						<span class="absolute top-3.5 right-3.5 flex h-5.5 w-5.5 items-center justify-center rounded-[4px] bg-accent text-body-sm font-bold text-white">✓</span>
+			{#each DISCIPLINES as d (d.sport)}
+				{@const on = isSelected(d.sport)}
+				<div
+					role="checkbox"
+					aria-checked={on}
+					tabindex="0"
+					onclick={() => toggleSport(d.sport)}
+					onkeydown={(e) => e.key === 'Enter' && toggleSport(d.sport)}
+					class="relative cursor-pointer rounded-[10px] border p-5 {on
+						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
+						: 'border-line bg-bg-card'}"
+				>
+					{#if on}
+						<span
+							class="absolute top-3.5 right-3.5 flex h-5.5 w-5.5 items-center justify-center rounded-[4px] bg-accent text-body-sm font-bold text-white"
+							>✓</span
+						>
 					{/if}
-					<div class="mb-2 font-display text-[22px] font-black tracking-snug uppercase">{d.n}</div>
-					<p class="m-0 text-body-sm leading-relaxed text-muted">{d.d}</p>
+					<div class="mb-2 font-display text-[22px] font-black tracking-snug uppercase">{d.label}</div>
+					<p class="m-0 text-body-sm leading-relaxed text-muted">{d.desc}</p>
 				</div>
 			{/each}
 		</div>
 	</div>
 
-	<!-- Levels -->
-	<div>
-		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
-			↳ NIVEAUX ACCEPTÉS *
-		</div>
-		<div class="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
-			{#each [
-				{ n: 'Débutant', d: 'Première session ou base à consolider', on: true },
-				{ n: 'Intermédiaire', d: 'Bords assurés, départ planning, premiers sauts', on: true },
-				{ n: 'Avancé', d: 'Tricks, foil, vagues, perfectionnement spécifique', on: true },
-				{ n: 'Tous niveaux', d: "Je m'adapte à toute la pyramide", on: false }
-			] as n (n.n)}
-				<div class="cursor-pointer rounded-[10px] border p-4.5 {n.on ? 'border-ink bg-white' : 'border-line bg-bg-card'}">
-					<div class="mb-1.5 flex items-center gap-2">
-						<span class="flex h-4.5 w-4.5 items-center justify-center rounded-[4px] text-label font-bold text-white {n.on ? 'bg-accent' : 'border-[1.5px] border-line bg-transparent'}">
-							{n.on ? '✓' : ''}
-						</span>
-						<span class="text-[14px] font-bold">{n.n}</span>
-					</div>
-					<div class="pl-6.5 text-caption leading-snug text-muted">{n.d}</div>
-				</div>
-			{/each}
-		</div>
-	</div>
-
-	<!-- Wind minimum -->
-	<div>
-		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
-			↳ VENT MINIMUM (KT)
-		</div>
-		<div class="mb-1.5 font-mono text-[10.5px] tracking-wide text-muted">
-			Seuil en dessous duquel tu n'enseignes pas — utile pour le matching météo (MVP 2)
-		</div>
-		<div class="flex items-center gap-4.5 rounded-lg border border-line bg-white px-5.5 py-4.5">
-			<div class="font-display text-[42px] font-black leading-none text-accent" style="min-width: 90px">
-				12 kt
+	<!-- Levels per selected sport -->
+	{#each ctx.data.sports as entry (entry.sport)}
+		<div>
+			<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
+				↳ NIVEAUX ACCEPTÉS · {entry.sport.toUpperCase()} *
 			</div>
-			<input type="range" min="5" max="30" value="12" class="flex-1 accent-accent" />
-			<div class="font-mono text-label tracking-loose text-muted">5 — 30 KT</div>
+			<div class="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+				{#each LEVELS as lvl (lvl.value)}
+					{@const on = hasLevel(entry.sport, lvl.value)}
+					<div
+						role="checkbox"
+						aria-checked={on}
+						tabindex="0"
+						onclick={() => toggleLevel(entry.sport, lvl.value)}
+						onkeydown={(e) => e.key === 'Enter' && toggleLevel(entry.sport, lvl.value)}
+						class="cursor-pointer rounded-[10px] border p-4.5 {on
+							? 'border-ink bg-white'
+							: 'border-line bg-bg-card'}"
+					>
+						<div class="mb-1.5 flex items-center gap-2">
+							<span
+								class="flex h-4.5 w-4.5 items-center justify-center rounded-[4px] text-label font-bold text-white {on
+									? 'bg-accent'
+									: 'border-[1.5px] border-line bg-transparent'}"
+							>
+								{on ? '✓' : ''}
+							</span>
+							<span class="text-[14px] font-bold">{lvl.label}</span>
+						</div>
+						<div class="pl-6.5 text-caption leading-snug text-muted">{lvl.desc}</div>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
+	{/each}
 </div>

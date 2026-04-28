@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getProfRegisterCtx } from './context';
 
-	const ctx = getContext<{ step: number }>('profRegister');
+	const ctx = getProfRegisterCtx();
 
 	const steps = [
 		{ n: '01', t: 'Identité', s: 'Photo, prénom, nom, bio' },
@@ -18,7 +18,7 @@
 	<div class="mb-3.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 		↳ ÉTAPES · 7
 	</div>
-	<div class="font-display text-[32px] font-black leading-none tracking-tight uppercase">
+	<div class="font-display text-[32px] leading-none font-black tracking-tight uppercase">
 		Crée ton<br />profil moniteur.
 	</div>
 	<p class="mt-3.5 mb-5.5 text-[13.5px] leading-body text-muted">
@@ -38,10 +38,18 @@
 			{@const active = i === ctx.step}
 			{@const done = i < ctx.step}
 			<div
-				class="grid items-center gap-3 rounded-md px-3 py-3 {active ? 'border border-line bg-white' : 'border border-transparent'}"
+				class="grid items-center gap-3 rounded-md px-3 py-3 {active
+					? 'border border-line bg-white'
+					: 'border border-transparent'}"
 				style="grid-template-columns: 34px 1fr"
 			>
-				<div class="flex h-7.5 w-7.5 items-center justify-center rounded-full font-mono text-label font-bold tracking-wide {done ? 'bg-accent text-white' : active ? 'bg-ink text-white' : 'border border-line text-muted'}">
+				<div
+					class="flex h-7.5 w-7.5 items-center justify-center rounded-full font-mono text-label font-bold tracking-wide {done
+						? 'bg-accent text-white'
+						: active
+							? 'bg-ink text-white'
+							: 'border border-line text-muted'}"
+				>
 					{done ? '✓' : s.n}
 				</div>
 				<div>
@@ -61,11 +69,15 @@
 			style="background-image: repeating-linear-gradient(108deg, transparent 0 22px, rgba(255,255,255,.045) 22px 23px), repeating-linear-gradient(108deg, transparent 0 90px, rgba(255,255,255,.08) 90px 91px); mask-image: linear-gradient(95deg, transparent 0%, black 20%, black 80%, transparent 100%);"
 		></div>
 		<div class="relative">
-			<div class="mb-2 font-mono text-micro tracking-widest text-accent-soft uppercase">★ EARLY ADOPTER</div>
+			<div class="mb-2 font-mono text-micro tracking-widest text-accent-soft uppercase">
+				★ EARLY ADOPTER
+			</div>
 			<div class="text-body-sm leading-relaxed text-white/85">
 				Les 20 premiers moniteurs inscrits ont <b class="text-white">6 mois Premium offerts</b>.
 			</div>
-			<div class="mt-2.5 font-mono text-micro tracking-loose text-white/50">14/20 PLACES RESTANTES</div>
+			<div class="mt-2.5 font-mono text-micro tracking-loose text-white/50">
+				14/20 PLACES RESTANTES
+			</div>
 		</div>
 	</div>
 </aside>
