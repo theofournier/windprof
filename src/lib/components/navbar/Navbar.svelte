@@ -108,7 +108,7 @@
 
 							<!-- Account link -->
 							<a
-								href={isProf ? '/prof-account' : '/account'}
+								href={isProf ? '/prof-account' : '/rider-account'}
 								onclick={() => (dropdownOpen = false)}
 								class="block px-4 py-2.5 font-display text-sm font-semibold text-ink uppercase hover:bg-ink/5"
 							>

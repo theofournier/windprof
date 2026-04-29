@@ -19,7 +19,7 @@ export const load: PageServerLoad = async (event) => {
 		.get();
 
 	if (existing) {
-		redirect(303, '/account');
+		redirect(303, '/rider-account');
 	}
 };
 
@@ -84,6 +84,6 @@ export const actions: Actions = {
 			);
 		}
 
-		redirect(303, '/account');
+		redirect(303, '/rider-account');
 	}
 };
