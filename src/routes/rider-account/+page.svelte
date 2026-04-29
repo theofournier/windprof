@@ -21,7 +21,8 @@
 			sports: data.sports as RiderFormData['sports'],
 			goals: (data.profile.goals as string[]) ?? [],
 			formatPreferences: (data.profile.formatPreferences as string[]) ?? [],
-			equipmentPreference: (data.profile.equipmentPreference as RiderFormData['equipmentPreference']) ?? '',
+			equipmentPreference:
+				(data.profile.equipmentPreference as RiderFormData['equipmentPreference']) ?? '',
 			spots: data.spots as RiderFormData['spots'],
 			maxDistanceKm: data.profile.maxDistanceKm ?? 60,
 			availabilityDays: (data.profile.availabilityDays as number[]) ?? [],
@@ -51,17 +52,44 @@
 
 	type SectionId = (typeof sections)[number]['id'];
 
-	let active = $state<SectionId>('profil');
-	let saving = $state(false);
+	let savingSection = $state<SectionId | null>(null);
 	let savedSection = $state<SectionId | null>(null);
+	let visibleSection = $state<SectionId>('profil');
+
+	$effect(() => {
+		function onScroll() {
+			const threshold = window.innerHeight * 0.35;
+			let current: SectionId = sections[0].id;
+			for (const s of sections) {
+				const el = document.getElementById(s.id);
+				if (el && el.getBoundingClientRect().top <= threshold) {
+					current = s.id;
+				}
+			}
+			visibleSection = current;
+		}
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		onScroll();
+		return () => window.removeEventListener('scroll', onScroll);
+	});
+
+	function scrollToSection(id: string) {
+		return (e: MouseEvent) => {
+			e.preventDefault();
+			const el = document.getElementById(id);
+			if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			history.pushState(null, '', `#${id}`);
+		};
+	}
 
 	function makeEnhance(sectionId: SectionId) {
 		return ({ cancel }: { cancel: () => void }) => {
-			if (saving) {
+			if (savingSection !== null) {
 				cancel();
 				return;
 			}
-			saving = true;
+			savingSection = sectionId;
 			return async ({
 				result,
 				update
@@ -69,7 +97,7 @@
 				result: { type: string };
 				update: (opts?: { reset?: boolean }) => Promise<void>;
 			}) => {
-				saving = false;
+				savingSection = null;
 				if (result.type === 'success') {
 					savedSection = sectionId;
 					setTimeout(() => {
@@ -81,8 +109,6 @@
 			};
 		};
 	}
-
-	const activeSection = $derived(sections.find((s) => s.id === active)!);
 </script>
 
 <div class="min-h-screen bg-bg">
@@ -115,10 +141,10 @@
 			<div class="-mx-5 overflow-x-auto px-5 sm:-mx-8 sm:px-8">
 				<div class="flex gap-1.5 pb-1" style="min-width: max-content">
 					{#each sections as s (s.id)}
-						<button
-							type="button"
-							onclick={() => (active = s.id)}
-							class="flex items-center gap-2 rounded-[6px] px-3 py-2.5 font-mono text-[10.5px] font-bold tracking-widest uppercase transition-colors {active ===
+						<a
+							href="#{s.id}"
+							onclick={scrollToSection(s.id)}
+							class="flex items-center gap-2 rounded-[6px] px-3 py-2.5 font-mono text-[10.5px] font-bold tracking-widest uppercase transition-colors {visibleSection ===
 							s.id
 								? 'bg-ink text-white'
 								: 'border border-line text-muted hover:border-ink hover:text-ink'}"
@@ -128,7 +154,7 @@
 							{/if}
 							{s.num}
 							<span class="hidden sm:inline">· {s.title.split(' ')[0]}</span>
-						</button>
+						</a>
 					{/each}
 				</div>
 			</div>
@@ -140,16 +166,16 @@
 			<nav class="hidden lg:block">
 				<div class="sticky overflow-hidden rounded-[10px] border border-line" style="top: 2rem">
 					{#each sections as s, i (s.id)}
-						<button
-							type="button"
-							onclick={() => (active = s.id)}
+						<a
+							href="#{s.id}"
+							onclick={scrollToSection(s.id)}
 							class="flex w-full items-center gap-3 px-4.5 py-4 text-left transition-colors {i <
 							sections.length - 1
 								? 'border-b border-line'
-								: ''} {active === s.id ? 'bg-ink' : 'hover:bg-bg-dark'}"
+								: ''} {visibleSection === s.id ? 'bg-ink' : 'hover:bg-bg-dark'}"
 						>
 							<span
-								class="shrink-0 font-mono text-[9.5px] font-semibold tracking-widest uppercase {active ===
+								class="shrink-0 font-mono text-[9.5px] font-semibold tracking-widest uppercase {visibleSection ===
 								s.id
 									? 'text-white/40'
 									: 'text-muted'}"
@@ -157,7 +183,7 @@
 								{s.num}
 							</span>
 							<span
-								class="min-w-0 flex-1 truncate font-mono text-[11.5px] font-bold tracking-wide uppercase {active ===
+								class="min-w-0 flex-1 truncate font-mono text-[11.5px] font-bold tracking-wide uppercase {visibleSection ===
 								s.id
 									? 'text-white'
 									: 'text-ink'}"
@@ -167,64 +193,70 @@
 							{#if savedSection === s.id}
 								<span class="shrink-0 text-[12px] text-green-400">✓</span>
 							{/if}
-						</button>
+						</a>
 					{/each}
 				</div>
 			</nav>
 
-			<!-- Content panel -->
-			<div>
-				<!-- Section heading -->
-				<div class="mb-6">
-					<div class="font-mono text-[10.5px] font-semibold tracking-widest text-accent uppercase">
-						↳ {activeSection.num} · {activeSection.title}
-					</div>
-				</div>
-
-				<!-- Form -->
-				<form method="POST" action="?/update" use:enhance={makeEnhance(active)}>
-					<input type="hidden" name="section" value={active} />
-					<input type="hidden" name="formData" value={JSON.stringify(formData)} />
-
-					{#if active === 'profil'}
-						<StepProfile />
-					{:else if active === 'disciplines'}
-						<StepDisciplines />
-					{:else if active === 'objectifs'}
-						<StepGoals />
-					{:else if active === 'preferences'}
-						<StepPreferences />
-					{/if}
-
-					<!-- Error -->
-					{#if (form as any)?.section === active && (form as any)?.error}
-						<div
-							class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
-						>
-							{(form as any).error}
-						</div>
-					{/if}
-
-					<!-- Save row -->
-					<div class="mt-8 flex items-center justify-between border-t border-line pt-5">
-						{#if savedSection === active}
-							<span
-								class="font-mono text-[11px] font-semibold tracking-widest text-green-600 uppercase"
+			<!-- Content: all sections stacked -->
+			<div class="flex flex-col gap-14">
+				{#each sections as s (s.id)}
+					<section id={s.id} style="scroll-margin-top: 2rem">
+						<!-- Section heading -->
+						<div class="mb-6">
+							<div
+								class="font-mono text-[10.5px] font-semibold tracking-widest text-accent uppercase"
 							>
-								✓ Modifications sauvegardées
-							</span>
-						{:else}
-							<span></span>
-						{/if}
-						<button
-							type="submit"
-							disabled={saving}
-							class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
-						>
-							{saving ? 'Sauvegarde…' : 'Enregistrer'}
-						</button>
-					</div>
-				</form>
+								↳ {s.num} · {s.title}
+							</div>
+						</div>
+
+						<!-- Form -->
+						<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
+							<input type="hidden" name="section" value={s.id} />
+							<input type="hidden" name="formData" value={JSON.stringify(formData)} />
+
+							{#if s.id === 'profil'}
+								<StepProfile />
+							{:else if s.id === 'disciplines'}
+								<StepDisciplines />
+							{:else if s.id === 'objectifs'}
+								<StepGoals />
+							{:else if s.id === 'preferences'}
+								<StepPreferences />
+							{/if}
+
+							<!-- Error -->
+							{#if (form as any)?.section === s.id && (form as any)?.error}
+								<div
+									class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+								>
+									{(form as any).error}
+								</div>
+							{/if}
+
+							<!-- Save row -->
+							<div class="mt-8 flex items-center justify-between border-t border-line pt-5">
+								{#if savedSection === s.id}
+									<span
+										class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+									>
+										✓ Modifications sauvegardées
+									</span>
+								{:else}
+									<span></span>
+								{/if}
+								<button
+									type="submit"
+									disabled={savingSection !== null}
+									class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+								>
+									{savingSection === s.id ? 'Sauvegarde…' : 'Enregistrer'}
+								</button>
+							</div>
+						</form>
+					</section>
+				{/each}
 			</div>
 		</div>
 	</main>
