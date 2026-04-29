@@ -10,6 +10,9 @@
 	let { data }: PageProps = $props();
 	let showFilter = $state(false);
 
+	const PAGE_SIZE = 9;
+	let currentPage = $state(1);
+
 	let location = $state('');
 	let sports = $state<string[]>([]);
 	let level = $state('');
@@ -45,6 +48,16 @@
 				return 0;
 			})
 	);
+
+	let totalPages = $derived(Math.max(1, Math.ceil(filteredProfs.length / PAGE_SIZE)));
+	let pagedProfs = $derived(
+		filteredProfs.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+	);
+
+	$effect(() => {
+		filteredProfs;
+		currentPage = 1;
+	});
 
 	let sportCounts = $derived({
 		kitesurf: data.profs.filter((p) => p.sports.includes('kitesurf')).length,
@@ -104,7 +117,7 @@
 					onremove={removeFilter}
 				/>
 				<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
-					{#each filteredProfs as prof (prof.id)}
+					{#each pagedProfs as prof (prof.id)}
 						<ProfItem
 							id={prof.id}
 							name={prof.name}
@@ -118,7 +131,7 @@
 						/>
 					{/each}
 				</div>
-				<ProfsPaginator />
+				<ProfsPaginator bind:currentPage {totalPages} />
 			</div>
 		</div>
 	</div>
