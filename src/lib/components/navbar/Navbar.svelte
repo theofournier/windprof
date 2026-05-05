@@ -68,7 +68,7 @@
 			<a href="/profs">Moniteurs</a>
 			<a href="/sports">Disciplines</a>
 			<a href="/spots">Spots</a>
-			<a href="/prof-register">Devenir moniteur</a>
+			<a href="/become-prof">Devenir moniteur</a>
 		</div>
 
 		<!-- Desktop auth section -->
