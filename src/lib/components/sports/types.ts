@@ -1,0 +1,20 @@
+export type Discipline = {
+	id: string;
+	name: string;
+	tagline: string;
+	blurb: string;
+	moniteurs: number;
+	spots: number;
+	windMin: number;
+	windMax: number;
+	windSweet: string;
+	beaufort: number[];
+	learnTime: string;
+	level: string;
+	gear: string[];
+	certifs: string[];
+	bestSpots: string[];
+	season: number[];
+	priceRange: string;
+	icon: 'kite' | 'wing' | 'wind';
+};
