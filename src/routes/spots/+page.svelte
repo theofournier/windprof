@@ -4,7 +4,7 @@
 	import SpotsFeatured from '$lib/components/spots/SpotsFeatured.svelte';
 	import SpotsMap from '$lib/components/spots/SpotsMap.svelte';
 	import SpotsFilter from '$lib/components/spots/SpotsFilter.svelte';
-	import SpotRow from '$lib/components/spots/SpotRow.svelte';
+	import SpotRow from '$lib/components/spots/SpotsRow.svelte';
 	import SpotsCTA from '$lib/components/spots/SpotsCTA.svelte';
 	import type { Spot } from '$lib/components/spots/types.js';
 
