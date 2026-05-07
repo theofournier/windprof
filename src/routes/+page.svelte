@@ -1,19 +1,25 @@
 <script lang="ts">
-	import Description from '$lib/components/homepage/Description.svelte';
-	import Hero from '$lib/components/homepage/Hero.svelte';
-	import ProfDescription from '$lib/components/homepage/ProfDescription.svelte';
-	import Profs from '$lib/components/homepage/Profs.svelte';
-	import Sports from '$lib/components/homepage/Sports.svelte';
-	import type { PageProps } from './$types';
-	let { data }: PageProps = $props();
+	import HomeHero from '$lib/components/homepage/HomeHero.svelte';
+	import HomeDisciplines from '$lib/components/homepage/HomeDisciplines.svelte';
+	import HomeHowItWorks from '$lib/components/homepage/HomeHowItWorks.svelte';
+	import HomeFeaturedProfs from '$lib/components/homepage/HomeFeaturedProfs.svelte';
+	import HomeSpots from '$lib/components/homepage/HomeSpots.svelte';
+	import HomeForecast from '$lib/components/homepage/HomeForecast.svelte';
+	import HomeTestimonials from '$lib/components/homepage/HomeTestimonials.svelte';
+	import HomeBecomeProfCTA from '$lib/components/homepage/HomeBecomeProfCTA.svelte';
 </script>
 
+<svelte:head>
+	<title>Windmatch — Trouvez votre moniteur de sport de vent</title>
+</svelte:head>
+
 <div>
-	<Hero />
-	<div class="mx-auto my-10 flex max-w-360 flex-col gap-8 px-5 sm:my-16 sm:gap-10 sm:px-10 lg:my-20 lg:gap-12 lg:px-14">
-		<Sports />
-		<Profs profs={data.profs} />
-		<Description />
-		<ProfDescription />
-	</div>
+	<HomeHero />
+	<HomeDisciplines />
+	<HomeHowItWorks />
+	<HomeFeaturedProfs />
+	<HomeSpots />
+	<HomeForecast />
+	<HomeTestimonials />
+	<HomeBecomeProfCTA />
 </div>
