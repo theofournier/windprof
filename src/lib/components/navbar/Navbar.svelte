@@ -1,32 +1,22 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
 	import { authClient } from '$lib/auth.client';
+	import { page } from '$app/state';
+	import type { User } from '$lib/server/auth';
+	import WindLines from '../global/WindLines.svelte';
 
-	type NavUser = {
-		name: string;
-		email: string;
-		image?: string | null;
-		type?: string | null;
-	} | null;
+	function isActive(path: string) {
+		return page.url.pathname === path || page.url.pathname.startsWith(path + '/');
+	}
 
-	let { user = null }: { user?: NavUser } = $props();
+	let { user = null }: { user?: User | null } = $props();
 
 	let menuOpen = $state(false);
 	let dropdownOpen = $state(false);
 
 	let loggedIn = $derived(user !== null);
 	let isProf = $derived(user?.type === 'prof');
-	let initials = $derived(
-		user?.name
-			? user.name
-					.trim()
-					.split(/\s+/)
-					.slice(0, 2)
-					.map((w) => w[0])
-					.join('')
-					.toUpperCase()
-			: '?'
-	);
+	let initials = $derived(user?.name.trim().slice(0, 1).toUpperCase() ?? '?');
 
 	async function signOut() {
 		await authClient.signOut({
@@ -51,8 +41,30 @@
 	}
 </script>
 
-<nav class="relative z-20 bg-ink">
-	<div class="flex items-center justify-between px-5 py-5 sm:px-14 sm:py-6">
+{#snippet links(href: string, label: string)}
+	<a
+		{href}
+		class="transition-colors hover:text-white {isActive(href)
+			? 'text-white underline decoration-accent underline-offset-4'
+			: ''}">{label}</a
+	>
+{/snippet}
+{#snippet mobileLinks(href: string, label: string)}
+	<a
+		{href}
+		onclick={() => (menuOpen = false)}
+		class="border-b border-white/10 py-3.5 font-display text-sm font-semibold uppercase transition-colors hover:text-white {isActive(
+			href
+		)
+			? 'text-white underline decoration-accent underline-offset-4'
+			: 'text-white/70'}">{label}</a
+	>
+{/snippet}
+
+<nav class="navbar relative z-20">
+	<WindLines />
+
+	<div class="relative flex items-center justify-between px-5 py-5 sm:px-14 sm:py-6">
 		<a href="/" onclick={() => (menuOpen = false)}>
 			<div class="flex items-center gap-2">
 				<img src={logo} alt="Logo de Windprof" class="h-8 w-8" />
@@ -63,15 +75,14 @@
 		</a>
 
 		<div
-			class="hidden items-center gap-9 font-display text-sm font-semibold text-white/85 uppercase sm:flex"
+			class="hidden items-center gap-9 font-display text-sm font-semibold text-white/70 uppercase sm:flex"
 		>
-			<a href="/profs">Moniteurs</a>
-			<a href="/sports">Disciplines</a>
-			<a href="/spots">Spots</a>
-			<a href="/become-prof">Devenir moniteur</a>
+			{@render links('/profs', 'Moniteurs')}
+			{@render links('/sports', 'Disciplines')}
+			<!--{@render links('/spots', 'Spots')}-->
+			{@render links('/become-prof', 'Devenir moniteur')}
 		</div>
 
-		<!-- Desktop auth section -->
 		<div class="hidden sm:flex">
 			{#if loggedIn}
 				<!-- Avatar button + dropdown -->
@@ -127,12 +138,14 @@
 				</div>
 			{:else}
 				<div class="flex items-center gap-4">
-					<a href="/login" class="font-display text-sm font-semibold text-white/85 uppercase"
+					<a
+						href="/login"
+						class="font-display text-sm font-semibold text-white/70 uppercase transition-colors hover:text-white"
 						>Connexion</a
 					>
 					<a
 						href="/signup"
-						class="rounded-md border-2 bg-white px-4 py-2 font-display text-sm font-bold text-ink uppercase"
+						class="rounded-md bg-accent px-4 py-2 font-display text-sm font-bold text-white uppercase transition-opacity hover:opacity-90"
 						>S'inscrire</a
 					>
 				</div>
@@ -149,31 +162,11 @@
 	</div>
 
 	{#if menuOpen}
-		<div class="flex flex-col border-t border-white/10 px-5 pb-6 sm:hidden">
-			<a
-				href="/profs"
-				onclick={() => (menuOpen = false)}
-				class="border-b border-white/10 py-3.5 font-display text-sm font-semibold text-white/85 uppercase"
-				>Moniteurs</a
-			>
-			<a
-				href="/sports"
-				onclick={() => (menuOpen = false)}
-				class="border-b border-white/10 py-3.5 font-display text-sm font-semibold text-white/85 uppercase"
-				>Disciplines</a
-			>
-			<a
-				href="/spots"
-				onclick={() => (menuOpen = false)}
-				class="border-b border-white/10 py-3.5 font-display text-sm font-semibold text-white/85 uppercase"
-				>Spots</a
-			>
-			<a
-				href="/prof-register"
-				onclick={() => (menuOpen = false)}
-				class="border-b border-white/10 py-3.5 font-display text-sm font-semibold text-white/85 uppercase"
-				>Devenir moniteur</a
-			>
+		<div class="relative z-10 flex flex-col border-t border-white/10 px-5 pb-6 sm:hidden">
+			{@render mobileLinks('/profs', 'Moniteurs')}
+			{@render mobileLinks('/sports', 'Disciplines')}
+			{@render mobileLinks('/spots', 'Spots')}
+			{@render mobileLinks('/become-prof', 'Devenir moniteur')}
 
 			<!-- Mobile auth section -->
 			<div class="mt-5">
@@ -183,11 +176,12 @@
 						onclick={() => (menuOpen = false)}
 						class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
 					>
-						{isProf ? 'Mon compte moniteur' : 'Mon compte'}
+						<p class="font-display text-sm font-semibold text-ink">{user?.name}</p>
+						<p class="text-xs text-ink/50">{user?.email}</p>
 					</a>
 					<button
 						onclick={signOut}
-						class="mt-3 w-full cursor-pointer rounded-md border-2 border-red-500 px-4 py-3 text-center font-display text-sm font-bold text-red-500 uppercase"
+						class="mt-3 w-full cursor-pointer rounded-md bg-red-500 px-4 py-3 text-center font-display text-sm font-bold text-white uppercase"
 					>
 						Se déconnecter
 					</button>
@@ -196,13 +190,13 @@
 						<a
 							href="/login"
 							onclick={() => (menuOpen = false)}
-							class="py-2 text-center font-display text-sm font-semibold text-white/85 uppercase"
+							class="py-2 text-center font-display text-sm font-semibold text-white/70 uppercase transition-colors hover:text-white"
 							>Connexion</a
 						>
 						<a
 							href="/signup"
 							onclick={() => (menuOpen = false)}
-							class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
+							class="block rounded-md bg-accent px-4 py-3 text-center font-display text-sm font-bold text-white uppercase transition-opacity hover:opacity-90"
 							>S'inscrire</a
 						>
 					</div>
@@ -211,3 +205,10 @@
 		</div>
 	{/if}
 </nav>
+
+<style>
+	.navbar {
+		background: linear-gradient(180deg, #07101c 0%, #0e1a2b 100%);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	}
+</style>

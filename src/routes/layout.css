@@ -86,3 +86,17 @@
     @apply font-display font-black tracking-tight uppercase;
   }
 }
+.wind-lines {
+		background-image:
+			repeating-linear-gradient(108deg, transparent 0 22px, rgba(255, 255, 255, 0.035) 22px 23px),
+			repeating-linear-gradient(108deg, transparent 0 90px, rgba(255, 255, 255, 0.06) 90px 91px);
+		mask-image: linear-gradient(95deg, transparent 0%, black 20%, black 80%, transparent 100%);
+	}
+
+	.grid-overlay {
+		background-image:
+			linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+		background-size: 80px 80px;
+		mask-image: radial-gradient(ellipse at 70% 50%, black, transparent 70%);
+	}

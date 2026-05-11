@@ -2,28 +2,10 @@
 	import logo from '$lib/assets/logo.svg';
 </script>
 
-<footer class="bg-ink px-5 pt-12 pb-9 text-white/70 sm:px-10 sm:pt-16 lg:px-14">
-	<div class="mx-auto mb-10 hidden max-w-360 items-center gap-5 border-b border-white/8 pb-8 sm:flex">
-		<div class="font-mono text-micro tracking-widest text-white/40">BEAUFORT · 0–12</div>
-		<div class="grid h-6.5 flex-1 grid-cols-[repeat(13,1fr)] items-end gap-0.5">
-			<div class="rounded-t-[1px] bg-white/15" style="height:6px"></div>
-			<div class="rounded-t-[1px] bg-white/15" style="height:7.6px"></div>
-			<div class="rounded-t-[1px] bg-white/15" style="height:9.2px"></div>
-			<div class="rounded-t-[1px] bg-success" style="height:10.8px"></div>
-			<div class="rounded-t-[1px] bg-success" style="height:12.4px"></div>
-			<div class="rounded-t-[1px] bg-success" style="height:14px"></div>
-			<div class="rounded-t-[1px] bg-accent-soft" style="height:15.6px"></div>
-			<div class="rounded-t-[1px] bg-accent-soft" style="height:17.2px"></div>
-			<div class="rounded-t-[1px] bg-accent-soft" style="height:18.8px"></div>
-			<div class="rounded-t-[1px] bg-accent" style="height:20.4px"></div>
-			<div class="rounded-t-[1px] bg-accent" style="height:22px"></div>
-			<div class="rounded-t-[1px] bg-accent" style="height:23.6px"></div>
-			<div class="rounded-t-[1px] bg-accent" style="height:25.2px"></div>
-		</div>
-		<div class="font-mono text-micro tracking-widest text-white/40">0 → 64+ KT</div>
-	</div>
-
-	<div class="mx-auto grid max-w-360 grid-cols-2 gap-8 sm:grid-cols-[2fr_1fr_1fr] lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] lg:gap-10">
+<footer class="bg-ink px-5 py-9 text-white/70 sm:px-10 sm:pt-16 lg:px-14">
+	<div
+		class="mx-auto grid max-w-360 grid-cols-2 gap-8 sm:grid-cols-[2fr_1fr_1fr] lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] lg:gap-10"
+	>
 		<div class="col-span-2 sm:col-span-1">
 			<div class="mb-4.5 flex items-center gap-2.5">
 				<img src={logo} alt="Logo Windprof" class="h-6" />
@@ -40,15 +22,15 @@
 		<div class="flex flex-col">
 			<div class="mb-3.5 font-mono text-label tracking-label text-white/40">PRODUIT</div>
 			<a href="/profs" class="mb-2 text-body-sm">Moniteurs</a>
-			<a href="/spots" class="mb-2 text-body-sm">Spots</a>
-			<a href="/prof-register" class="mb-2 text-body-sm">Devenir moniteur</a>
+			<!-- <a href="/spots" class="mb-2 text-body-sm">Spots</a> -->
+			<a href="/become-prof" class="mb-2 text-body-sm">Devenir moniteur</a>
 		</div>
 
 		<div class="flex flex-col">
 			<div class="mb-3.5 font-mono text-label tracking-label text-white/40">DISCIPLINES</div>
-			<a href="/sports/kitesurf" class="mb-2 text-body-sm">Kitesurf</a>
-			<a href="/sports/wingfoil" class="mb-2 text-body-sm">Wingfoil</a>
-			<a href="/sports/windsurf" class="mb-2 text-body-sm">Windsurf</a>
+			<a href="/sports#kitesurf" class="mb-2 text-body-sm">Kitesurf</a>
+			<a href="/sports#wingfoil" class="mb-2 text-body-sm">Wingfoil</a>
+			<a href="/sports#windsurf" class="mb-2 text-body-sm">Windsurf</a>
 		</div>
 
 		<div class="flex flex-col">

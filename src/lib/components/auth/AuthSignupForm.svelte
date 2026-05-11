@@ -1,18 +1,23 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { authClient } from '$lib/auth.client';
+	import type { Role } from '$lib/server/db/schema';
 
-	type FormResult = { error?: string; email?: string; firstName?: string; lastName?: string } | null;
-	type Role = 'moniteur' | 'rider';
+	type FormResult = {
+		error?: string;
+		email?: string;
+		firstName?: string;
+		lastName?: string;
+	} | null;
 
 	const roles: { k: Role; n: string; d: string; icon: string }[] = [
-		{ k: 'moniteur', n: 'Moniteur', d: 'Je veux publier mon profil', icon: '⚐' },
+		{ k: 'prof', n: 'Moniteur', d: 'Je veux publier mon profil', icon: '⚐' },
 		{ k: 'rider', n: 'Rider', d: 'Je cherche un coach', icon: '◇' }
 	];
 
-	let { form = null }: { form?: FormResult } = $props();
+	let { form = null, roleParam = 'rider' }: { form?: FormResult; roleParam?: Role } = $props();
 
-	let role: Role = $state('moniteur');
+	let role = $derived(roleParam);
 	let showPassword = $state(false);
 	let acceptCgu = $state(true);
 	let newsletter = $state(false);
@@ -155,7 +160,7 @@
 					value={form?.firstName ?? ''}
 					placeholder="Julien"
 					autocomplete="given-name"
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 			</div>
 			<div>
@@ -172,7 +177,7 @@
 					value={form?.lastName ?? ''}
 					placeholder="Mercier"
 					autocomplete="family-name"
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 			</div>
 		</div>
@@ -192,7 +197,7 @@
 				value={form?.email ?? ''}
 				placeholder="julien@exemple.fr"
 				autocomplete="email"
-				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 			/>
 		</div>
 
@@ -211,12 +216,12 @@
 					name="password"
 					placeholder="••••••••••"
 					autocomplete="new-password"
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 pr-16 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border border-line bg-white px-3.5 py-3 pr-16 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 				/>
 				<button
 					type="button"
 					onclick={() => (showPassword = !showPassword)}
-					class="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer font-mono text-[10.5px] tracking-loose text-muted underline uppercase transition-colors hover:text-ink"
+					class="absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer font-mono text-[10.5px] tracking-loose text-muted uppercase underline transition-colors hover:text-ink"
 				>
 					{showPassword ? 'Masquer' : 'Voir'}
 				</button>
@@ -250,10 +255,7 @@
 				✓
 			</button>
 			<span class="text-[12.5px] leading-[1.55] text-muted">
-				J'accepte les <a
-					href="/cgu"
-					class="font-semibold text-ink underline">CGU</a
-				>
+				J'accepte les <a href="/cgu" class="font-semibold text-ink underline">CGU</a>
 				et la
 				<a href="/confidentialite" class="font-semibold text-ink underline"
 					>politique de confidentialité</a
@@ -297,13 +299,15 @@
 			{#if submitting}
 				Création...
 			{:else}
-				{role === 'moniteur' ? 'Créer mon compte → étape suivante' : 'Créer mon compte rider →'}
+				{role === 'prof' ? 'Créer mon compte → étape suivante' : 'Créer mon compte rider →'}
 			{/if}
 		</button>
 	</form>
 
-	<div class="mt-3.5 text-center font-mono text-[10.5px] tracking-loose text-muted uppercase leading-relaxed">
-		⌥ {role === 'moniteur'
+	<div
+		class="mt-3.5 text-center font-mono text-[10.5px] leading-relaxed tracking-loose text-muted uppercase"
+	>
+		⌥ {role === 'prof'
 			? '7 ÉTAPES POUR PUBLIER · BROUILLON AUTO-SAUVÉ'
 			: "ACCÈS IMMÉDIAT À L'ANNUAIRE · 0% COMMISSION"}
 	</div>

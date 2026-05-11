@@ -1,6 +1,6 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { users } from "../auth.schema";
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 export const riderProfiles = sqliteTable("rider_profiles", {
     id: text("id").primaryKey(),
@@ -36,3 +36,6 @@ export const riderProfiles = sqliteTable("rider_profiles", {
         .$onUpdate(() => new Date())
         .notNull(),
 });
+
+export type RiderProfile = InferSelectModel<typeof riderProfiles>;
+export type NewRiderProfile = InferInsertModel<typeof riderProfiles>;

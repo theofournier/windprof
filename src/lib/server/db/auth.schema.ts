@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
@@ -92,3 +92,13 @@ export const verifications = sqliteTable(
   },
   (table) => [index("verifications_identifier_idx").on(table.identifier)],
 );
+
+export type User = InferSelectModel<typeof users>;
+export type NewUser = InferInsertModel<typeof users>;
+export type Session = InferSelectModel<typeof sessions>;
+export type NewSession = InferInsertModel<typeof sessions>;
+export type Account = InferSelectModel<typeof accounts>;
+export type NewAccount = InferInsertModel<typeof accounts>;
+export type Verification = InferSelectModel<typeof verifications>;
+export type NewVerification = InferInsertModel<typeof verifications>;
+export type Role = "rider" | "prof";

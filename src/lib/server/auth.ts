@@ -39,3 +39,5 @@ export function getAuth(db: DrizzleClient) {
 }
 
 export type BetterAuth = ReturnType<typeof getAuth>;
+export type Session = BetterAuth["$Infer"]["Session"]["session"];
+export type User = BetterAuth["$Infer"]["Session"]["user"];

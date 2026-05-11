@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { users } from "../auth.schema";
 
@@ -38,3 +38,6 @@ export const profProfiles = sqliteTable("prof_profiles", {
         .$onUpdate(() => new Date())
         .notNull(),
 });
+
+export type ProfProfile = InferSelectModel<typeof profProfiles>;
+export type NewProfProfile = InferInsertModel<typeof profProfiles>;

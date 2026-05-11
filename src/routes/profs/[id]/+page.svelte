@@ -10,7 +10,7 @@
 	import ProfAtAGlance from '$lib/components/prof/ProfAtAGlance.svelte';
 
 	let { data }: PageProps = $props();
-	const { prof } = data;
+	let prof = $derived(data.prof);
 	const location = prof.region ? `${prof.city} — ${prof.region}` : prof.city;
 </script>
 
@@ -29,13 +29,13 @@
 	<ProfGallery name={prof.name} windDirection="—" windRange="—" />
 	<ProfHero
 		name={prof.name}
-		location={location}
+		{location}
 		stars={prof.avgRating}
 		reviewCount={prof.reviewCount}
 		isVerified={prof.isVerified}
 		isPremium={false}
 		bio={prof.bio}
-		disciplines={prof.disciplines}
+		sports={prof.sports}
 		levels={prof.levels}
 		phone={prof.phone}
 		email={prof.email}
@@ -46,7 +46,7 @@
 	class="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14"
 >
 	<div>
-		<ProfPricing items={prof.priceItems} />
+		<ProfPricing items={prof.prices} />
 		<ProfCertifications certifications={prof.certifications} />
 		<ProfSpots profName={prof.firstName} spots={prof.spots} />
 		<ProfReviews

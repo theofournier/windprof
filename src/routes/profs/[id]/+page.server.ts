@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { profProfiles } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
+import { getProf } from '$lib/server/db/mockData';
 
 function relativeDate(date: Date): string {
 	const diffMs = date.getTime() - Date.now();
@@ -14,16 +15,7 @@ function relativeDate(date: Date): string {
 }
 
 export const load: PageServerLoad = async (event) => {
-	const p = await event.locals.db.query.profProfiles.findFirst({
-		where: eq(profProfiles.id, event.params.id),
-		with: {
-			disciplines: true,
-			certifications: true,
-			priceItems: { orderBy: (t, { asc }) => [asc(t.displayOrder)] },
-			spots: { orderBy: (t, { asc }) => [asc(t.displayOrder)] },
-			reviews: true
-		}
-	});
+	const p = await getProf(event.params.id);
 
 	if (!p || !p.isPublished) {
 		error(404, 'Prof not found');
@@ -33,7 +25,7 @@ export const load: PageServerLoad = async (event) => {
 		? p.reviews.reduce((sum, r) => sum + r.rating, 0) / p.reviews.length
 		: 0;
 
-	const allLevels = p.disciplines.flatMap((d) =>
+	const allLevels = p.sports.flatMap((d) =>
 		d.acceptedLevels ? (JSON.parse(d.acceptedLevels) as string[]) : []
 	);
 	const levels = [...new Set(allLevels)];
@@ -42,7 +34,7 @@ export const load: PageServerLoad = async (event) => {
 	const languages: string[] = p.languages ? JSON.parse(p.languages) : [];
 
 	const glanceDetails: { label: string; value: string }[] = [
-		{ label: 'Disciplines', value: p.disciplines.map((d) => d.sport).join(' · ') || '—' },
+		{ label: 'sports', value: p.sports.map((d) => d.sport).join(' · ') || '—' },
 		{ label: 'Niveaux', value: [...new Set(allLevels)].join(' · ') || '—' }
 	];
 	if (languages.length) glanceDetails.push({ label: 'Langues', value: languages.join(' · ') });
@@ -65,13 +57,13 @@ export const load: PageServerLoad = async (event) => {
 			region: p.region ?? null,
 			phone: p.phone ?? '',
 			email: p.contactEmail ?? '',
-			disciplines: p.disciplines.map((d) => d.sport),
+			sports: p.sports.map((d) => d.sport),
 			levels,
 			certifications: p.certifications.map((c) => ({
 				name: c.type,
 				year: c.year?.toString() ?? ''
 			})),
-			priceItems: p.priceItems.map((pr) => ({
+			prices: p.prices.map((pr) => ({
 				label: pr.description,
 				duration: pr.duration ?? '',
 				price: `${pr.priceEur}€`

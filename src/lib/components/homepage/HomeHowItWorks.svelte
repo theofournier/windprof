@@ -23,12 +23,12 @@
 	];
 </script>
 
-<section class="mx-auto max-w-360 px-5 sm:px-10 lg:px-14 py-16">
+<section class="mx-auto max-w-360 px-5 sm:px-10 lg:px-14 py-10">
 	<div class="grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
 
 		<!-- Left: sticky header -->
 		<div class="lg:sticky lg:top-20 lg:self-start">
-			<div class="mb-3 font-mono text-label font-semibold tracking-wider text-accent uppercase">↳ 02 · MÉTHODE</div>
+			<div class="mb-3 font-mono text-label font-semibold tracking-wider text-accent uppercase">↳ MÉTHODE</div>
 			<h2 class="mb-6 text-[40px] leading-[0.95] tracking-tight sm:text-[54px] lg:text-[64px]">
 				Direct.
 				<span class="block font-serif font-normal italic normal-case tracking-normal">sans intermédiaire.</span>

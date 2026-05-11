@@ -10,7 +10,7 @@
 		isVerified,
 		isPremium,
 		bio,
-		disciplines,
+		sports,
 		levels,
 		phone,
 		email,
@@ -24,7 +24,7 @@
 		isVerified: boolean;
 		isPremium: boolean;
 		bio: string;
-		disciplines: string[];
+		sports: string[];
 		levels: string[];
 		phone: string;
 		email: string;
@@ -76,10 +76,10 @@
 
 	<!-- Discipline & level chips -->
 	<div class="mb-5 flex flex-wrap gap-1.5">
-		{#each disciplines as d (d)}
+		{#each sports as s (s)}
 			<span
 				class="rounded-sm bg-ink px-2 py-1 font-mono text-label tracking-wide text-white uppercase"
-				>{d}</span
+				>{s}</span
 			>
 		{/each}
 		{#each levels as l (l)}

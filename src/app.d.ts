@@ -1,6 +1,5 @@
-import type { User, Session } from 'better-auth/minimal';
 import type { DrizzleClient } from '$lib/server/db';
-import type { BetterAuth } from "$lib/server/auth";
+import type { BetterAuth, User, Session } from "$lib/server/auth";
 
 declare global {
 	namespace App {

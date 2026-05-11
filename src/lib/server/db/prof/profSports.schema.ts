@@ -1,5 +1,6 @@
 import { sqliteTable, text, index } from "drizzle-orm/sqlite-core";
 import { profProfiles } from "./profProfiles.schema";
+import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 export const profSports = sqliteTable(
     "prof_sports",
@@ -16,3 +17,6 @@ export const profSports = sqliteTable(
     },
     (t) => [index("prof_sports_profId_idx").on(t.profId)],
 );
+
+export type ProfSport = InferSelectModel<typeof profSports>;
+export type NewProfSport = InferInsertModel<typeof profSports>;

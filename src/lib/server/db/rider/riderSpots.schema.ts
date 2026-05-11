@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 import { riderProfiles } from "./riderProfiles.schema";
+import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 export const riderSpots = sqliteTable(
     "rider_spots",
@@ -14,3 +15,6 @@ export const riderSpots = sqliteTable(
     },
     (t) => [index("rider_spots_riderId_idx").on(t.riderId)],
 );
+
+export type RiderSpot = InferSelectModel<typeof riderSpots>;
+export type NewRiderSpot = InferInsertModel<typeof riderSpots>;

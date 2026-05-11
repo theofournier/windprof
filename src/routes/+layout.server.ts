@@ -1,4 +1,4 @@
-import { getProfs } from '$lib/server/mockData';
+import { getProfs } from '$lib/server/db/mockData';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {

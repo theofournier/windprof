@@ -1,13 +1,15 @@
 <script lang="ts">
-	import ProfItem from '$lib/components/profs/ProfItem.svelte';
+	import ProfItem from '$lib/components/profs/ProfsItem.svelte';
 	import ProfsActiveFilter from '$lib/components/profs/ProfsActiveFilter.svelte';
-	import ProfSearch from '$lib/components/profs/ProfSearch.svelte';
+	import ProfSearch from '$lib/components/profs/ProfsSearch.svelte';
 	import ProfsFilter from '$lib/components/profs/ProfsFilter.svelte';
 	import ProfsHeader from '$lib/components/profs/ProfsHeader.svelte';
 	import ProfsPaginator from '$lib/components/profs/ProfsPaginator.svelte';
 	import type { PageProps } from './$types';
+	import { mapProfItem } from '$lib/utils/mapProfItem';
 
 	let { data }: PageProps = $props();
+	let profItems = $derived(data.profs.map(mapProfItem));
 	let showFilter = $state(false);
 
 	const PAGE_SIZE = 9;
@@ -24,7 +26,7 @@
 	let languages = $state<string[]>([]);
 
 	let filteredProfs = $derived(
-		data.profs
+		profItems
 			.filter((p) => {
 				if (location && !p.location?.toLowerCase().includes(location.toLowerCase())) return false;
 				if (sports.length && !p.sports.some((s) => sports.includes(s))) return false;
@@ -60,9 +62,9 @@
 	});
 
 	let sportCounts = $derived({
-		kitesurf: data.profs.filter((p) => p.sports.includes('kitesurf')).length,
-		wingfoil: data.profs.filter((p) => p.sports.includes('wingfoil')).length,
-		windsurf: data.profs.filter((p) => p.sports.includes('windsurf')).length
+		kitesurf: profItems.filter((p) => p.sports.includes('kitesurf')).length,
+		wingfoil: profItems.filter((p) => p.sports.includes('wingfoil')).length,
+		windsurf: profItems.filter((p) => p.sports.includes('windsurf')).length
 	});
 
 	function removeFilter(key: string, value?: string) {

@@ -1,7 +1,7 @@
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 import { profProfiles } from "../prof/profProfiles.schema";
 import { riderProfiles } from "../rider/riderProfiles.schema";
-import { sql } from "drizzle-orm";
+import { sql, type InferSelectModel, type InferInsertModel } from "drizzle-orm";
 
 export const reviews = sqliteTable(
     "reviews",
@@ -24,3 +24,6 @@ export const reviews = sqliteTable(
         index("reviews_riderId_idx").on(t.riderId),
     ],
 );
+
+export type Review = InferSelectModel<typeof reviews>;
+export type NewReview = InferInsertModel<typeof reviews>;
