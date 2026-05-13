@@ -15,6 +15,10 @@ export default betterAuth({
             clientId: env.GOOGLE_CLIENT_ID as string,
             clientSecret: env.GOOGLE_CLIENT_SECRET as string,
         },
+        facebook: {
+            clientId: env.FACEBOOK_CLIENT_ID as string,
+            clientSecret: env.FACEBOOK_CLIENT_SECRET as string,
+        },
     },
     experimental: { joins: true },
     plugins: [
