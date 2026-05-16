@@ -65,7 +65,7 @@
 		></div>
 		<div class="relative">
 			<div class="mb-2 font-mono text-micro tracking-widest text-accent-soft uppercase">
-				★ PROMESSE WINDMATCH
+				★ PROMESSE WINDPROF
 			</div>
 			<div class="text-body-sm leading-relaxed text-white/85">
 				Tu contactes le moniteur en <b class="text-white">direct</b>. Pas de commission, pas

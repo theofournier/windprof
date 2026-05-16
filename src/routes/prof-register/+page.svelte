@@ -73,7 +73,7 @@
 		'Upload tes diplômes BPJEPS / DE / IKO / VDWS. Notre équipe vérifie sous 48h et active ton badge ✓ Vérifié.',
 		"Indique ta ville principale et tes spots habituels. La carte interactive arrive au MVP 2 — pour l'instant, du texte libre.",
 		'Tarifs indicatifs par discipline. Les riders te contactent directement, tu négocies en direct, sans commission.',
-		"Téléphone et/ou email. Ces infos seront affichées sur ta fiche publique : c'est le cœur de la promesse Windmatch.",
+		"Téléphone et/ou email. Ces infos seront affichées sur ta fiche publique : c'est le cœur de la promesse Windprof.",
 		'Vérifie que tout est bon. Tu pourras éditer ton profil à tout moment depuis ton dashboard.'
 	];
 

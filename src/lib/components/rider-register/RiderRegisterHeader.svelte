@@ -5,7 +5,7 @@
 			<path d="M4 18 Q 14 8, 24 18" stroke="#E8724C" stroke-width="2" fill="none" stroke-linecap="round" />
 			<circle cx="14" cy="22" r="1.5" fill="#0E1A2B" />
 		</svg>
-		<span class="font-display text-xl font-black tracking-tight text-ink uppercase">Windmatch</span>
+		<span class="font-display text-xl font-black tracking-tight text-ink uppercase">Windprof</span>
 		<span class="ml-3.5 border-l border-line pl-3.5 font-mono text-label tracking-label text-muted uppercase">
 			↳ Profil rider
 		</span>

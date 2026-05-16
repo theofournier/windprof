@@ -128,7 +128,7 @@
 			style="max-width: 1140px"
 		>
 			<a href={resolve('/')} class="font-display text-[20px] font-black tracking-tight uppercase">
-				WINDMATCH
+				WINDPROF
 			</a>
 			<a
 				href={resolve('/profs/[id]', { id: data.profile.id })}

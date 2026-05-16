@@ -26,7 +26,7 @@
 			</h1>
 			<p class="max-w-115 text-[16px] leading-relaxed text-white/80">
 				L'annuaire des moniteurs indépendants de sports de vent. Diplômes vérifiés, contact direct,
-				zéro intermédiaire — la promesse Windmatch tient en trois lignes.
+				zéro intermédiaire — la promesse Windprof tient en trois lignes.
 			</p>
 		</div>
 

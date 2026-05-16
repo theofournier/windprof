@@ -196,7 +196,7 @@
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ BUDGET PAR SESSION
 			<span class="font-sans text-label font-normal tracking-normal text-muted normal-case">
-				— indicatif · Windmatch ne prend aucune commission, tu négocies en direct
+				— indicatif · Windprof ne prend aucune commission, tu négocies en direct
 			</span>
 		</div>
 		<div class="grid grid-cols-4 gap-2.5">

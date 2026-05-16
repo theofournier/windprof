@@ -3,14 +3,14 @@
 		{
 			k: '01',
 			t: 'Zéro commission.',
-			d: 'Aucun pourcentage, jamais. Tes élèves te paient en direct, sur le spot ou à l\'avance — comme tu veux. On ne touche pas un centime sur tes cours.',
+			d: "Aucun pourcentage, jamais. Tes élèves te paient en direct, sur le spot ou à l'avance — comme tu veux. On ne touche pas un centime sur tes cours.",
 			stat: '0 %',
 			label: 'sur tes cours'
 		},
 		{
 			k: '02',
 			t: 'Contact direct.',
-			d: 'Téléphone et email affichés publiquement sur ta fiche. Les riders t\'écrivent, tu réponds quand tu veux. Pas d\'intermédiaire, pas de messagerie interne.',
+			d: "Téléphone et email affichés publiquement sur ta fiche. Les riders t'écrivent, tu réponds quand tu veux. Pas d'intermédiaire, pas de messagerie interne.",
 			stat: '∞',
 			label: 'appels & emails'
 		},
@@ -35,47 +35,64 @@
 	<!-- Section header -->
 	<div class="mb-10">
 		<div class="mb-3 font-mono text-label font-semibold tracking-wider text-accent uppercase">
-			↳ 01 · POURQUOI WINDMATCH
+			↳ 01 · POURQUOI WINDPROF
 		</div>
 		<h2 class="text-[40px] leading-[0.95] tracking-tight sm:text-[54px] lg:text-[68px]">
 			Quatre choses
-			<span class="font-serif font-normal italic normal-case tracking-normal">qu'on fait différemment.</span>
+			<span class="font-serif font-normal tracking-normal normal-case italic"
+				>qu'on fait différemment.</span
+			>
 		</h2>
 	</div>
 
 	<!-- 2x2 grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-		{#each pillars as pillar, i (pillar.k)}
+		{#each pillars as pillar (pillar.k)}
 			<div
-				class="group relative flex flex-col overflow-hidden rounded-xl border
-				{i === 0 ? 'pillar-dark border-white/10' : 'border-line bg-white'}"
+				role="group"
+				class="group relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors duration-300 hover:border-white/10"
 			>
-				{#if i === 0}
-					<div class="wind-lines absolute inset-0 pointer-events-none"></div>
-				{/if}
+				<!-- dark overlay + windlines, fades in on hover -->
+				<div
+					class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+				>
+					<div class="pillar-dark absolute inset-0"></div>
+					<div class="wind-lines absolute inset-0"></div>
+				</div>
 
 				<div class="relative z-10 flex h-full flex-col">
-					<!-- Top: number + content + stat, divided vertically on md+ -->
 					<div class="flex h-full flex-col sm:flex-row">
 						<!-- Left: number, title, description -->
 						<div class="flex-1 p-7 sm:p-8">
-							<div class="mb-4 font-mono text-label font-semibold tracking-wider {i === 0 ? 'text-white/40' : 'text-muted'} uppercase">
+							<div
+								class="mb-4 font-mono text-label font-semibold tracking-wider text-muted uppercase transition-colors duration-300 group-hover:text-white/40"
+							>
 								{pillar.k}
 							</div>
-							<h3 class="mb-3 text-[26px] leading-tight tracking-tight {i === 0 ? 'text-white' : 'text-ink'} sm:text-[30px]">
+							<h3
+								class="mb-3 text-[26px] leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-white sm:text-[30px]"
+							>
 								{pillar.t}
 							</h3>
-							<p class="text-[14.5px] leading-relaxed {i === 0 ? 'text-white/60' : 'text-muted'}">
+							<p
+								class="text-[14.5px] leading-relaxed text-muted transition-colors duration-300 group-hover:text-white/60"
+							>
 								{pillar.d}
 							</p>
 						</div>
 
 						<!-- Right: stat + label -->
-						<div class="flex flex-col items-center justify-center border-t {i === 0 ? 'border-white/10' : 'border-line'} px-8 py-6 sm:w-36 sm:border-t-0 sm:border-l sm:py-8">
-							<div class="font-display text-[40px] font-black leading-none tracking-tight {i === 0 ? 'text-accent' : 'text-accent'} sm:text-[48px]">
+						<div
+							class="flex flex-col items-center justify-center border-t border-line px-8 py-6 transition-colors duration-300 group-hover:border-white/10 sm:w-36 sm:border-t-0 sm:border-l sm:py-8"
+						>
+							<div
+								class="font-display text-[40px] leading-none font-black tracking-tight text-accent sm:text-[48px]"
+							>
 								{pillar.stat}
 							</div>
-							<div class="mt-1 text-center font-mono text-caption font-semibold tracking-wider {i === 0 ? 'text-white/50' : 'text-muted'} uppercase">
+							<div
+								class="mt-1 text-center font-mono text-caption font-semibold tracking-wider text-muted uppercase transition-colors duration-300 group-hover:text-white/50"
+							>
 								{pillar.label}
 							</div>
 						</div>

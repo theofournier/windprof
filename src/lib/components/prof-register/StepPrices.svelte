@@ -19,7 +19,7 @@
 			↳ GRILLE TARIFAIRE INDICATIVE *
 		</div>
 		<div class="mb-3 font-mono text-label tracking-loose text-muted uppercase">
-			⌥ Tarifs négociables en direct — Windmatch ne prend aucune commission
+			⌥ Tarifs négociables en direct — Windprof ne prend aucune commission
 		</div>
 		<div class="overflow-x-auto overflow-hidden rounded-[10px] border border-line">
 			{#each ctx.data.prices as row, i (i)}

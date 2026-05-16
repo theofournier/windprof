@@ -9,7 +9,7 @@
 		},
 		{
 			quote:
-				"Avant Windmatch je perdais des élèves dans les commissions des plateformes. Ici j'ai retrouvé une relation directe — et de la marge.",
+				"Avant Windprof je perdais des élèves dans les commissions des plateformes. Ici j'ai retrouvé une relation directe — et de la marge.",
 			author: 'Marco D.',
 			role: 'Moniteur · Windsurf',
 			spot: 'Almanarre'
