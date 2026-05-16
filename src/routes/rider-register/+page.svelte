@@ -72,6 +72,10 @@
 	const stepNumbers = ['01', '02', '03', '04', '05'];
 </script>
 
+<svelte:head>
+	<title>Création rider — Windprof</title>
+</svelte:head>
+
 <div class="min-h-screen bg-bg">
 	<RiderRegisterHeader />
 

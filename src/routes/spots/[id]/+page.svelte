@@ -14,6 +14,10 @@
 	let shortName = $derived(spot.name.split('—')[0].trim());
 </script>
 
+<svelte:head>
+	<title>{spot.name} — Windprof</title>
+</svelte:head>
+
 <ProfBreadcrumb
 	segments={[
 		{ label: 'SPOTS', href: '/spots' },
@@ -75,7 +79,7 @@
 			</div>
 			<div class="flex items-end gap-3 border-b border-ink/8 pb-4">
 				<div
-					class="font-display text-[52px] font-black leading-none {spot.tagHot
+					class="font-display text-[52px] leading-none font-black {spot.tagHot
 						? 'text-accent'
 						: 'text-ink'}"
 				>

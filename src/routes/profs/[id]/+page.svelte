@@ -14,6 +14,10 @@
 	const location = prof.region ? `${prof.city} — ${prof.region}` : prof.city;
 </script>
 
+<svelte:head>
+	<title>{prof.name} — Windprof</title>
+</svelte:head>
+
 <ProfBreadcrumb
 	segments={[
 		{ label: 'MONITEURS', href: '/profs' },

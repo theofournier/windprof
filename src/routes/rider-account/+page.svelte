@@ -111,6 +111,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{formData.firstName} {formData.lastName} — Windprof</title>
+</svelte:head>
+
 <div class="min-h-screen bg-bg">
 	<!-- Header -->
 	<header class="border-b border-line bg-white">

@@ -80,6 +80,10 @@
 	const stepNumbers = ['01', '02', '03', '04', '05', '06', '07'];
 </script>
 
+<svelte:head>
+	<title>Création moniteur — Windprof</title>
+</svelte:head>
+
 <div class="min-h-screen bg-bg">
 	<ProfRegisterHeader />
 

@@ -287,6 +287,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Spots — Windprof</title>
+</svelte:head>
+
 <div class="flex flex-col">
 	<SpotsHero />
 	<SpotsSearch />
@@ -303,13 +307,12 @@
 				>
 					↳ ATLAS · LISTE COMPLÈTE
 				</div>
-				<h2 class="m-0 font-display text-[42px] font-black leading-none tracking-[-0.03em]">
+				<h2 class="m-0 font-display text-[42px] leading-none font-black tracking-[-0.03em]">
 					{filteredSpots.length} spots
-					<span class="font-serif font-normal italic normal-case tracking-snug text-muted"
+					<span class="font-serif font-normal tracking-snug text-muted normal-case italic"
 						>· côte FR + classiques</span
 					>
 				</h2>
-
 			</div>
 			<div class="flex items-center gap-4">
 				<span class="font-mono text-[10.5px] font-semibold tracking-label text-muted uppercase"
@@ -319,7 +322,7 @@
 					{#each SORT_OPTIONS as opt}
 						<button
 							onclick={() => (sort = opt.key)}
-							class="cursor-pointer rounded-sm border-none px-3.5 py-1.75 font-display text-caption font-black uppercase tracking-wide transition-colors {sort ===
+							class="cursor-pointer rounded-sm border-none px-3.5 py-1.75 font-display text-caption font-black tracking-wide uppercase transition-colors {sort ===
 							opt.key
 								? 'bg-ink text-white'
 								: 'bg-transparent text-muted'}"
@@ -351,9 +354,7 @@
 					style="grid-template-columns: 200px 1.5fr 1fr 90px 100px 1fr 120px; padding: 0 22px;"
 				>
 					{#each ['', 'SPOT · COORDS', 'DISCIPLINES', 'ROSE', 'VENT LIVE', "BEAUFORT · PLAN D'EAU", 'MONITEURS'] as col}
-						<div
-							class="py-2 font-mono text-[9.5px] tracking-label text-muted uppercase"
-						>
+						<div class="py-2 font-mono text-[9.5px] tracking-label text-muted uppercase">
 							{col}
 						</div>
 					{/each}
@@ -364,9 +365,7 @@
 				{/each}
 
 				{#if filteredSpots.length === 0}
-					<div
-						class="py-16 text-center font-mono text-label tracking-wider text-muted uppercase"
-					>
+					<div class="py-16 text-center font-mono text-label tracking-wider text-muted uppercase">
 						Aucun spot ne correspond à vos critères
 					</div>
 				{/if}

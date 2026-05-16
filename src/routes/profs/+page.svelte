@@ -81,6 +81,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Moniteurs — Windprof</title>
+</svelte:head>
+
 <div class="mx-auto flex max-w-360 flex-col gap-8 px-4 pt-5 pb-9 sm:px-8 lg:px-14">
 	<ProfSearch bind:location bind:sports bind:level />
 	<ProfsHeader count={filteredProfs.length} {location} />
