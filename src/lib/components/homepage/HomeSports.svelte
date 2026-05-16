@@ -11,9 +11,10 @@
 	prof: string,
 	name: string,
 	description: string,
-	href: string
+	href: string,
+	profFilter: string
 )}
-	<a {href} class="group relative flex min-h-35 flex-col overflow-hidden rounded-xl bg-white">
+	<div class="group relative flex min-h-35 flex-col overflow-hidden rounded-xl bg-white">
 		<!-- dark overlay + windlines, fades in on hover -->
 		<div
 			class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -32,7 +33,7 @@
 			</div>
 			<div class="flex items-start justify-between">
 				<div
-					class="font-mono text-label font-semibold tracking-wider uppercase text-muted transition-colors duration-300 group-hover:text-white/40"
+					class="font-mono text-label font-semibold tracking-wider text-muted uppercase transition-colors duration-300 group-hover:text-white/40"
 				>
 					{position}
 				</div>
@@ -47,22 +48,27 @@
 			>
 				{name}
 			</h3>
-			<p class="mt-3 text-[14px] leading-relaxed text-muted transition-colors duration-300 group-hover:text-white/60">
+			<p
+				class="mt-3 text-[14px] leading-relaxed text-muted transition-colors duration-300 group-hover:text-white/60"
+			>
 				{description}
 			</p>
 			<div class="mt-auto flex items-center justify-between pt-6">
-				<span
-					class="font-mono text-label font-semibold tracking-wider uppercase text-muted transition-colors duration-300 group-hover:text-white/40"
-					>EXPLORER</span
+				<a
+					{href}
+					class="rounded-md border border-muted px-4 py-2 font-mono text-label font-semibold tracking-wider text-muted uppercase transition-colors duration-300 group-hover:text-white/40 hover:bg-muted/30"
 				>
-				<div
-					class="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-bold text-white"
+					EXPLORER
+				</a>
+				<a
+					href={'/profs?sport=' + profFilter}
+					class="flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-bold text-white transition-opacity hover:opacity-90"
 				>
-					→
-				</div>
+					Voir les moniteurs →
+				</a>
 			</div>
 		</div>
-	</a>
+	</div>
 {/snippet}
 
 <section class="mx-auto max-w-360 px-5 py-14 sm:px-10 sm:py-16 lg:px-14 lg:py-18">
@@ -95,7 +101,8 @@
 			'312',
 			'Kitesurf',
 			'Aile, planche, lignes. Le plus enseigné du réseau.',
-			'/sports#kitesurf'
+			'/sports#kitesurf',
+			'kitesurf'
 		)}
 
 		{@render sportCard(
@@ -104,7 +111,8 @@
 			'184',
 			'Wingfoil',
 			'Wing à la main, foil sous les pieds. Discipline en explosion.',
-			'/sports#wingfoil'
+			'/sports#wingfoil',
+			'wingfoil'
 		)}
 
 		{@render sportCard(
@@ -113,7 +121,8 @@
 			'96',
 			'Windsurf',
 			"L'école originelle. Foil, freeride, vagues — tout y passe.",
-			'/sports#windsurf'
+			'/sports#windsurf',
+			'windsurf'
 		)}
 	</div>
 </section>

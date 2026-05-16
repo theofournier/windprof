@@ -7,8 +7,10 @@
 	import ProfsPaginator from '$lib/components/profs/ProfsPaginator.svelte';
 	import type { PageProps } from './$types';
 	import { mapProfItem } from '$lib/utils/mapProfItem';
+	import { page } from '$app/state';
 
 	let { data }: PageProps = $props();
+	const sportParam = $derived(page.url.searchParams.get('sport'));
 	let profItems = $derived(data.profs.map(mapProfItem));
 	let showFilter = $state(false);
 
