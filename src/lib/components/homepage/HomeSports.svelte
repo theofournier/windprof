@@ -13,14 +13,27 @@
 	description: string,
 	href: string
 )}
-	<a {href} class="sport-hover group relative flex min-h-35 flex-col overflow-hidden rounded-xl">
-		<WindLines withGrid={false} />
+	<a {href} class="group relative flex min-h-35 flex-col overflow-hidden rounded-xl bg-white">
+		<!-- dark overlay + windlines, fades in on hover -->
+		<div
+			class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+		>
+			<div class="sport-dark absolute inset-0"></div>
+			<WindLines withGrid={false} />
+		</div>
+
 		<div class="relative z-10 flex h-full flex-col p-7">
 			<div class="absolute top-2 right-2">
-				<img src={icon} alt="Icon {name}" class="h-22" />
+				<img
+					src={icon}
+					alt="Icon {name}"
+					class="h-22 invert transition-[filter] duration-300 group-hover:invert-0"
+				/>
 			</div>
 			<div class="flex items-start justify-between">
-				<div class="font-mono text-label font-semibold tracking-wider text-white/40 uppercase">
+				<div
+					class="font-mono text-label font-semibold tracking-wider uppercase text-muted transition-colors duration-300 group-hover:text-white/40"
+				>
 					{position}
 				</div>
 			</div>
@@ -29,14 +42,17 @@
 			>
 				{prof} MONITEURS
 			</div>
-			<h3 class="mt-2 font-display text-[32px] leading-none font-black tracking-tight text-white">
+			<h3
+				class="mt-2 font-display text-[32px] leading-none font-black tracking-tight text-ink transition-colors duration-300 group-hover:text-white"
+			>
 				{name}
 			</h3>
-			<p class="mt-3 text-[14px] leading-relaxed text-white/60">
+			<p class="mt-3 text-[14px] leading-relaxed text-muted transition-colors duration-300 group-hover:text-white/60">
 				{description}
 			</p>
 			<div class="mt-auto flex items-center justify-between pt-6">
-				<span class="font-mono text-label font-semibold tracking-wider text-white/40 uppercase"
+				<span
+					class="font-mono text-label font-semibold tracking-wider uppercase text-muted transition-colors duration-300 group-hover:text-white/40"
 					>EXPLORER</span
 				>
 				<div
@@ -73,7 +89,6 @@
 
 	<!-- 3 cards grid -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-		<!-- Card 0: dark (kitesurf) -->
 		{@render sportCard(
 			'01',
 			kitesurfLogo,
@@ -83,7 +98,6 @@
 			'/sports#kitesurf'
 		)}
 
-		<!-- Card 1: white (wingfoil) -->
 		{@render sportCard(
 			'02',
 			wingfoilfLogo,
@@ -93,7 +107,6 @@
 			'/sports#wingfoil'
 		)}
 
-		<!-- Card 2: white (windsurf) -->
 		{@render sportCard(
 			'03',
 			windsurfLogo,
@@ -106,7 +119,7 @@
 </section>
 
 <style>
-	.sport-hover {
+	.sport-dark {
 		background: linear-gradient(135deg, #0e1a2b 0%, #07101c 100%);
 	}
 </style>
