@@ -1,76 +1,10 @@
 <script lang="ts">
 	import SportsHero from '$lib/components/sports/SportsHero.svelte';
-	import DisciplineCards from '$lib/components/sports/DisciplineCards.svelte';
-	import DisciplinesTable from '$lib/components/sports/DisciplinesTable.svelte';
-	import DisciplineFocus from '$lib/components/sports/DisciplineFocus.svelte';
+	import SportsCards from '$lib/components/sports/SportsCards.svelte';
+	import SportsTable from '$lib/components/sports/SportsTable.svelte';
+	import SportsFocus from '$lib/components/sports/SportsFocus.svelte';
 	import SportsFaq from '$lib/components/sports/SportsFaq.svelte';
-	import type { Discipline } from '$lib/components/sports/types.js';
-
-	const disciplines: Discipline[] = [
-		{
-			id: 'kitesurf',
-			name: 'Kitesurf',
-			tagline: "Voile en l'air, planche aux pieds.",
-			blurb:
-				"Le plus polyvalent des sports de vent. Un cerf-volant gonflable de 7 à 17 m² te tracte sur une twin-tip ou un foil. Sauts, vagues, freeride : trois disciplines en une.",
-			moniteurs: 146,
-			spots: 58,
-			windMin: 12,
-			windMax: 25,
-			windSweet: '15–22 kt',
-			beaufort: [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-			learnTime: '8–12 h',
-			level: 'Débutant accessible',
-			gear: ['Aile 7–17 m²', 'Twin-tip ou foil', 'Harnais culotte', 'Combinaison 4/3'],
-			certifs: ['BPJEPS Kite', 'IKO Level 1–3'],
-			bestSpots: ['Leucate', 'La Torche', 'Beauduc', 'Wissant', 'Gruissan'],
-			season: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-			priceRange: '50–80€/h',
-			icon: 'kite'
-		},
-		{
-			id: 'wingfoil',
-			name: 'Wingfoil',
-			tagline: "L'art de léviter sur l'eau.",
-			blurb:
-				"L'aile à main libre et le foil sous la planche. Tu décolles à 10 nœuds, glisses à 1 mètre au-dessus de la mer, en silence. La discipline qui explose depuis 2021.",
-			moniteurs: 72,
-			spots: 41,
-			windMin: 10,
-			windMax: 20,
-			windSweet: '12–18 kt',
-			beaufort: [0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-			learnTime: '15–25 h',
-			level: 'Intermédiaire',
-			gear: ['Aile 3–6 m²', 'Planche foil 80–120 L', 'Foil 1500–2200 cm²', 'Combinaison 4/3'],
-			certifs: ['DE Voile', 'VDWS Wing'],
-			bestSpots: ['Almanarre', 'La Ciotat', 'La Torche', 'Hyères', 'Quiberon'],
-			season: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-			priceRange: '70–95€/h',
-			icon: 'wing'
-		},
-		{
-			id: 'windsurf',
-			name: 'Windsurf',
-			tagline: "L'école originelle. Toujours d'aplomb.",
-			blurb:
-				"Mât, voile, planche, wishbone. Le plus ancien des sports de vent reste le plus pédagogique : on sent la voile, on lit le vent. Slalom, vague, freeride.",
-			moniteurs: 94,
-			spots: 63,
-			windMin: 8,
-			windMax: 22,
-			windSweet: '12–20 kt',
-			beaufort: [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-			learnTime: '6–10 h',
-			level: 'Débutant accessible',
-			gear: ['Voile 4.5–7.5 m²', 'Planche 110–180 L', 'Mât + wishbone', 'Combinaison 4/3'],
-			certifs: ['BPJEPS Voile', 'VDWS Surf'],
-			bestSpots: ['Almanarre', 'Hourtin', 'Hyères', 'Wissant', 'Gruissan'],
-			season: [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-			priceRange: '45–70€/h',
-			icon: 'wind'
-		}
-	];
+	import { sports } from '$lib/components/sports/sportsData';
 </script>
 
 <svelte:head>
@@ -81,12 +15,12 @@
 	<SportsHero />
 
 	<div class="mx-auto max-w-360 px-5 sm:px-10 lg:px-14">
-		<DisciplineCards {disciplines} />
-		<DisciplinesTable {disciplines} />
+		<SportsCards {sports} />
+		<SportsTable {sports} />
 	</div>
 
-	{#each disciplines as discipline, i}
-		<DisciplineFocus {discipline} index={i} />
+	{#each sports as sport, i}
+		<SportsFocus {sport} index={i} />
 	{/each}
 
 	<div class="mx-auto max-w-360 px-5 sm:px-10 lg:px-14">

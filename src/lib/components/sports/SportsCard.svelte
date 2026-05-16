@@ -1,13 +1,13 @@
 <script lang="ts">
-	import SportSilhouette from './SportSilhouette.svelte';
-	import type { Discipline } from './types.js';
+	import SportsSilhouette from './SportsSilhouette.svelte';
+	import type { Sport } from './types.js';
 
-	let { discipline, index }: { discipline: Discipline; index: number } = $props();
+	let { sport, index }: { sport: Sport; index: number } = $props();
 </script>
 
-<a href="#{discipline.id}" class="block">
+<a href="#{sport.id}" class="block">
 	<article
-		class="relative flex min-h-[420px] flex-col overflow-hidden rounded-lg bg-ink px-7 py-7 text-white"
+		class="relative flex min-h-105 flex-col overflow-hidden rounded-lg bg-ink px-7 py-7 text-white"
 	>
 		<div class="wind-lines absolute inset-0"></div>
 
@@ -15,27 +15,28 @@
 			<span class="font-mono text-micro tracking-label text-white/50">
 				0{index + 1} / 03
 			</span>
-			<span class="font-mono text-micro tracking-label uppercase text-accent">
-				↗ {discipline.windSweet}
-			</span>
 		</div>
 
-		<div class="relative my-2 min-h-[180px] flex-1">
-			<SportSilhouette kind={discipline.icon} />
+		<div class="relative my-2 min-h-45 flex-1">
+			<SportsSilhouette kind={sport.icon} />
 		</div>
 
 		<div class="relative">
-			<h2 class="mb-1 font-display text-[48px] tracking-tight uppercase">{discipline.name}</h2>
-			<p class="mb-4 font-serif text-lg italic font-normal text-accent">{discipline.tagline}</p>
+			<h2 class="mb-1 font-display text-[48px] tracking-tight uppercase">{sport.name}</h2>
+			<p class="mb-4 font-serif text-lg font-normal text-accent italic">{sport.tagline}</p>
 
-			<p class="mb-2 font-mono text-micro uppercase tracking-label text-white/45">
-				FENÊTRE UTILE · BEAUFORT
+			<p class="mb-2 font-mono text-micro tracking-label text-white/45 uppercase">
+				FENÊTRE UTILE · BEAUFORT · <span
+					class="text-sm text-accent"
+				>
+					↗ {sport.windSweet}
+				</span>
 			</p>
 			<div
 				class="mb-4 grid items-end gap-0.5"
 				style="grid-template-columns: repeat(13, 1fr); height: 24px;"
 			>
-				{#each discipline.beaufort as bar}
+				{#each sport.beaufort as bar}
 					<div
 						class="rounded-t-[1px]"
 						style="height: {bar ? '22px' : '5px'}; background: {bar
@@ -51,7 +52,7 @@
 						MONITEURS · SPOTS
 					</p>
 					<p class="mt-1 font-display text-[22px]">
-						{discipline.moniteurs} · {discipline.spots}
+						{sport.moniteurs} · {sport.spots}
 					</p>
 				</div>
 				<span class="text-[24px] text-accent">→</span>

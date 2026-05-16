@@ -1,4 +1,4 @@
-export type Discipline = {
+export type Sport = {
 	id: string;
 	name: string;
 	tagline: string;

@@ -2,11 +2,11 @@
 	const faqs = [
 		{
 			q: 'Quelle discipline pour débuter ?',
-			a: "Le windsurf reste le plus pédagogique : on sent immédiatement la voile, on lit le vent, on tombe sans risque. Le kitesurf est plus rapide à libérer mais demande un encadrement strict les 8 premières heures."
+			a: 'Le windsurf reste le plus pédagogique : on sent immédiatement la voile, on lit le vent, on tombe sans risque. Le kitesurf est plus rapide à libérer mais demande un encadrement strict les 8 premières heures.'
 		},
 		{
 			q: 'Faut-il savoir nager ?',
-			a: "Oui. Tous les moniteurs Windprof exigent une attestation de 25 m minimum. Le matériel flotte mais tu seras parfois loin du bord, fatigué, dans la houle."
+			a: 'Oui. Tous les moniteurs Windprof exigent une attestation de 25 m minimum. Le matériel flotte mais tu seras parfois loin du bord, fatigué, dans la houle.'
 		},
 		{
 			q: "Combien d'heures de cours pour être autonome ?",
@@ -14,7 +14,7 @@
 		},
 		{
 			q: 'Quel budget matériel après les cours ?',
-			a: "Environ 1 200–1 800 € en occasion pour un set complet windsurf ou kitesurf, 2 500–4 000 € pour un wingfoil. Beaucoup de moniteurs prêtent ou louent du matos en occasion à leurs élèves."
+			a: 'Environ 1 200–1 800 € en occasion pour un set complet windsurf ou kitesurf, 2 500–4 000 € pour un wingfoil. Beaucoup de moniteurs prêtent ou louent du matos en occasion à leurs élèves.'
 		}
 	];
 </script>
@@ -22,7 +22,7 @@
 <section class="py-20">
 	<div class="flex flex-col gap-16 lg:grid lg:grid-cols-[1fr_2fr] lg:gap-20">
 		<div>
-			<p class="mb-3.5 font-mono text-label uppercase tracking-widest text-accent">↳ FAQ</p>
+			<p class="mb-3.5 font-mono text-label tracking-widest text-accent uppercase">↳ FAQ</p>
 			<h2 class="m-0 text-[40px] leading-[0.95] sm:text-[56px]">
 				Choisir<br />sa première<br />discipline.
 			</h2>
