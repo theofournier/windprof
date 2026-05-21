@@ -16,9 +16,4 @@
 			{/if}
 		</h1>
 	</div>
-	<button
-		class="inline-flex cursor-pointer flex-col items-center gap-2.5 rounded-md border-2 border-line bg-transparent px-4 py-2.5 font-display text-sm font-bold tracking-wide text-ink uppercase hover:bg-ink/5"
-	>
-		⊞ Carte
-	</button>
 </div>

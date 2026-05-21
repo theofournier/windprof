@@ -8,24 +8,29 @@
 	import type { PageProps } from './$types';
 	import { mapProfItem } from '$lib/utils/mapProfItem';
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { untrack } from 'svelte';
+	import { PRICE_RANGE_MAX, PRICE_RANGE_MIN } from '$lib/constants';
 
 	let { data }: PageProps = $props();
-	const sportParam = $derived(page.url.searchParams.get('sport'));
 	let profItems = $derived(data.profs.map(mapProfItem));
 	let showFilter = $state(false);
 
 	const PAGE_SIZE = 9;
-	let currentPage = $state(1);
 
-	let location = $state('');
-	let sports = $state<string[]>([]);
-	let level = $state('');
-	let sort = $state('stars');
-	let priceMin = $state(0);
-	let priceMax = $state(500);
-	let equipmentProvided = $state(false);
-	let isVerified = $state(false);
-	let languages = $state<string[]>([]);
+	// Initialize state from URL params
+	const p0 = page.url.searchParams;
+	const singleSport = p0.get('sport');
+	let location = $state(p0.get('location') ?? '');
+	let sports = $state<string[]>(p0.getAll('sports').length > 0 ? p0.getAll('sports') : singleSport ? [singleSport] : []);
+	let levels = $state<string[]>(p0.getAll('levels'));
+	let sort = $state(p0.get('sort') ?? 'stars');
+	let priceMin = $state(Number(p0.get('priceMin') ?? PRICE_RANGE_MIN));
+	let priceMax = $state(Number(p0.get('priceMax') ?? PRICE_RANGE_MAX));
+	let equipmentProvided = $state(p0.get('equipmentProvided') === 'true');
+	let isVerified = $state(p0.get('isVerified') === 'true');
+	let languages = $state<string[]>(p0.getAll('languages'));
+	let currentPage = $state(Number(p0.get('page') ?? 1));
 
 	let filteredProfs = $derived(
 		profItems
@@ -33,16 +38,17 @@
 				if (location && !p.location?.toLowerCase().includes(location.toLowerCase())) return false;
 				if (sports.length && !p.sports.some((s) => sports.includes(s))) return false;
 				if (
-					level &&
+					levels.length &&
 					p.acceptedLevels.length > 0 &&
-					!p.acceptedLevels.includes(level) &&
+					!levels.some((l) => p.acceptedLevels.includes(l)) &&
 					!p.acceptedLevels.includes('all')
 				)
 					return false;
 				if (isVerified && !p.isVerified) return false;
 				if (equipmentProvided && !p.equipmentProvided) return false;
-				if (p.price > 0 && p.price < priceMin) return false;
-				if (priceMax < 500 && p.price > 0 && p.price > priceMax) return false;
+				if (p.price > PRICE_RANGE_MIN && p.price < priceMin) return false;
+				if (priceMax < PRICE_RANGE_MAX && p.price > PRICE_RANGE_MIN && p.price > priceMax)
+					return false;
 				if (languages.length && !languages.some((l) => p.languages.includes(l))) return false;
 				return true;
 			})
@@ -69,16 +75,38 @@
 		windsurf: profItems.filter((p) => p.sports.includes('windsurf')).length
 	});
 
+	// Sync state → URL on every filter/page change
+	$effect(() => {
+		const params = new URLSearchParams();
+		if (location) params.set('location', location);
+		sports.forEach((s) => params.append('sports', s));
+		levels.forEach((l) => params.append('levels', l));
+		if (sort !== 'stars') params.set('sort', sort);
+		if (priceMin !== PRICE_RANGE_MIN) params.set('priceMin', String(priceMin));
+		if (priceMax !== PRICE_RANGE_MAX) params.set('priceMax', String(priceMax));
+		if (equipmentProvided) params.set('equipmentProvided', 'true');
+		if (isVerified) params.set('isVerified', 'true');
+		languages.forEach((l) => params.append('languages', l));
+		if (currentPage !== 1) params.set('page', String(currentPage));
+
+		const newSearch = params.toString();
+		untrack(() => {
+			if (page.url.searchParams.toString() !== newSearch) {
+				goto(`?${newSearch}`, { replaceState: true, noScroll: true, keepFocus: true });
+			}
+		});
+	});
+
 	function removeFilter(key: string, value?: string) {
 		if (key === 'location') location = '';
 		else if (key === 'sport' && value) sports = sports.filter((s) => s !== value);
-		else if (key === 'level') level = '';
+		else if (key === 'level' && value) levels = levels.filter((l) => l !== value);
 		else if (key === 'equipmentProvided') equipmentProvided = false;
 		else if (key === 'isVerified') isVerified = false;
 		else if (key === 'language' && value) languages = languages.filter((l) => l !== value);
 		else if (key === 'price') {
-			priceMin = 0;
-			priceMax = 500;
+			priceMin = PRICE_RANGE_MIN;
+			priceMax = PRICE_RANGE_MAX;
 		}
 	}
 </script>
@@ -88,7 +116,7 @@
 </svelte:head>
 
 <div class="mx-auto flex max-w-360 flex-col gap-8 px-4 pt-5 pb-9 sm:px-8 lg:px-14">
-	<ProfSearch bind:location bind:sports bind:level />
+	<ProfSearch bind:location bind:sports bind:levels />
 	<ProfsHeader count={filteredProfs.length} {location} />
 	<div>
 		<button
@@ -102,7 +130,7 @@
 				<ProfsFilter
 					bind:sort
 					bind:sports
-					bind:level
+					bind:levels
 					bind:priceMin
 					bind:priceMax
 					bind:equipmentProvided
@@ -115,7 +143,7 @@
 			<div>
 				<ProfsActiveFilter
 					{sports}
-					{level}
+					{levels}
 					{location}
 					{equipmentProvided}
 					{isVerified}

@@ -44,8 +44,8 @@
 					<h3 class="font-display text-2xl font-black tracking-tight text-ink uppercase">
 						{name}
 					</h3>
-					<div class="mt-1 flex items-center gap-2">
-						<span class="text-sm text-accent">{'★'.repeat(Math.floor(stars))}</span>
+					<div class="mt-1 flex items-baseline gap-1">
+						<span class="text-sm text-accent">★</span>
 						<span class="font-mono text-caption text-muted">{stars} ({reviewCount})</span>
 					</div>
 				</div>

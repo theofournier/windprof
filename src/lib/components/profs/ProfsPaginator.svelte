@@ -22,35 +22,39 @@
 	let pageNumbers = $derived(getPageNumbers(currentPage, totalPages));
 </script>
 
+{#snippet navButton(icon: string, onclick: () => void, disabled: boolean)}
+	<button
+		{onclick}
+		{disabled}
+		class="flex size-10 cursor-pointer items-center justify-center rounded-md border border-line bg-white text-ink hover:bg-bg-dark disabled:cursor-default disabled:opacity-40"
+		>{icon}</button
+	>
+{/snippet}
+
 {#if totalPages > 1}
 	<div class="mt-10 flex items-center justify-center gap-2">
-		<button
-			onclick={() => (currentPage -= 1)}
-			disabled={currentPage === 1}
-			class="flex size-10 cursor-pointer items-center justify-center rounded-md border border-line bg-white text-ink hover:bg-bg-dark disabled:cursor-default disabled:opacity-40"
-		>←</button>
+		{@render navButton('←', () => (currentPage -= 1), currentPage === 1)}
 
 		{#each pageNumbers as page}
 			{#if page === '...'}
 				<span
 					class="mono flex size-10 items-center justify-center rounded-md text-body-sm font-bold tracking-wide text-muted"
-				>…</span>
+					>…</span
+				>
 			{:else if page === currentPage}
 				<span
 					class="mono flex size-10 items-center justify-center rounded-md bg-ink text-body-sm font-bold tracking-wide text-white"
-				>{page}</span>
+					>{page}</span
+				>
 			{:else}
 				<button
 					onclick={() => (currentPage = page as number)}
 					class="mono flex size-10 cursor-pointer items-center justify-center rounded-md text-body-sm font-bold tracking-wide text-ink hover:bg-bg-dark"
-				>{page}</button>
+					>{page}</button
+				>
 			{/if}
 		{/each}
 
-		<button
-			onclick={() => (currentPage += 1)}
-			disabled={currentPage === totalPages}
-			class="flex size-10 cursor-pointer items-center justify-center rounded-md border border-line bg-white text-ink hover:bg-bg-dark disabled:cursor-default disabled:opacity-40"
-		>→</button>
+		{@render navButton('→', () => (currentPage += 1), currentPage === totalPages)}
 	</div>
 {/if}

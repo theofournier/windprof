@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { PRICE_RANGE_MAX, PRICE_RANGE_MIN } from '$lib/constants';
+
 	const SPORT_LABELS: Record<string, string> = {
 		kitesurf: 'Kitesurf',
 		wingfoil: 'Wingfoil',
@@ -13,17 +15,17 @@
 
 	let {
 		sports = [],
-		level = '',
+		levels = [],
 		location = '',
 		equipmentProvided = false,
 		isVerified = false,
-		priceMin = 0,
-		priceMax = 500,
+		priceMin = PRICE_RANGE_MIN,
+		priceMax = PRICE_RANGE_MAX,
 		languages = [],
 		onremove
 	}: {
 		sports?: string[];
-		level?: string;
+		levels?: string[];
 		location?: string;
 		equipmentProvided?: boolean;
 		isVerified?: boolean;
@@ -35,12 +37,12 @@
 
 	let hasActiveFilters = $derived(
 		sports.length > 0 ||
-			!!level ||
+			levels.length > 0 ||
 			!!location ||
 			equipmentProvided ||
 			isVerified ||
-			priceMin > 0 ||
-			priceMax < 500 ||
+			priceMin > PRICE_RANGE_MIN ||
+			priceMax < PRICE_RANGE_MAX ||
 			languages.length > 0
 	);
 </script>
@@ -70,20 +72,20 @@
 			</span>
 		{/each}
 
-		{#if level}
+		{#each levels as lv (lv)}
 			<span
 				class="inline-flex items-center gap-2 rounded-sm border border-ink/14 bg-white px-3 py-1 text-sm"
 			>
-				{LEVEL_LABELS[level] ?? level}
-				<button onclick={() => onremove('level')} class="cursor-pointer text-muted">✕</button>
+				{LEVEL_LABELS[lv] ?? lv}
+				<button onclick={() => onremove('level', lv)} class="cursor-pointer text-muted">✕</button>
 			</span>
-		{/if}
+		{/each}
 
-		{#if priceMin > 0 || priceMax < 500}
+		{#if priceMin > PRICE_RANGE_MIN || priceMax < PRICE_RANGE_MAX}
 			<span
 				class="inline-flex items-center gap-2 rounded-sm border border-ink/14 bg-white px-3 py-1 text-sm"
 			>
-				{priceMin}–{priceMax === 500 ? '500+' : priceMax} €/h
+				{priceMin}–{priceMax === PRICE_RANGE_MAX ? `${PRICE_RANGE_MAX}+` : priceMax} €/h
 				<button onclick={() => onremove('price')} class="cursor-pointer text-muted">✕</button>
 			</span>
 		{/if}
