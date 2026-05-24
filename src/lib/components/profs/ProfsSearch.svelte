@@ -96,7 +96,7 @@
 				aria-hidden="true"
 			></div>
 			<div
-				class="absolute top-full left-0 z-50 mt-2 min-w-48 overflow-hidden rounded-lg border border-line bg-white shadow-md"
+				class="absolute top-full left-0 z-60 mt-2 min-w-48 overflow-hidden rounded-lg border border-line bg-white shadow-md"
 			>
 				{#each options as opt (opt.value)}
 					{@const checked = selected.includes(opt.value)}

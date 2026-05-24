@@ -121,9 +121,40 @@
 	<div>
 		<button
 			onclick={() => (showFilter = !showFilter)}
-			class="mb-4 inline-flex cursor-pointer items-center gap-2 rounded-sm border border-ink/14 bg-white px-4 py-2 text-sm font-semibold lg:hidden"
+			class="mb-4 inline-flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold shadow-sm transition-colors lg:hidden {showFilter
+				? 'border-blue-200 bg-blue-50 text-blue-700'
+				: 'border-ink/14 bg-white text-ink hover:bg-gray-50'}"
 		>
-			⊞ Filtres {showFilter ? '↑' : '↓'}
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<line x1="4" y1="6" x2="20" y2="6" />
+				<line x1="8" y1="12" x2="16" y2="12" />
+				<line x1="11" y1="18" x2="13" y2="18" />
+			</svg>
+			Filtres
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="14"
+				height="14"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2.5"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="transition-transform {showFilter ? 'rotate-180' : ''}"
+			>
+				<polyline points="6 9 12 15 18 9" />
+			</svg>
 		</button>
 		<div class="grid grid-cols-1 gap-9 lg:grid-cols-[280px_1fr]">
 			<div class="lg:block" class:hidden={!showFilter}>
