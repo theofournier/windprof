@@ -101,4 +101,4 @@ export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
 export type Verification = InferSelectModel<typeof verifications>;
 export type NewVerification = InferInsertModel<typeof verifications>;
-export type Role = "rider" | "prof";
+export type UserType = "rider" | "prof";

@@ -3,10 +3,10 @@
 	import AuthSignupForm from '$lib/components/auth/AuthSignupForm.svelte';
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
-	import type { Role } from '$lib/server/db/schema';
+	import type { UserType } from '$lib/server/db/schema';
 
 	let { form }: PageProps = $props();
-	const roleParam = $derived((page.url.searchParams.get('role') as Role) ?? 'rider');
+	const roleParam = $derived((page.url.searchParams.get('role') as UserType) ?? 'rider');
 </script>
 
 <svelte:head>

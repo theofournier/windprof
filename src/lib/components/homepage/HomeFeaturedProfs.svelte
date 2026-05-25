@@ -63,7 +63,7 @@
 	<div class="mt-10 flex justify-center">
 		<a
 			href="/profs"
-			class="inline-flex items-center justify-center rounded-md border bg-ink px-8 py-4 font-display text-sm font-black tracking-tight text-white uppercase transition-opacity hover:opacity-80"
+			class="inline-flex items-center justify-center rounded-md border bg-accent px-8 py-4 font-display text-sm font-black tracking-tight text-white uppercase transition-opacity hover:opacity-80"
 		>
 			Voir les 592 moniteurs →
 		</a>

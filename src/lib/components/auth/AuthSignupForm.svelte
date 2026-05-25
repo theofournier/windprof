@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { authClient } from '$lib/auth.client';
-	import type { Role } from '$lib/server/db/schema';
+	import type { UserType } from '$lib/server/db/schema';
 	import googleIcon from '$lib/assets/google.svg';
 	import facebookIcon from '$lib/assets/facebook.svg';
 
@@ -12,12 +12,12 @@
 		lastName?: string;
 	} | null;
 
-	const roles: { k: Role; n: string; d: string; icon: string }[] = [
+	const roles: { k: UserType; n: string; d: string; icon: string }[] = [
 		{ k: 'prof', n: 'Moniteur', d: 'Je veux publier mon profil', icon: '⚐' },
 		{ k: 'rider', n: 'Rider', d: 'Je cherche un coach', icon: '◇' }
 	];
 
-	let { form = null, roleParam = 'rider' }: { form?: FormResult; roleParam?: Role } = $props();
+	let { form = null, roleParam = 'rider' }: { form?: FormResult; roleParam?: UserType } = $props();
 
 	let role = $derived(roleParam);
 	let showPassword = $state(false);

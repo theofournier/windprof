@@ -125,15 +125,21 @@
 </svelte:head>
 
 <div class="min-h-screen bg-bg">
-	<!-- Header -->
-	<header class="border-b border-line bg-white">
+	<main class="mx-auto px-5 pt-10 pb-20 sm:px-8" style="max-width: 1140px">
+		<!-- Page title -->
+		<div class="mb-1.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
+			↳ MON PROFIL
+		</div>
 		<div
-			class="mx-auto flex items-center justify-between px-5 py-4 sm:px-8"
-			style="max-width: 1140px"
+			class="mb-8 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-5"
 		>
-			<a href={resolve('/')} class="font-display text-[20px] font-black tracking-tight uppercase">
-				WINDPROF
-			</a>
+			<h1
+				class="m-0 font-display text-[34px] leading-[0.95] font-black tracking-tight uppercase sm:text-[40px]"
+			>
+				{formData.firstName}
+				{formData.lastName}
+			</h1>
+
 			<a
 				href={resolve('/profs/[id]', { id: data.profile.id })}
 				class="font-mono text-label font-semibold tracking-widest text-muted uppercase transition-colors hover:text-ink"
@@ -141,92 +147,63 @@
 				↗ Voir ma fiche
 			</a>
 		</div>
-	</header>
 
-	<main class="mx-auto px-5 pt-10 pb-20 sm:px-8" style="max-width: 1140px">
-		<!-- Page title -->
-		<div class="mb-1.5 font-mono text-[11px] font-semibold tracking-widest text-accent uppercase">
-			↳ MON PROFIL
-		</div>
-		<h1
-			class="m-0 mb-8 font-display text-[34px] leading-[0.95] font-black tracking-tight uppercase sm:text-[40px]"
+		<a
+			href="/account/settings"
+			class="mb-8 inline-flex font-mono text-label font-semibold tracking-widest text-muted uppercase transition-colors hover:text-ink"
 		>
-			{formData.firstName}
-			{formData.lastName}
-		</h1>
-
-		<!-- Mobile tab bar -->
-		<div class="mb-6 lg:hidden">
-			<div class="-mx-5 overflow-x-auto px-5 sm:-mx-8 sm:px-8">
-				<div class="flex gap-1.5 pb-1" style="min-width: max-content">
-					{#each sections as s (s.id)}
-						<a
-							href="#{s.id}"
-							onclick={scrollToSection(s.id)}
-							class="flex items-center gap-2 rounded-[6px] px-3 py-2.5 font-mono text-[10.5px] font-bold tracking-widest uppercase transition-colors {visibleSection ===
-							s.id
-								? 'bg-ink text-white'
-								: 'border border-line text-muted hover:border-ink hover:text-ink'}"
-						>
-							{#if savedSection === s.id}
-								<span class="text-green-400">✓</span>
-							{/if}
-							{s.num}
-							<span class="hidden sm:inline">· {s.title.split(' ')[0]}</span>
-						</a>
-					{/each}
-				</div>
-			</div>
-		</div>
+			↗ Paramètres du compte
+		</a>
 
 		<!-- Desktop layout: sidebar + content -->
 		<div class="lg:grid lg:items-start lg:gap-10" style="grid-template-columns: 210px 1fr">
 			<!-- Sidebar nav (desktop only) -->
-			<nav class="hidden lg:block">
-				<div class="sticky overflow-hidden rounded-[10px] border border-line" style="top: 2rem">
+			<aside class="sticky top-5 hidden lg:block">
+				<div class="sticky overflow-hidden">
 					{#each sections as s, i (s.id)}
 						<a
 							href="#{s.id}"
 							onclick={scrollToSection(s.id)}
-							class="flex w-full items-center gap-3 px-4.5 py-4 text-left transition-colors {i <
-							sections.length - 1
-								? 'border-b border-line'
-								: ''} {visibleSection === s.id ? 'bg-ink' : 'hover:bg-bg-dark'}"
+							class="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors {visibleSection ===
+							s.id
+								? 'border border-muted/50 bg-white '
+								: 'hover:bg-bg-dark'}"
 						>
 							<span
-								class="shrink-0 font-mono text-[9.5px] font-semibold tracking-widest uppercase {visibleSection ===
+								class="shrink-0 items-center justify-center p-2 text-center font-mono text-[9.5px] font-semibold tracking-widest uppercase {visibleSection ===
 								s.id
-									? 'text-white/40'
-									: 'text-muted'}"
+									? 'rounded-full bg-ink text-white'
+									: 'rounded-full border border-muted/50 p-1 text-muted'}"
 							>
 								{s.num}
 							</span>
 							<span
 								class="min-w-0 flex-1 truncate font-mono text-[11.5px] font-bold tracking-wide uppercase {visibleSection ===
 								s.id
-									? 'text-white'
-									: 'text-ink'}"
+									? 'text-ink'
+									: 'text-muted'}"
 							>
 								{s.title}
 							</span>
 							{#if savedSection === s.id}
-								<span class="shrink-0 text-[12px] text-green-400">✓</span>
+								<span class="shrink-0 text-caption text-green-400">✓</span>
 							{/if}
 						</a>
 					{/each}
 				</div>
-			</nav>
+			</aside>
 
 			<!-- Content: all sections stacked -->
-			<div class="flex flex-col gap-14">
+			<div class="flex flex-col gap-10">
 				{#each sections as s (s.id)}
 					<section id={s.id} style="scroll-margin-top: 2rem">
 						<!-- Section heading -->
 						<div class="mb-6">
-							<div
-								class="font-mono text-[10.5px] font-semibold tracking-widest text-accent uppercase"
-							>
-								↳ {s.num} · {s.title}
+							<div class="font-mono text-[10.5px] font-bold tracking-widest text-accent uppercase">
+								↳ {s.num} ·
+								<span class="font-display text-3xl font-black tracking-tighter text-ink"
+									>{s.title}</span
+								>
 							</div>
 						</div>
 
@@ -259,7 +236,7 @@
 							{/if}
 
 							<!-- Save row -->
-							<div class="mt-8 flex items-center justify-between border-t border-line pt-5">
+							<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
 								{#if savedSection === s.id}
 									<span
 										class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"

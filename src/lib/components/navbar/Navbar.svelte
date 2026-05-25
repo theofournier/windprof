@@ -126,6 +126,15 @@
 								{isProf ? 'Mon compte moniteur' : 'Mon compte'}
 							</a>
 
+							<!-- Security link -->
+							<a
+								href="/account/settings"
+								onclick={() => (dropdownOpen = false)}
+								class="block px-4 py-2.5 font-display text-sm font-semibold text-ink uppercase hover:bg-ink/5"
+							>
+								Paramètres
+							</a>
+
 							<!-- Sign out -->
 							<button
 								onclick={signOut}
@@ -178,6 +187,13 @@
 					>
 						<p class="font-display text-sm font-semibold text-ink">{user?.name}</p>
 						<p class="text-xs text-ink/50">{user?.email}</p>
+					</a>
+					<a
+						href="/account/settings"
+						onclick={() => (menuOpen = false)}
+						class="mt-2 block rounded-md border border-line bg-white px-4 py-2.5 text-center font-display text-sm font-semibold text-muted uppercase hover:text-ink"
+					>
+						Paramètres
 					</a>
 					<button
 						onclick={signOut}
