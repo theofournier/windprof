@@ -2,7 +2,7 @@
 	let { withGrid = true } = $props();
 </script>
 
-<div class="absolute inset-0">
+<div class="pointer-events-none absolute inset-0">
 	{#if withGrid}
 		<div class="grid-overlay absolute inset-0"></div>
 	{/if}

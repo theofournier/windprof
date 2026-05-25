@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import ProfBreadcrumb from '$lib/components/prof/ProfBreadcrumb.svelte';
 	import ProfAtAGlance from '$lib/components/prof/ProfAtAGlance.svelte';
 	import ProfReviews from '$lib/components/prof/ProfReviews.svelte';
 	import SpotGallery from '$lib/components/spot/SpotGallery.svelte';
@@ -17,14 +16,6 @@
 <svelte:head>
 	<title>{spot.name} — Windprof</title>
 </svelte:head>
-
-<ProfBreadcrumb
-	segments={[
-		{ label: 'SPOTS', href: '/spots' },
-		{ label: spot.region.split('·')[1]?.trim().toUpperCase() ?? spot.region.toUpperCase() },
-		{ label: spot.name.toUpperCase() }
-	]}
-/>
 
 <!-- Hero: gallery + info -->
 <section

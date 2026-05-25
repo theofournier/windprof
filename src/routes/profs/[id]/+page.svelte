@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import ProfBreadcrumb from '$lib/components/prof/ProfBreadcrumb.svelte';
 	import ProfGallery from '$lib/components/prof/ProfGallery.svelte';
 	import ProfHero from '$lib/components/prof/ProfHero.svelte';
 	import ProfPricing from '$lib/components/prof/ProfPricing.svelte';
@@ -11,26 +10,17 @@
 
 	let { data }: PageProps = $props();
 	let prof = $derived(data.prof);
-	const location = prof.region ? `${prof.city} — ${prof.region}` : prof.city;
+	const location = $derived(prof.region ? `${prof.city} — ${prof.region}` : prof.city);
 </script>
 
 <svelte:head>
 	<title>{prof.name} — Windprof</title>
 </svelte:head>
 
-<ProfBreadcrumb
-	segments={[
-		{ label: 'MONITEURS', href: '/profs' },
-		...(prof.region ? [{ label: prof.region.toUpperCase() }] : []),
-		{ label: prof.city.toUpperCase() },
-		{ label: prof.name.toUpperCase() }
-	]}
-/>
-
 <section
 	class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-7 pb-12 sm:px-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:px-14"
 >
-	<ProfGallery name={prof.name} windDirection="—" windRange="—" />
+	<ProfGallery name={prof.name} />
 	<ProfHero
 		name={prof.name}
 		{location}
@@ -47,7 +37,7 @@
 </section>
 
 <section
-	class="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14"
+	class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-4 pb-16 sm:px-8 lg:grid-cols-[1.5fr_1fr] lg:gap-10 lg:px-14"
 >
 	<div>
 		<ProfPricing items={prof.prices} />
