@@ -160,7 +160,7 @@
 </script>
 
 <svelte:head>
-	<title>Sécurité — Windprof</title>
+	<title>Paramètres — Windprof</title>
 </svelte:head>
 
 <div class="min-h-screen bg-bg">
