@@ -36,6 +36,9 @@
 	</div>
 
 	<!-- Phone + email -->
+	{#if ctx.errors.contact}
+		<p class="font-mono text-label text-red-500">{ctx.errors.contact}</p>
+	{/if}
 	<div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
 		<div>
 			<label
@@ -52,7 +55,7 @@
 				type="tel"
 				placeholder="06 12 34 56 78"
 				bind:value={ctx.data.phone}
-				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+				class="w-full rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.contact && !ctx.data.phone.trim() ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
 			/>
 		</div>
 		<div>
@@ -70,7 +73,7 @@
 				type="email"
 				placeholder="contact@…"
 				bind:value={ctx.data.contactEmail}
-				class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+				class="w-full rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.contact && !ctx.data.contactEmail.trim() ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
 			/>
 		</div>
 	</div>

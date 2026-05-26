@@ -23,6 +23,7 @@ export type RiderFormData = {
 export type RiderRegisterCtx = {
 	readonly step: number;
 	readonly data: RiderFormData;
+	readonly errors: Record<string, string>;
 	goTo(n: number): void;
 	next(): void;
 	prev(): void;

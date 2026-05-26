@@ -44,6 +44,9 @@
 				— sélection multiple
 			</span>
 		</div>
+		{#if ctx.errors.sports}
+			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.sports}</p>
+		{/if}
 		<div class="grid grid-cols-3 gap-3">
 			{#each DISCIPLINES as d (d.sport)}
 				{@const on = isSelected(d.sport)}
@@ -70,11 +73,18 @@
 		</div>
 	</div>
 
+	{#if ctx.errors.sportsLevel}
+		<p class="font-mono text-label text-red-500">{ctx.errors.sportsLevel}</p>
+	{/if}
+
 	<!-- Level per selected sport -->
 	{#each ctx.data.sports as entry (entry.sport)}
 		<div>
-			<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
+			<div class="mb-2.5 font-mono text-label font-semibold tracking-widest uppercase {ctx.errors.sportsLevel && !entry.level ? 'text-red-500' : 'text-accent'}">
 				↳ TON NIVEAU · {entry.sport.toUpperCase()}
+				{#if ctx.errors.sportsLevel && !entry.level}
+					<span class="font-sans font-normal tracking-normal normal-case">— requis</span>
+				{/if}
 			</div>
 			<div class="mb-3 font-mono text-[10.5px] tracking-wide text-muted uppercase">
 				⌥ Si tu as plusieurs disciplines, on te demandera le niveau pour chacune

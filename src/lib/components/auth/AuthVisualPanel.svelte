@@ -21,8 +21,7 @@
 				<em style="font-style: italic; font-weight: 400; color: #E8724C;">Le vent t'attend.</em>
 			</h1>
 			<p class="max-w-[460px] text-[16px] leading-relaxed text-white/80">
-				Reprends là où tu en étais. Ton brouillon, tes prévisions sauvegardées, ton dashboard
-				moniteur — tout est resté en place.
+				Reprends là où tu en étais.
 			</p>
 		</div>
 	</div>

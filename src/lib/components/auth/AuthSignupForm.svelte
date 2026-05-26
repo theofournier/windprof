@@ -262,7 +262,7 @@
 		class="mt-3.5 text-center font-mono text-[10.5px] leading-relaxed tracking-loose text-muted uppercase"
 	>
 		⌥ {role === 'prof'
-			? '7 ÉTAPES POUR PUBLIER · BROUILLON AUTO-SAUVÉ'
+			? '7 ÉTAPES POUR PUBLIER'
 			: "ACCÈS IMMÉDIAT À L'ANNUAIRE · 0% COMMISSION"}
 	</div>
 

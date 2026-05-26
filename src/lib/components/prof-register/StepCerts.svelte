@@ -73,6 +73,9 @@
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ AJOUTER UN DIPLÔME
 		</div>
+		{#if ctx.errors.certifications}
+			<p class="mb-3 font-mono text-label text-red-500">{ctx.errors.certifications}</p>
+		{/if}
 		<div class="mb-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
 			<div>
 				<label

@@ -21,6 +21,8 @@ export const load: PageServerLoad = async (event) => {
 	if (existing) {
 		redirect(303, '/prof-account');
 	}
+
+	return { missing: event.url.searchParams.get('missing') === 'true' };
 };
 
 export const actions: Actions = {

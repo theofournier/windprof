@@ -49,8 +49,11 @@
 					type="text"
 					placeholder="Julien"
 					bind:value={ctx.data.firstName}
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.firstName ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
 				/>
+				{#if ctx.errors.firstName}
+					<p class="mt-1.5 font-mono text-label text-red-500">{ctx.errors.firstName}</p>
+				{/if}
 			</div>
 			<div>
 				<label
@@ -64,8 +67,11 @@
 					type="text"
 					placeholder="Mercier"
 					bind:value={ctx.data.lastName}
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.lastName ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
 				/>
+				{#if ctx.errors.lastName}
+					<p class="mt-1.5 font-mono text-label text-red-500">{ctx.errors.lastName}</p>
+				{/if}
 			</div>
 		</div>
 

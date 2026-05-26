@@ -27,6 +27,7 @@ export type ProfFormData = {
 export type ProfRegisterCtx = {
 	readonly step: number;
 	readonly data: ProfFormData;
+	readonly errors: Record<string, string>;
 	goTo(n: number): void;
 	next(): void;
 	prev(): void;

@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 	import { setProfRegisterCtx } from '$lib/components/prof-register/context';
 	import type { ProfFormData } from '$lib/components/prof-register/context';
-	import ProfRegisterHeader from '$lib/components/prof-register/ProfRegisterHeader.svelte';
 	import ProfRegisterSidebar from '$lib/components/prof-register/ProfRegisterSidebar.svelte';
 	import ProfRegisterNav from '$lib/components/prof-register/ProfRegisterNav.svelte';
 	import StepIdentity from '$lib/components/prof-register/StepIdentity.svelte';
@@ -12,12 +11,16 @@
 	import StepPrices from '$lib/components/prof-register/StepPrices.svelte';
 	import StepContact from '$lib/components/prof-register/StepContact.svelte';
 	import StepReview from '$lib/components/prof-register/StepReview.svelte';
+	import LeaveWarningDialog from '$lib/components/global/LeaveWarningDialog.svelte';
 
-	const { form } = $props<{ form: { error?: string } | null }>();
+	const { data, form } = $props<{ data: { missing: boolean }; form: { error?: string } | null }>();
+
+	let submitted = $state(false);
 
 	const TOTAL_STEPS = 7;
 
 	let step = $state(0);
+	let stepErrors: Record<string, string> = $state({});
 
 	let formData: ProfFormData = $state({
 		firstName: '',
@@ -36,8 +39,36 @@
 		phone: '',
 		contactEmail: '',
 		contactVisibility: 'phone_email',
-		responseTime: '',
+		responseTime: ''
 	});
+
+	function validateStep(): boolean {
+		stepErrors = {};
+		if (step === 0) {
+			if (!formData.firstName.trim()) stepErrors.firstName = 'Le prénom est requis';
+			if (!formData.lastName.trim()) stepErrors.lastName = 'Le nom est requis';
+		} else if (step === 1) {
+			if (formData.sports.length === 0)
+				stepErrors.sports = 'Sélectionne au moins une discipline';
+			else if (formData.sports.some((s) => s.acceptedLevels.length === 0))
+				stepErrors.sportsLevels = 'Sélectionne au moins un niveau pour chaque discipline';
+		} else if (step === 2) {
+			if (formData.certifications.length === 0)
+				stepErrors.certifications = 'Ajoute au moins un diplôme';
+		} else if (step === 3) {
+			if (!formData.city.trim()) stepErrors.city = 'La ville est requise';
+			if (formData.spots.length === 0) stepErrors.spots = 'Ajoute au moins un spot';
+		} else if (step === 4) {
+			if (formData.prices.length === 0)
+				stepErrors.prices = 'Ajoute au moins une formule tarifaire';
+			else if (formData.prices.some((p) => !p.description.trim()))
+				stepErrors.pricesDesc = 'Chaque formule doit avoir une description';
+		} else if (step === 5) {
+			if (!formData.phone.trim() && !formData.contactEmail.trim())
+				stepErrors.contact = 'Renseigne au moins un téléphone ou un email de contact';
+		}
+		return Object.keys(stepErrors).length === 0;
+	}
 
 	setProfRegisterCtx({
 		get step() {
@@ -46,14 +77,22 @@
 		get data() {
 			return formData;
 		},
+		get errors() {
+			return stepErrors;
+		},
 		goTo(n: number) {
 			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
 		},
 		next() {
+			if (!validateStep()) return;
+			stepErrors = {};
 			step = Math.min(TOTAL_STEPS - 1, step + 1);
+			window.scrollTo({ top: 50, behavior: 'smooth' });
 		},
 		prev() {
+			stepErrors = {};
 			step = Math.max(0, step - 1);
+			window.scrollTo({ top: 50, behavior: 'smooth' });
 		}
 	});
 
@@ -84,11 +123,23 @@
 	<title>Création moniteur — Windprof</title>
 </svelte:head>
 
-<div class="min-h-screen bg-bg">
-	<ProfRegisterHeader />
+{#if data.missing}
+	<div class="border-b border-amber-200 bg-amber-50 px-6 py-4">
+		<div class="mx-auto" style="max-width: 1320px">
+			<p class="text-body-sm font-bold uppercase tracking-widest text-amber-800">
+				Profil incomplet
+			</p>
+			<p class="mt-0.5 text-[13.5px] text-amber-700">
+				Il nous manque quelques informations. Complète ton profil ci-dessous pour accéder à
+				Windprof.
+			</p>
+		</div>
+	</div>
+{/if}
 
+<div class="min-h-screen bg-bg">
 	<div
-		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:grid lg:items-start lg:gap-12 lg:px-14 lg:pt-10 lg:pb-20 lg:grid-cols-[280px_1fr]"
+		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:grid lg:grid-cols-[280px_1fr] lg:items-start lg:gap-12 lg:px-14 lg:pt-10 lg:pb-20"
 		style="max-width: 1320px"
 	>
 		<div class="hidden lg:block">
@@ -109,12 +160,22 @@
 			</p>
 
 			{#if form?.error}
-				<div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700">
+				<div
+					class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+				>
 					{form.error}
 				</div>
 			{/if}
 
-			<form method="POST" use:enhance>
+			<form
+				method="POST"
+				use:enhance={() => {
+					return async ({ result, update }) => {
+						if (result.type === 'redirect') submitted = true;
+						await update();
+					};
+				}}
+			>
 				<input type="hidden" name="formData" value={JSON.stringify(formData)} />
 
 				{#if step === 0}
@@ -138,3 +199,5 @@
 		</main>
 	</div>
 </div>
+
+<LeaveWarningDialog {submitted} />

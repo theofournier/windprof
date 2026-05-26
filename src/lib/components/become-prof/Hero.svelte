@@ -62,7 +62,7 @@
 
 				<!-- Trust badges -->
 				<div class="flex flex-wrap gap-5">
-					{#each ['BROUILLON SAUVÉ', 'ANNULATION 1 CLIC'] as badge (badge)}
+					{#each ['ANNULATION 1 CLIC'] as badge (badge)}
 						<div class="flex items-center gap-2">
 							<span class="h-2 w-2 rounded-full bg-success"></span>
 							<span

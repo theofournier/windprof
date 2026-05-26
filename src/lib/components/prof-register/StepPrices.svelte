@@ -21,6 +21,12 @@
 		<div class="mb-3 font-mono text-label tracking-loose text-muted uppercase">
 			⌥ Tarifs négociables en direct — Windprof ne prend aucune commission
 		</div>
+		{#if ctx.errors.prices}
+			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.prices}</p>
+		{/if}
+		{#if ctx.errors.pricesDesc}
+			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.pricesDesc}</p>
+		{/if}
 		<div class="overflow-x-auto overflow-hidden rounded-[10px] border border-line">
 			{#each ctx.data.prices as row, i (i)}
 				<div
@@ -33,7 +39,7 @@
 						type="text"
 						placeholder="Cours individuel · kitesurf"
 						bind:value={row.description}
-						class="border-none bg-transparent p-0 font-sans text-[14px] font-semibold text-ink outline-none"
+						class="border-none bg-transparent p-0 font-sans text-[14px] font-semibold outline-none {ctx.errors.pricesDesc && !row.description.trim() ? 'text-red-400 placeholder:text-red-300' : 'text-ink'}"
 					/>
 					<input
 						type="text"

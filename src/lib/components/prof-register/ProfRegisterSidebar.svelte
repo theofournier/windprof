@@ -22,7 +22,7 @@
 		Crée ton<br />profil moniteur.
 	</div>
 	<p class="mt-3.5 mb-5.5 text-[13.5px] leading-body text-muted">
-		~8 minutes. Tu peux quitter à tout moment, ton brouillon est sauvegardé.
+		~8 minutes.
 	</p>
 
 	<!-- Progress bar -->

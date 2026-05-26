@@ -49,6 +49,9 @@
 				— sélection multiple
 			</span>
 		</div>
+		{#if ctx.errors.goals}
+			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.goals}</p>
+		{/if}
 		<div class="grid grid-cols-2 gap-2.5">
 			{#each GOALS as g (g.n)}
 				{@const on = ctx.data.goals.includes(g.n)}

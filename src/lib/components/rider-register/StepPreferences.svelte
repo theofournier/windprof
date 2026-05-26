@@ -103,13 +103,16 @@
 				{/each}
 			</div>
 		{/if}
+		{#if ctx.errors.spots}
+			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.spots}</p>
+		{/if}
 		<div class="flex gap-2">
 			<input
 				type="text"
 				placeholder="Leucate — La Franqui"
 				bind:value={newSpotName}
 				onkeydown={(e) => e.key === 'Enter' && (e.preventDefault(), addSpot())}
-				class="flex-1 rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+				class="flex-1 rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.spots && ctx.data.spots.length === 0 ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
 			/>
 			<button
 				type="button"

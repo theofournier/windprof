@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { setRiderRegisterCtx } from '$lib/components/rider-register/context';
-	import RiderRegisterHeader from '$lib/components/rider-register/RiderRegisterHeader.svelte';
 	import RiderRegisterSidebar from '$lib/components/rider-register/RiderRegisterSidebar.svelte';
 	import RiderRegisterNav from '$lib/components/rider-register/RiderRegisterNav.svelte';
 	import StepProfile from '$lib/components/rider-register/StepProfile.svelte';
@@ -9,12 +8,16 @@
 	import StepGoals from '$lib/components/rider-register/StepGoals.svelte';
 	import StepPreferences from '$lib/components/rider-register/StepPreferences.svelte';
 	import StepReview from '$lib/components/rider-register/StepReview.svelte';
+	import LeaveWarningDialog from '$lib/components/global/LeaveWarningDialog.svelte';
 
-	const { form } = $props<{ form: { error?: string } | null }>();
+	const { data, form } = $props<{ data: { missing: boolean }; form: { error?: string } | null }>();
+
+	let submitted = $state(false);
 
 	const TOTAL_STEPS = 5;
 
 	let step = $state(0);
+	let stepErrors: Record<string, string> = $state({});
 
 	import type { RiderFormData } from '$lib/components/rider-register/context';
 
@@ -32,8 +35,26 @@
 		maxDistanceKm: 60,
 		availabilityDays: [],
 		availabilitySlots: [],
-		budgetRanges: [],
+		budgetRanges: []
 	});
+
+	function validateStep(): boolean {
+		stepErrors = {};
+		if (step === 0) {
+			if (!formData.firstName.trim()) stepErrors.firstName = 'Le prénom est requis';
+			if (!formData.city.trim()) stepErrors.city = 'La ville est requise';
+		} else if (step === 1) {
+			if (formData.sports.length === 0)
+				stepErrors.sports = 'Sélectionne au moins une discipline';
+			else if (formData.sports.some((s) => !s.level))
+				stepErrors.sportsLevel = 'Indique ton niveau pour chaque discipline sélectionnée';
+		} else if (step === 2) {
+			if (formData.goals.length === 0) stepErrors.goals = 'Sélectionne au moins un objectif';
+		} else if (step === 3) {
+			if (formData.spots.length === 0) stepErrors.spots = 'Ajoute au moins un spot';
+		}
+		return Object.keys(stepErrors).length === 0;
+	}
 
 	setRiderRegisterCtx({
 		get step() {
@@ -42,14 +63,22 @@
 		get data() {
 			return formData;
 		},
+		get errors() {
+			return stepErrors;
+		},
 		goTo(n: number) {
 			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
 		},
 		next() {
+			if (!validateStep()) return;
+			stepErrors = {};
 			step = Math.min(TOTAL_STEPS - 1, step + 1);
+			window.scrollTo({ top: 50, behavior: 'smooth' });
 		},
 		prev() {
+			stepErrors = {};
 			step = Math.max(0, step - 1);
+			window.scrollTo({ top: 50, behavior: 'smooth' });
 		}
 	});
 
@@ -76,9 +105,21 @@
 	<title>Création rider — Windprof</title>
 </svelte:head>
 
-<div class="min-h-screen bg-bg">
-	<RiderRegisterHeader />
+{#if data.missing}
+	<div class="border-b border-amber-200 bg-amber-50 px-6 py-4">
+		<div class="mx-auto" style="max-width: 1320px">
+			<p class="text-body-sm font-bold uppercase tracking-widest text-amber-800">
+				Profil incomplet
+			</p>
+			<p class="mt-0.5 text-[13.5px] text-amber-700">
+				Il nous manque quelques informations. Complète ton profil ci-dessous pour accéder à
+				Windprof.
+			</p>
+		</div>
+	</div>
+{/if}
 
+<div class="min-h-screen bg-bg">
 	<div
 		class="mx-auto grid items-start gap-12 px-14 pt-10 pb-20"
 		style="max-width: 1320px; grid-template-columns: 280px 1fr"
@@ -90,7 +131,7 @@
 				↳ ÉTAPE {stepNumbers[step]} / 05
 			</div>
 			<h1
-				class="m-0 mb-3 font-display text-[54px] font-black leading-[0.95] tracking-tight uppercase"
+				class="m-0 mb-3 font-display text-[54px] leading-[0.95] font-black tracking-tight uppercase"
 			>
 				{stepTitles[step]}
 			</h1>
@@ -99,12 +140,22 @@
 			</p>
 
 			{#if form?.error}
-				<div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700">
+				<div
+					class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+				>
 					{form.error}
 				</div>
 			{/if}
 
-			<form method="POST" use:enhance>
+			<form
+				method="POST"
+				use:enhance={() => {
+					return async ({ result, update }) => {
+						if (result.type === 'redirect') submitted = true;
+						await update();
+					};
+				}}
+			>
 				<input type="hidden" name="formData" value={JSON.stringify(formData)} />
 
 				{#if step === 0}
@@ -124,3 +175,5 @@
 		</main>
 	</div>
 </div>
+
+<LeaveWarningDialog {submitted} />
