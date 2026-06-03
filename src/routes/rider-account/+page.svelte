@@ -30,12 +30,17 @@
 		}))
 	);
 
+	let sectionErrors = $state<Record<string, string>>({});
+
 	setRiderRegisterCtx({
 		get step() {
 			return 0;
 		},
 		get data() {
 			return formData;
+		},
+		get errors() {
+			return sectionErrors;
 		},
 		goTo() {},
 		next() {},
@@ -82,9 +87,31 @@
 		};
 	}
 
+	function validateSection(id: SectionId): boolean {
+		sectionErrors = {};
+		if (id === 'profil') {
+			if (!formData.firstName.trim()) sectionErrors.firstName = 'Le prénom est requis';
+			if (!formData.city.trim()) sectionErrors.city = 'La ville est requise';
+		} else if (id === 'disciplines') {
+			if (formData.sports.length === 0)
+				sectionErrors.sports = 'Sélectionne au moins une discipline';
+			else if (formData.sports.some((s) => !s.level))
+				sectionErrors.sportsLevel = 'Indique ton niveau pour chaque discipline sélectionnée';
+		} else if (id === 'objectifs') {
+			if (formData.goals.length === 0) sectionErrors.goals = 'Sélectionne au moins un objectif';
+		} else if (id === 'preferences') {
+			if (formData.spots.length === 0) sectionErrors.spots = 'Ajoute au moins un spot';
+		}
+		return Object.keys(sectionErrors).length === 0;
+	}
+
 	function makeEnhance(sectionId: SectionId) {
 		return ({ cancel }: { cancel: () => void }) => {
 			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			if (!validateSection(sectionId)) {
 				cancel();
 				return;
 			}
@@ -115,7 +142,10 @@
 </svelte:head>
 
 <div class="min-h-screen bg-bg">
-	<main class="mx-auto px-5 pt-10 pb-20 sm:px-8" style="max-width: 1140px">
+	<main
+		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:px-14 lg:pt-10 lg:pb-20"
+		style="max-width: 1320px"
+	>
 		<!-- Page title -->
 		<div class="mb-1.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ MON PROFIL
@@ -139,7 +169,7 @@
 		</a>
 
 		<!-- Desktop layout: sidebar + content -->
-		<div class="lg:grid lg:items-start lg:gap-10" style="grid-template-columns: 210px 1fr">
+		<div class="lg:grid lg:items-start lg:gap-12" style="grid-template-columns: 280px 1fr">
 			<!-- Sidebar nav (desktop only) -->
 			<aside class="sticky top-5 hidden lg:block">
 				<div class="sticky overflow-hidden">

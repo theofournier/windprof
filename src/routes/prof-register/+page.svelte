@@ -48,8 +48,7 @@
 			if (!formData.firstName.trim()) stepErrors.firstName = 'Le prénom est requis';
 			if (!formData.lastName.trim()) stepErrors.lastName = 'Le nom est requis';
 		} else if (step === 1) {
-			if (formData.sports.length === 0)
-				stepErrors.sports = 'Sélectionne au moins une discipline';
+			if (formData.sports.length === 0) stepErrors.sports = 'Sélectionne au moins une discipline';
 			else if (formData.sports.some((s) => s.acceptedLevels.length === 0))
 				stepErrors.sportsLevels = 'Sélectionne au moins un niveau pour chaque discipline';
 		} else if (step === 2) {
@@ -59,8 +58,7 @@
 			if (!formData.city.trim()) stepErrors.city = 'La ville est requise';
 			if (formData.spots.length === 0) stepErrors.spots = 'Ajoute au moins un spot';
 		} else if (step === 4) {
-			if (formData.prices.length === 0)
-				stepErrors.prices = 'Ajoute au moins une formule tarifaire';
+			if (formData.prices.length === 0) stepErrors.prices = 'Ajoute au moins une formule tarifaire';
 			else if (formData.prices.some((p) => !p.description.trim()))
 				stepErrors.pricesDesc = 'Chaque formule doit avoir une description';
 		} else if (step === 5) {
@@ -126,7 +124,7 @@
 {#if data.missing}
 	<div class="border-b border-amber-200 bg-amber-50 px-6 py-4">
 		<div class="mx-auto" style="max-width: 1320px">
-			<p class="text-body-sm font-bold uppercase tracking-widest text-amber-800">
+			<p class="text-body-sm font-bold tracking-widest text-amber-800 uppercase">
 				Profil incomplet
 			</p>
 			<p class="mt-0.5 text-[13.5px] text-amber-700">

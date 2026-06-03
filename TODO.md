@@ -2,7 +2,7 @@
 
 - [ ] Replace mock data
 - [ ] Image upload
-- [ ] Review form
+- [ ] Prof review form
 
 - [ ] Prof publish/unpublish toggle
 - [ ] Admin 

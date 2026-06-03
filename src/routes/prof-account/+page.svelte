@@ -38,12 +38,17 @@
 		})
 	);
 
+	let sectionErrors = $state<Record<string, string>>({});
+
 	setProfRegisterCtx({
 		get step() {
 			return 0;
 		},
 		get data() {
 			return formData;
+		},
+		get errors() {
+			return sectionErrors;
 		},
 		goTo() {},
 		next() {},
@@ -92,9 +97,41 @@
 		};
 	}
 
+	function validateSection(id: SectionId): boolean {
+		sectionErrors = {};
+		if (id === 'identite') {
+			if (!formData.firstName.trim()) sectionErrors.firstName = 'Le prénom est requis';
+			if (!formData.lastName.trim()) sectionErrors.lastName = 'Le nom est requis';
+		} else if (id === 'disciplines') {
+			if (formData.sports.length === 0)
+				sectionErrors.sports = 'Sélectionne au moins une discipline';
+			else if (formData.sports.some((s) => s.acceptedLevels.length === 0))
+				sectionErrors.sportsLevels = 'Sélectionne au moins un niveau pour chaque discipline';
+		} else if (id === 'certifications') {
+			if (formData.certifications.length === 0)
+				sectionErrors.certifications = 'Ajoute au moins un diplôme';
+		} else if (id === 'spots') {
+			if (!formData.city.trim()) sectionErrors.city = 'La ville est requise';
+			if (formData.spots.length === 0) sectionErrors.spots = 'Ajoute au moins un spot';
+		} else if (id === 'tarifs') {
+			if (formData.prices.length === 0)
+				sectionErrors.prices = 'Ajoute au moins une formule tarifaire';
+			else if (formData.prices.some((p) => !p.description.trim()))
+				sectionErrors.pricesDesc = 'Chaque formule doit avoir une description';
+		} else if (id === 'contact') {
+			if (!formData.phone.trim() && !formData.contactEmail.trim())
+				sectionErrors.contact = 'Renseigne au moins un téléphone ou un email de contact';
+		}
+		return Object.keys(sectionErrors).length === 0;
+	}
+
 	function makeEnhance(sectionId: SectionId) {
 		return ({ cancel }: { cancel: () => void }) => {
 			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			if (!validateSection(sectionId)) {
 				cancel();
 				return;
 			}
@@ -125,7 +162,10 @@
 </svelte:head>
 
 <div class="min-h-screen bg-bg">
-	<main class="mx-auto px-5 pt-10 pb-20 sm:px-8" style="max-width: 1140px">
+	<main
+		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:px-14 lg:pt-10 lg:pb-20"
+		style="max-width: 1320px"
+	>
 		<!-- Page title -->
 		<div class="mb-1.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ MON PROFIL
@@ -156,7 +196,7 @@
 		</a>
 
 		<!-- Desktop layout: sidebar + content -->
-		<div class="lg:grid lg:items-start lg:gap-10" style="grid-template-columns: 210px 1fr">
+		<div class="lg:grid lg:items-start lg:gap-12" style="grid-template-columns: 280px 1fr">
 			<!-- Sidebar nav (desktop only) -->
 			<aside class="sticky top-5 hidden lg:block">
 				<div class="sticky overflow-hidden">
