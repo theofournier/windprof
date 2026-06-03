@@ -114,6 +114,6 @@ export const actions: Actions = {
 			);
 		}
 
-		redirect(303, '/prof-account');
+		redirect(303, '/');
 	}
 };

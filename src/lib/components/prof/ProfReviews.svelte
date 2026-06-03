@@ -1,16 +1,23 @@
 <script lang="ts">
 	import ProfSectionTitle from './ProfSectionTitle.svelte';
+	import ProfReviewForm from './ProfReviewForm.svelte';
 
 	let {
 		averageRating,
 		totalReviews,
 		distribution,
-		reviews
+		reviews,
+		profId,
+		profName,
+		userType
 	}: {
 		averageRating: number;
 		totalReviews: number;
 		distribution: { stars: number; count: number }[];
 		reviews: { name: string; level: string; date: string; rating: number; text: string }[];
+		profId: string;
+		profName: string;
+		userType: 'rider' | 'prof' | null;
 	} = $props();
 
 	const LIMIT = 5;
@@ -41,7 +48,7 @@
 	</span>
 {/snippet}
 
-<div>
+<div id="avis">
 	<div class="mb-4.5 flex items-end justify-between">
 		<div>
 			<ProfSectionTitle title="AVIS DES RIDERS" />
@@ -108,4 +115,6 @@
 			{showAll ? 'Voir moins' : 'Voir tous'}
 		</button>
 	{/if}
+
+	<ProfReviewForm {profId} {profName} {userType} />
 </div>

@@ -1,6 +1,6 @@
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { profProfiles } from '$lib/server/db/schema';
+import { error, fail } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+import { profProfiles, riderProfiles, reviews } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { getProf } from '$lib/server/db/mockData';
 
@@ -47,6 +47,7 @@ export const load: PageServerLoad = async (event) => {
 	});
 
 	return {
+		userType: event.locals.user?.type ?? null,
 		prof: {
 			id: p.id,
 			name: `${p.firstName} ${p.lastName}`,
@@ -85,4 +86,53 @@ export const load: PageServerLoad = async (event) => {
 			glanceDetails
 		}
 	};
+};
+
+export const actions: Actions = {
+	submitReview: async (event) => {
+		if (!event.locals.user) {
+			return fail(401, { error: 'Vous devez être connecté pour laisser un avis.' });
+		}
+		if (event.locals.user.type !== 'rider') {
+			return fail(403, { error: 'Seuls les riders peuvent laisser des avis.' });
+		}
+
+		const form = await event.request.formData();
+		const profId = String(form.get('profId') ?? '');
+		const rating = Number(form.get('rating'));
+		const body = String(form.get('body') ?? '').trim();
+
+		if (!profId) return fail(400, { error: 'Prof introuvable.' });
+		if (!rating || rating < 1 || rating > 5) return fail(400, { error: 'Note invalide.' });
+		if (!body) return fail(400, { error: 'Votre avis ne peut pas être vide.' });
+		if (body.length > 400) return fail(400, { error: 'Votre avis dépasse 400 caractères.' });
+
+		const riderProfile = await event.locals.db
+			.select()
+			.from(riderProfiles)
+			.where(eq(riderProfiles.userId, event.locals.user.id))
+			.get();
+
+		if (!riderProfile) return fail(400, { error: 'Profil rider introuvable.' });
+
+		const riderName = riderProfile.lastName
+			? `${riderProfile.firstName} ${riderProfile.lastName}`
+			: riderProfile.firstName;
+
+		try {
+			await event.locals.db.insert(reviews).values({
+				id: crypto.randomUUID(),
+				profId,
+				riderId: riderProfile.id,
+				riderName,
+				riderLevel: null,
+				rating,
+				body
+			});
+		} catch {
+			return fail(500, { error: 'Impossible de publier votre avis. Veuillez réessayer.' });
+		}
+
+		return { success: true };
+	}
 };

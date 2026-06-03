@@ -10,6 +10,7 @@
 
 	let { data }: PageProps = $props();
 	let prof = $derived(data.prof);
+	let userType = $derived(data.userType);
 	const location = $derived(prof.region ? `${prof.city} — ${prof.region}` : prof.city);
 </script>
 
@@ -48,6 +49,9 @@
 			totalReviews={prof.reviewCount}
 			distribution={prof.distribution}
 			reviews={prof.reviews}
+			profId={prof.id}
+			profName={prof.firstName}
+			{userType}
 		/>
 	</div>
 

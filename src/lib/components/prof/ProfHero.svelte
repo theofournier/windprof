@@ -39,7 +39,11 @@
 		<div class="flex items-center gap-1.5">
 			<span class="text-lg text-accent">★</span>
 			<span class="font-display text-xl font-black">{stars}</span>
-			<span class="text-sm text-muted">· {reviewCount} avis</span>
+			<a
+				href="#avis"
+				class="text-sm text-muted underline decoration-dotted underline-offset-2 transition-colors hover:text-ink"
+			>· {reviewCount} avis</a
+			>
 		</div>
 		{#if isVerified}
 			<span

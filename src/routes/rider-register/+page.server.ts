@@ -86,6 +86,6 @@ export const actions: Actions = {
 			);
 		}
 
-		redirect(303, '/rider-account');
+		redirect(303, '/');
 	}
 };
