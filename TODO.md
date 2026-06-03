@@ -2,8 +2,6 @@
 
 - [ ] Replace mock data
 - [ ] Image upload
-- [ ] Prof report send email
-- [ ] Share QR code
 
 - [ ] Prof publish/unpublish toggle
 - [ ] Admin 

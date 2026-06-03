@@ -51,10 +51,6 @@
 					>✉</a
 				>
 			{/if}
-			<button
-				class="cursor-pointer rounded-md border border-white/20 bg-white/8 px-4.5 py-3.5 text-[15px] text-white"
-				>↪</button
-			>
 		</div>
 
 		<div class="mt-3 text-center font-mono text-[10.5px] tracking-loose text-white/50 uppercase">
