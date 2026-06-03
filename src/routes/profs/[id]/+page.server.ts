@@ -48,6 +48,7 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		userType: event.locals.user?.type ?? null,
+		userEmail: event.locals.user?.email ?? null,
 		prof: {
 			id: p.id,
 			name: `${p.firstName} ${p.lastName}`,
@@ -132,6 +133,28 @@ export const actions: Actions = {
 		} catch {
 			return fail(500, { error: 'Impossible de publier votre avis. Veuillez réessayer.' });
 		}
+
+		return { success: true };
+	},
+
+	submitReport: async (event) => {
+		const form = await event.request.formData();
+		const profId = String(form.get('profId') ?? '').trim();
+		const reason = String(form.get('reason') ?? '').trim();
+		const description = String(form.get('description') ?? '').trim();
+		const email = String(form.get('email') ?? '').trim();
+
+		if (!profId) return fail(400, { error: 'Prof introuvable.' });
+		if (!reason) return fail(400, { error: 'Veuillez sélectionner une raison.' });
+		if (reason === 'Autre' && !description) {
+			return fail(400, { error: 'Veuillez décrire le problème.' });
+		}
+		if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+			return fail(400, { error: 'Adresse email invalide.' });
+		}
+
+		// TODO: replace with Resend email to admin
+		console.log('[REPORT]', { profId, reason, description, reporterEmail: email });
 
 		return { success: true };
 	}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ProfContactCard from './ProfContactCard.svelte';
-	import ProfReportLink from './ProfReportLink.svelte';
 
 	let {
 		name,
@@ -42,7 +41,7 @@
 			<a
 				href="#avis"
 				class="text-sm text-muted underline decoration-dotted underline-offset-2 transition-colors hover:text-ink"
-			>· {reviewCount} avis</a
+				>· {reviewCount} avis</a
 			>
 		</div>
 		{#if isVerified}
@@ -79,5 +78,4 @@
 	</div>
 
 	<ProfContactCard {name} {phone} {email} />
-	<ProfReportLink />
 </div>

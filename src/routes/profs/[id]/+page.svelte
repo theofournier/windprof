@@ -7,10 +7,12 @@
 	import ProfSpots from '$lib/components/prof/ProfSpots.svelte';
 	import ProfReviews from '$lib/components/prof/ProfReviews.svelte';
 	import ProfAtAGlance from '$lib/components/prof/ProfAtAGlance.svelte';
+	import ProfReportLink from '$lib/components/prof/ProfReportLink.svelte';
 
 	let { data }: PageProps = $props();
 	let prof = $derived(data.prof);
 	let userType = $derived(data.userType);
+	let userEmail = $derived(data.userEmail);
 	const location = $derived(prof.region ? `${prof.city} — ${prof.region}` : prof.city);
 </script>
 
@@ -57,5 +59,6 @@
 
 	<aside class="order-first flex flex-col gap-4.5 lg:sticky lg:top-5 lg:order-0 lg:self-start">
 		<ProfAtAGlance details={prof.glanceDetails} />
+		<ProfReportLink profId={prof.id} profName={prof.firstName} {userEmail} />
 	</aside>
 </section>
