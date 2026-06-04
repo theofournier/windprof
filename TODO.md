@@ -1,7 +1,10 @@
 # Windprof — Todo List
 
 - [ ] Replace mock data
-- [ ] Image upload
+- [ ] Profile photo upload
+- [ ] Certification upload - Not required
+- [ ] Prof prices examples
+- [ ] Loading when create profile
 
 - [ ] Prof publish/unpublish toggle
 - [ ] Admin 

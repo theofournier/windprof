@@ -1,6 +1,8 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { profProfiles, profSports, profCertifications, profSpots, profPrices } from '$lib/server/db/schema';
+import { profProfiles, profSports, profCertifications, profSpots, profPrices, profPhotos } from '$lib/server/db/schema';
+import { galleryKey, galleryUrl, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -112,6 +114,32 @@ export const actions: Actions = {
 					displayOrder: i,
 				}))
 			);
+		}
+
+		const bucket = event.platform?.env?.windprof_bucket;
+		const publicUrl = env.BUCKET_PUBLIC_URL;
+		if (bucket && publicUrl) {
+			const files = form.getAll('gallery') as File[];
+			const validFiles = files
+				.filter((f) => f instanceof File && isAllowedImageType(f.type) && isValidSize(f.size))
+				.slice(0, 10);
+
+			if (validFiles.length > 0) {
+				const photoRecords = await Promise.all(
+					validFiles.map(async (file, i) => {
+						const key = galleryKey(profileId, file.type);
+						await uploadPhoto(bucket, key, file, file.type);
+						return {
+							id: crypto.randomUUID(),
+							profId: profileId,
+							key,
+							url: galleryUrl(publicUrl, key),
+							displayOrder: i,
+						};
+					})
+				);
+				await event.locals.db.insert(profPhotos).values(photoRecords);
+			}
 		}
 
 		redirect(303, '/');

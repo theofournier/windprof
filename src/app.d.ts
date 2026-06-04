@@ -10,7 +10,10 @@ declare global {
 			session?: Session;
 		}
 		interface Platform {
-			env: { windprof_db: D1Database };
+			env: {
+				windprof_db: D1Database;
+				windprof_bucket: R2Bucket;
+			};
 		}
 	}
 }

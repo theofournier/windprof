@@ -1,6 +1,7 @@
 export * from "./auth.schema";
 
 export * from "./prof/profCertifications.schema";
+export * from './prof/profPhotos.schema';
 export * from './prof/profPrices.schema';
 export * from './prof/profProfiles.schema';
 export * from './prof/profSports.schema';

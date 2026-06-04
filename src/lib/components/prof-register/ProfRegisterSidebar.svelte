@@ -10,20 +10,19 @@
 		{ n: '04', t: 'Spots', s: "Ville & lieux d'enseignement" },
 		{ n: '05', t: 'Tarifs', s: 'Grille indicative & matériel' },
 		{ n: '06', t: 'Contact', s: 'Coordonnées visibles publiquement' },
-		{ n: '07', t: 'Récap', s: 'Aperçu avant publication' }
+		{ n: '07', t: 'Galerie', s: 'Photos de tes sessions & spots' },
+		{ n: '08', t: 'Récap', s: 'Aperçu avant publication' }
 	];
 </script>
 
 <aside class="sticky top-6">
 	<div class="mb-3.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
-		↳ ÉTAPES · 7
+		↳ ÉTAPES · 8
 	</div>
 	<div class="font-display text-[32px] leading-none font-black tracking-tight uppercase">
 		Crée ton<br />profil moniteur.
 	</div>
-	<p class="mt-3.5 mb-5.5 text-[13.5px] leading-body text-muted">
-		~8 minutes.
-	</p>
+	<p class="mt-3.5 mb-5.5 text-[13.5px] leading-body text-muted">~8 minutes.</p>
 
 	<!-- Progress bar -->
 	<div class="mb-6 flex gap-0.75">

@@ -16,5 +16,14 @@
             "database_id": "02688f0c-1cfa-4383-9c0b-e156345ea539",
             "migrations_dir": "./drizzle"
         }
-    ]
+    ],
+    "r2_buckets": [
+        {
+            "binding": "windprof_bucket",
+            "bucket_name": "windprof-bucket"
+        }
+    ],
+    "vars": {
+        "BUCKET_PUBLIC_URL": "https://bucket.windprof.theofournier.dev"
+    }
 }

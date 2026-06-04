@@ -10,6 +10,7 @@
 	import StepSpots from '$lib/components/prof-register/StepSpots.svelte';
 	import StepPrices from '$lib/components/prof-register/StepPrices.svelte';
 	import StepContact from '$lib/components/prof-register/StepContact.svelte';
+	import StepGallery from '$lib/components/prof-register/StepGallery.svelte';
 	import StepReview from '$lib/components/prof-register/StepReview.svelte';
 	import LeaveWarningDialog from '$lib/components/global/LeaveWarningDialog.svelte';
 
@@ -17,7 +18,7 @@
 
 	let submitted = $state(false);
 
-	const TOTAL_STEPS = 7;
+	const TOTAL_STEPS = 8;
 
 	let step = $state(0);
 	let stepErrors: Record<string, string> = $state({});
@@ -39,7 +40,8 @@
 		phone: '',
 		contactEmail: '',
 		contactVisibility: 'phone_email',
-		responseTime: ''
+		responseTime: '',
+		gallery: []
 	});
 
 	function validateStep(): boolean {
@@ -65,6 +67,7 @@
 			if (!formData.phone.trim() && !formData.contactEmail.trim())
 				stepErrors.contact = 'Renseigne au moins un téléphone ou un email de contact';
 		}
+		// step 6 = gallery (optional, no validation)
 		return Object.keys(stepErrors).length === 0;
 	}
 
@@ -80,6 +83,7 @@
 		},
 		goTo(n: number) {
 			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
+			window.scrollTo({ top: 50, behavior: 'smooth' });
 		},
 		next() {
 			if (!validateStep()) return;
@@ -101,6 +105,7 @@
 		'Où enseignes-tu ?',
 		'Tes tarifs.',
 		'Comment te joindre ?',
+		'Ta galerie.',
 		'Prêt à publier.'
 	];
 
@@ -111,10 +116,11 @@
 		"Indique ta ville principale et tes spots habituels. La carte interactive arrive au MVP 2 — pour l'instant, du texte libre.",
 		'Tarifs indicatifs par discipline. Les riders te contactent directement, tu négocies en direct, sans commission.',
 		"Téléphone et/ou email. Ces infos seront affichées sur ta fiche publique : c'est le cœur de la promesse Windprof.",
+		"Ajoute jusqu'à 10 photos de tes sessions, ton matériel ou tes spots. Optionnel — tu pourras en ajouter plus tard.",
 		'Vérifie que tout est bon. Tu pourras éditer ton profil à tout moment depuis ton dashboard.'
 	];
 
-	const stepNumbers = ['01', '02', '03', '04', '05', '06', '07'];
+	const stepNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 </script>
 
 <svelte:head>
@@ -146,7 +152,7 @@
 
 		<main class="min-w-0">
 			<div class="mb-2.5 font-mono text-[11px] font-semibold tracking-widest text-accent uppercase">
-				↳ ÉTAPE {stepNumbers[step]} / 07
+				↳ ÉTAPE {stepNumbers[step]} / 08
 			</div>
 			<h1
 				class="m-0 mb-3 font-display text-[36px] leading-[0.95] font-black tracking-tight uppercase sm:text-[44px] lg:text-[54px]"
@@ -167,7 +173,11 @@
 
 			<form
 				method="POST"
-				use:enhance={() => {
+				enctype="multipart/form-data"
+				use:enhance={({ formData: fd }) => {
+					for (const file of formData.gallery) {
+						fd.append('gallery', file);
+					}
 					return async ({ result, update }) => {
 						if (result.type === 'redirect') submitted = true;
 						await update();
@@ -189,6 +199,8 @@
 				{:else if step === 5}
 					<StepContact />
 				{:else if step === 6}
+					<StepGallery />
+				{:else if step === 7}
 					<StepReview />
 				{/if}
 

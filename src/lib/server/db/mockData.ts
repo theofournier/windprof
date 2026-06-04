@@ -436,6 +436,7 @@ const buildProfWithRelations = (profile: ProfProfile): ProfWithRelations => ({
     spots: spots.filter((s) => s.profId === profile.id),
     prices: prices.filter((p) => p.profId === profile.id),
     certifications: certifications.filter((c) => c.profId === profile.id),
+    photos: [],
     reviews: reviews.filter((r) => r.profId === profile.id),
 });
 

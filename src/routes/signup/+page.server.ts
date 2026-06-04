@@ -25,7 +25,7 @@ export const actions: Actions = {
 			return fail(400, { error: 'Le mot de passe doit contenir au moins 8 caractères.', email, firstName, lastName });
 		}
 
-		const type = role === 'moniteur' ? 'prof' : 'rider';
+		const type = role === 'prof' ? 'prof' : 'rider';
 
 		try {
 			await event.locals.auth.api.signUpEmail({

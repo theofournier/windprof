@@ -22,6 +22,7 @@ export type ProfFormData = {
 	contactEmail: string;
 	contactVisibility: ContactVisibility;
 	responseTime: ResponseTime | '';
+	gallery: File[];
 };
 
 export type ProfRegisterCtx = {

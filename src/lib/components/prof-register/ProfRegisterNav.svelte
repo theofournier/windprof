@@ -3,7 +3,7 @@
 
 	const ctx = getProfRegisterCtx();
 
-	const totalSteps = 7;
+	const totalSteps = 8;
 </script>
 
 <div class="mt-10 flex items-center justify-between border-t border-line pt-6">

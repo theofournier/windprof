@@ -1,12 +1,15 @@
 import { redirect, fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import {
 	profProfiles,
 	profSports,
 	profCertifications,
 	profSpots,
-	profPrices
+	profPrices,
+	profPhotos
 } from '$lib/server/db/schema';
+import { galleryKey, galleryUrl, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -21,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
 
 	if (!profile) redirect(303, '/prof-register');
 
-	const [sports, certifications, spots, prices] = await Promise.all([
+	const [sports, certifications, spots, prices, photos] = await Promise.all([
 		event.locals.db.select().from(profSports).where(eq(profSports.profId, profile.id)).all(),
 		event.locals.db
 			.select()
@@ -39,6 +42,12 @@ export const load: PageServerLoad = async (event) => {
 			.from(profPrices)
 			.where(eq(profPrices.profId, profile.id))
 			.orderBy(profPrices.displayOrder)
+			.all(),
+		event.locals.db
+			.select()
+			.from(profPhotos)
+			.where(eq(profPhotos.profId, profile.id))
+			.orderBy(profPhotos.displayOrder)
 			.all()
 	]);
 
@@ -64,7 +73,8 @@ export const load: PageServerLoad = async (event) => {
 			description: p.description,
 			duration: p.duration ?? '',
 			priceEur: p.priceEur
-		}))
+		})),
+		gallery: photos.map((p) => ({ id: p.id, url: p.url }))
 	};
 };
 
@@ -188,6 +198,72 @@ export const actions: Actions = {
 					responseTime: data.responseTime || null
 				})
 				.where(eq(profProfiles.id, profId));
+		} else if (section === 'galerie') {
+			const bucket = event.platform?.env?.windprof_bucket;
+			const publicUrl = env.BUCKET_PUBLIC_URL;
+			if (!bucket || !publicUrl) {
+				return fail(503, { error: 'Stockage photo non configuré.', section });
+			}
+
+			// Parse order and deletions from form (not JSON body)
+			const rawExisting = String(form.get('existingIds') ?? '[]');
+			const rawDeleted = String(form.get('deletedIds') ?? '[]');
+			let existingIds: string[];
+			let deletedIds: string[];
+			try {
+				existingIds = JSON.parse(rawExisting);
+				deletedIds = JSON.parse(rawDeleted);
+			} catch {
+				return fail(400, { error: 'Données invalides.', section });
+			}
+
+			// Delete removed photos from R2 + DB
+			if (deletedIds.length > 0) {
+				const toDelete = await event.locals.db
+					.select()
+					.from(profPhotos)
+					.where(inArray(profPhotos.id, deletedIds))
+					.all();
+				await Promise.all(toDelete.map((p) => deletePhoto(bucket, p.key)));
+				await event.locals.db
+					.delete(profPhotos)
+					.where(inArray(profPhotos.id, deletedIds));
+			}
+
+			// Upload new photos
+			const newFiles = (form.getAll('newPhoto') as File[]).filter(
+				(f) => f instanceof File && f.size > 0 && isAllowedImageType(f.type) && isValidSize(f.size)
+			);
+
+			const currentCount = existingIds.length;
+			const toUpload = newFiles.slice(0, Math.max(0, 10 - currentCount));
+
+			if (toUpload.length > 0) {
+				const newRecords = await Promise.all(
+					toUpload.map(async (file, i) => {
+						const key = galleryKey(profId, file.type);
+						await uploadPhoto(bucket, key, file, file.type);
+						return {
+							id: crypto.randomUUID(),
+							profId,
+							key,
+							url: galleryUrl(publicUrl, key),
+							displayOrder: currentCount + i,
+						};
+					})
+				);
+				await event.locals.db.insert(profPhotos).values(newRecords);
+			}
+
+			// Update display order for kept existing photos
+			await Promise.all(
+				existingIds.map((id, i) =>
+					event.locals.db
+						.update(profPhotos)
+						.set({ displayOrder: i })
+						.where(eq(profPhotos.id, id))
+				)
+			);
 		} else {
 			return fail(400, { error: 'Section inconnue.', section });
 		}

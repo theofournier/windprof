@@ -9,6 +9,7 @@
 	import StepSpots from '$lib/components/prof-register/StepSpots.svelte';
 	import StepPrices from '$lib/components/prof-register/StepPrices.svelte';
 	import StepContact from '$lib/components/prof-register/StepContact.svelte';
+	import StepGallery, { type GalleryState } from '$lib/components/prof-register/StepGallery.svelte';
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -33,7 +34,8 @@
 				phone: data.profile.phone ?? '',
 				contactEmail: data.profile.contactEmail ?? '',
 				contactVisibility: data.profile.contactVisibility ?? 'phone_email',
-				responseTime: data.profile.responseTime ?? ''
+				responseTime: data.profile.responseTime ?? '',
+				gallery: []
 			};
 		})
 	);
@@ -61,7 +63,8 @@
 		{ id: 'certifications', num: '03', title: 'DIPLÔMES' },
 		{ id: 'spots', num: '04', title: 'SPOTS & MATÉRIEL' },
 		{ id: 'tarifs', num: '05', title: 'TARIFS & LIENS' },
-		{ id: 'contact', num: '06', title: 'CONTACT' }
+		{ id: 'contact', num: '06', title: 'CONTACT' },
+		{ id: 'galerie', num: '07', title: 'GALERIE' }
 	] as const;
 
 	type SectionId = (typeof sections)[number]['id'];
@@ -122,7 +125,43 @@
 			if (!formData.phone.trim() && !formData.contactEmail.trim())
 				sectionErrors.contact = 'Renseigne au moins un téléphone ou un email de contact';
 		}
+		// galerie: no validation needed
 		return Object.keys(sectionErrors).length === 0;
+	}
+
+	// Gallery-specific state (survives remounts via closure)
+	let galleryState = $state<GalleryState>({ existingIds: [], deletedIds: [], newFiles: [] });
+
+	function makeGalleryEnhance() {
+		return ({ formData: fd, cancel }: { formData: FormData; cancel: () => void }) => {
+			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			fd.set('existingIds', JSON.stringify(galleryState.existingIds));
+			fd.set('deletedIds', JSON.stringify(galleryState.deletedIds));
+			for (const file of galleryState.newFiles) {
+				fd.append('newPhoto', file);
+			}
+			savingSection = 'galerie';
+			return async ({
+				result,
+				update
+			}: {
+				result: { type: string };
+				update: (opts?: { reset?: boolean }) => Promise<void>;
+			}) => {
+				savingSection = null;
+				if (result.type === 'success') {
+					savedSection = 'galerie';
+					setTimeout(() => {
+						savedSection = null;
+					}, 2500);
+				} else {
+					await update({ reset: false });
+				}
+			};
+		};
 	}
 
 	function makeEnhance(sectionId: SectionId) {
@@ -248,53 +287,102 @@
 						</div>
 
 						<!-- Form -->
-						<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
-							<input type="hidden" name="section" value={s.id} />
-							<input type="hidden" name="formData" value={JSON.stringify(formData)} />
-
-							{#if s.id === 'identite'}
-								<StepIdentity />
-							{:else if s.id === 'disciplines'}
-								<StepDisciplines />
-							{:else if s.id === 'certifications'}
-								<StepCerts />
-							{:else if s.id === 'spots'}
-								<StepSpots />
-							{:else if s.id === 'tarifs'}
-								<StepPrices />
-							{:else if s.id === 'contact'}
-								<StepContact />
-							{/if}
-
-							<!-- Error -->
-							{#if (form as any)?.section === s.id && (form as any)?.error}
-								<div
-									class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
-								>
-									{(form as any).error}
-								</div>
-							{/if}
-
-							<!-- Save row -->
-							<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
-								{#if savedSection === s.id}
-									<span
-										class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+						{#if s.id === 'galerie'}
+							<form
+								method="POST"
+								action="?/update"
+								enctype="multipart/form-data"
+								use:enhance={makeGalleryEnhance()}
+							>
+								<input type="hidden" name="section" value="galerie" />
+								<StepGallery
+									existingPhotos={data.gallery}
+									onGalleryChange={(state) => {
+										galleryState = state;
+									}}
+								/>
+								{#if (form as any)?.section === 'galerie' && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
 									>
-										✓ Modifications sauvegardées
-									</span>
-								{:else}
-									<span></span>
+										{(form as any).error}
+									</div>
 								{/if}
-								<button
-									type="submit"
-									disabled={savingSection !== null}
-									class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
-								>
-									{savingSection === s.id ? 'Sauvegarde…' : 'Enregistrer'}
-								</button>
-							</div>
-						</form>
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === 'galerie'}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+									{:else}
+										<span></span>
+									{/if}
+									<button
+										type="submit"
+										disabled={savingSection !== null}
+										class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+									>
+										{savingSection === 'galerie' ? 'Sauvegarde…' : 'Enregistrer'}
+									</button>
+								</div>
+							</form>
+						{:else}
+							<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
+								<input type="hidden" name="section" value={s.id} />
+								<input type="hidden" name="formData" value={JSON.stringify(formData)} />
+
+								{#if s.id === 'identite'}
+									<StepIdentity />
+								{:else if s.id === 'disciplines'}
+									<StepDisciplines />
+								{:else if s.id === 'certifications'}
+									<StepCerts />
+								{:else if s.id === 'spots'}
+									<StepSpots />
+								{:else if s.id === 'tarifs'}
+									<StepPrices />
+								{:else if s.id === 'contact'}
+									<StepContact />
+								{/if}
+
+								<!-- Error -->
+								{#if (form as any)?.section === s.id && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+									>
+										{(form as any).error}
+									</div>
+								{/if}
+
+								<!-- Save row -->
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === s.id}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+										<button
+											type="submit"
+											disabled={savingSection !== null}
+											class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+										>
+											Enregistrer
+										</button>
+									{:else}
+										<span></span>
+										<button
+											type="submit"
+											disabled={savingSection !== null}
+											class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+										>
+											{savingSection === s.id ? 'Sauvegarde…' : 'Enregistrer'}
+										</button>
+									{/if}
+								</div>
+							</form>
+						{/if}
 					</section>
 				{/each}
 			</div>
