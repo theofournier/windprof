@@ -38,10 +38,6 @@
 					>Vérifié</span
 				>
 			{/if}
-			<button
-				class="absolute top-4 right-4 h-8 w-8 cursor-pointer rounded-full bg-white/90 text-sm text-muted"
-				>♡</button
-			>
 		</div>
 		<div class="flex flex-1 flex-col justify-between p-6">
 			<div>
