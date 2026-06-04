@@ -17,6 +17,7 @@
 	const { data, form } = $props<{ data: { missing: boolean }; form: { error?: string } | null }>();
 
 	let submitted = $state(false);
+	let submitting = $state(false);
 
 	const TOTAL_STEPS = 8;
 
@@ -79,6 +80,9 @@
 		},
 		get errors() {
 			return stepErrors;
+		},
+		get submitting() {
+			return submitting;
 		},
 		goTo(n: number) {
 			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
@@ -183,8 +187,10 @@
 					formData.certifications.forEach((cert, i) => {
 						if (cert.file) fd.append(`certFile_${i}`, cert.file);
 					});
+					submitting = true;
 					return async ({ result, update }) => {
 						if (result.type === 'redirect') submitted = true;
+						else submitting = false;
 						await update();
 					};
 				}}

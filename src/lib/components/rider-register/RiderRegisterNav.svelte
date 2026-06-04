@@ -31,9 +31,10 @@
 	{:else}
 		<button
 			type="submit"
-			class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-5.5 py-3.5 font-display text-body-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-dark"
+			disabled={ctx.submitting}
+			class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-5.5 py-3.5 font-display text-body-sm font-bold tracking-wide text-white uppercase transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:opacity-60"
 		>
-			Voir les moniteurs ✓
+			{ctx.submitting ? 'Envoi en cours…' : 'Voir les moniteurs ✓'}
 		</button>
 	{/if}
 </div>

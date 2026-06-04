@@ -26,6 +26,7 @@ export type RiderRegisterCtx = {
 	readonly step: number;
 	readonly data: RiderFormData;
 	readonly errors: Record<string, string>;
+	readonly submitting: boolean;
 	goTo(n: number): void;
 	next(): void;
 	prev(): void;

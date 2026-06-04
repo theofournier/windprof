@@ -13,6 +13,7 @@
 	const { data, form } = $props<{ data: { missing: boolean }; form: { error?: string } | null }>();
 
 	let submitted = $state(false);
+	let submitting = $state(false);
 
 	const TOTAL_STEPS = 5;
 
@@ -66,6 +67,9 @@
 		},
 		get errors() {
 			return stepErrors;
+		},
+		get submitting() {
+			return submitting;
 		},
 		goTo(n: number) {
 			step = Math.max(0, Math.min(TOTAL_STEPS - 1, n));
@@ -155,8 +159,10 @@
 					if (formData.photoFile) {
 						fd.append('profilePhoto', formData.photoFile);
 					}
+					submitting = true;
 					return async ({ result, update }) => {
 						if (result.type === 'redirect') submitted = true;
+						else submitting = false;
 						await update();
 					};
 				}}

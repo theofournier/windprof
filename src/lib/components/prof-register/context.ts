@@ -31,6 +31,7 @@ export type ProfRegisterCtx = {
 	readonly step: number;
 	readonly data: ProfFormData;
 	readonly errors: Record<string, string>;
+	readonly submitting: boolean;
 	goTo(n: number): void;
 	next(): void;
 	prev(): void;
