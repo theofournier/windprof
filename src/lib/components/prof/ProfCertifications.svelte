@@ -25,12 +25,6 @@
 						>
 							✓ Vérifié
 						</span>
-					{:else}
-						<span
-							class="inline-flex flex-none items-center gap-1 rounded-[4px] bg-accent-soft px-2.5 py-1 font-mono text-label font-semibold tracking-wide text-ink/60 uppercase"
-						>
-							⏱ En attente
-						</span>
 					{/if}
 				</div>
 			{/each}

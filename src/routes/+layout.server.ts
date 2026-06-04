@@ -19,7 +19,9 @@ export const load: LayoutServerLoad = async (event) => {
             sports: true,
             spots: true,
             prices: true,
-            certifications: true,
+            certifications: {
+                where: (certs, { eq }) => eq(certs.status, 'verified')
+            },
             photos: true,
             reviews: true,
         },

@@ -20,7 +20,9 @@ export const load: PageServerLoad = async (event) => {
 			sports: true,
 			spots: true,
 			prices: true,
-			certifications: true,
+			certifications: {
+				where: (certs, { eq }) => eq(certs.status, 'verified')
+			},
 			photos: true,
 			reviews: true,
 		},
@@ -72,11 +74,11 @@ export const load: PageServerLoad = async (event) => {
 			sports: p.sports.map((d) => d.sport),
 			levels,
 			certifications: p.certifications
-			.filter((c) => c.status !== 'rejected')
-			.map((c) => ({
-				name: c.type,
-				isVerified: c.status === 'verified'
-			})),
+				.filter((c) => c.status !== 'rejected')
+				.map((c) => ({
+					name: c.type,
+					isVerified: c.status === 'verified'
+				})),
 			prices: p.prices.map((pr) => ({
 				label: pr.description,
 				duration: pr.duration ?? '',
