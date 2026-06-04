@@ -1,6 +1,5 @@
 # Windprof — Todo List
 
-- [ ] Replace mock data
 - [ ] Profile photo upload
 - [ ] Certification upload - Not required
 - [ ] Prof prices examples

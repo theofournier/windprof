@@ -2,7 +2,6 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { profProfiles, riderProfiles, reviews } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
-import { getProf } from '$lib/server/db/mockData';
 
 function relativeDate(date: Date): string {
 	const diffMs = date.getTime() - Date.now();
@@ -15,7 +14,17 @@ function relativeDate(date: Date): string {
 }
 
 export const load: PageServerLoad = async (event) => {
-	const p = await getProf(event.params.id);
+	const p = await event.locals.db.query.profProfiles.findFirst({
+		where: eq(profProfiles.id, event.params.id),
+		with: {
+			sports: true,
+			spots: true,
+			prices: true,
+			certifications: true,
+			photos: true,
+			reviews: true,
+		},
+	});
 
 	if (!p || !p.isPublished) {
 		error(404, 'Prof not found');

@@ -1,6 +1,5 @@
 import { redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { getProfs } from '$lib/server/db/mockData';
 import { riderProfiles, profProfiles } from '$lib/server/db/schema';
 import type { LayoutServerLoad } from './$types';
 
@@ -14,7 +13,17 @@ const SKIP_PROFILE_CHECK = [
 ];
 
 export const load: LayoutServerLoad = async (event) => {
-    const profs = await getProfs();
+    const profs = await event.locals.db.query.profProfiles.findMany({
+        where: eq(profProfiles.isPublished, true),
+        with: {
+            sports: true,
+            spots: true,
+            prices: true,
+            certifications: true,
+            photos: true,
+            reviews: true,
+        },
+    });
     const user = event.locals.user ?? null;
 
     if (user) {
