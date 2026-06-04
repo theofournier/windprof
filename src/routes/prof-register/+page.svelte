@@ -41,7 +41,9 @@
 		contactEmail: '',
 		contactVisibility: 'phone_email',
 		responseTime: '',
-		gallery: []
+		gallery: [],
+		photoFile: null,
+		existingPhotoUrl: null
 	});
 
 	function validateStep(): boolean {
@@ -175,6 +177,9 @@
 				method="POST"
 				enctype="multipart/form-data"
 				use:enhance={({ formData: fd }) => {
+					if (formData.photoFile) {
+						fd.append('profilePhoto', formData.photoFile);
+					}
 					for (const file of formData.gallery) {
 						fd.append('gallery', file);
 					}

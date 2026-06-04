@@ -6,9 +6,10 @@ import {
 	profCertifications,
 	profSpots,
 	profPrices,
-	profPhotos
+	profPhotos,
+	users
 } from '$lib/server/db/schema';
-import { galleryKey, galleryUrl, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { galleryKey, galleryUrl, profilePhotoKey, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -116,6 +117,23 @@ export const actions: Actions = {
 					languages: data.languages?.length ? JSON.stringify(data.languages) : null
 				})
 				.where(eq(profProfiles.id, profId));
+
+			const bucket = event.platform?.env?.windprof_bucket;
+			const publicUrl = env.BUCKET_PUBLIC_URL;
+			if (bucket && publicUrl) {
+				const profilePhoto = form.get('profilePhoto') as File | null;
+				if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
+					if (profile.photoUrl) {
+						const oldKey = profile.photoUrl.replace(publicUrl.replace(/\/$/, '') + '/', '');
+						await deletePhoto(bucket, oldKey).catch(() => { });
+					}
+					const key = profilePhotoKey(event.locals.user.id, profilePhoto.type);
+					await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
+					const photoUrl = galleryUrl(publicUrl, key);
+					await event.locals.db.update(profProfiles).set({ photoUrl }).where(eq(profProfiles.id, profId));
+					await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, event.locals.user.id));
+				}
+			}
 		} else if (section === 'disciplines') {
 			await event.locals.db.delete(profSports).where(eq(profSports.profId, profId));
 			if (data.sports?.length) {

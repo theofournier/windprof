@@ -1,6 +1,8 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { riderProfiles, ridersports, riderSpots } from '$lib/server/db/schema';
+import { riderProfiles, ridersports, riderSpots, users } from '$lib/server/db/schema';
+import { profilePhotoKey, galleryUrl, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -84,6 +86,23 @@ export const actions: Actions = {
 					bio: data.bio?.trim() || null
 				})
 				.where(eq(riderProfiles.id, riderId));
+
+			const bucket = event.platform?.env?.windprof_bucket;
+			const publicUrl = env.BUCKET_PUBLIC_URL;
+			if (bucket && publicUrl) {
+				const profilePhoto = form.get('profilePhoto') as File | null;
+				if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
+					if (profile.photoUrl) {
+						const oldKey = profile.photoUrl.replace(publicUrl.replace(/\/$/, '') + '/', '');
+						await deletePhoto(bucket, oldKey).catch(() => { });
+					}
+					const key = profilePhotoKey(event.locals.user.id, profilePhoto.type);
+					await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
+					const photoUrl = galleryUrl(publicUrl, key);
+					await event.locals.db.update(riderProfiles).set({ photoUrl }).where(eq(riderProfiles.id, riderId));
+					await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, event.locals.user.id));
+				}
+			}
 		} else if (section === 'disciplines') {
 			await event.locals.db.delete(ridersports).where(eq(ridersports.riderId, riderId));
 			if (data.sports?.length) {

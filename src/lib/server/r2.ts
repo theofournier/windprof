@@ -19,6 +19,11 @@ export function galleryKey(profId: string, contentType: string): string {
     return `profs/${profId}/gallery/${crypto.randomUUID()}.${ext}`;
 }
 
+export function profilePhotoKey(userId: string, contentType: string): string {
+    const ext = ALLOWED_TYPES.get(contentType) ?? 'jpg';
+    return `users/${userId}/profile.${ext}`;
+}
+
 export function galleryUrl(publicBaseUrl: string, key: string): string {
     return `${publicBaseUrl.replace(/\/$/, '')}/${key}`;
 }

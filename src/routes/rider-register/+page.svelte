@@ -35,7 +35,9 @@
 		maxDistanceKm: 60,
 		availabilityDays: [],
 		availabilitySlots: [],
-		budgetRanges: []
+		budgetRanges: [],
+		photoFile: null,
+		existingPhotoUrl: null
 	});
 
 	function validateStep(): boolean {
@@ -44,8 +46,7 @@
 			if (!formData.firstName.trim()) stepErrors.firstName = 'Le prénom est requis';
 			if (!formData.city.trim()) stepErrors.city = 'La ville est requise';
 		} else if (step === 1) {
-			if (formData.sports.length === 0)
-				stepErrors.sports = 'Sélectionne au moins une discipline';
+			if (formData.sports.length === 0) stepErrors.sports = 'Sélectionne au moins une discipline';
 			else if (formData.sports.some((s) => !s.level))
 				stepErrors.sportsLevel = 'Indique ton niveau pour chaque discipline sélectionnée';
 		} else if (step === 2) {
@@ -108,7 +109,7 @@
 {#if data.missing}
 	<div class="border-b border-amber-200 bg-amber-50 px-6 py-4">
 		<div class="mx-auto" style="max-width: 1320px">
-			<p class="text-body-sm font-bold uppercase tracking-widest text-amber-800">
+			<p class="text-body-sm font-bold tracking-widest text-amber-800 uppercase">
 				Profil incomplet
 			</p>
 			<p class="mt-0.5 text-[13.5px] text-amber-700">
@@ -149,7 +150,11 @@
 
 			<form
 				method="POST"
-				use:enhance={() => {
+				enctype="multipart/form-data"
+				use:enhance={({ formData: fd }) => {
+					if (formData.photoFile) {
+						fd.append('profilePhoto', formData.photoFile);
+					}
 					return async ({ result, update }) => {
 						if (result.type === 'redirect') submitted = true;
 						await update();

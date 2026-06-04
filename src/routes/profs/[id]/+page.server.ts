@@ -64,6 +64,7 @@ export const load: PageServerLoad = async (event) => {
 			firstName: p.firstName,
 			bio: p.bio ?? '',
 			isVerified: p.isVerified,
+			photoUrl: p.photoUrl ?? null,
 			city: p.city,
 			region: p.region ?? null,
 			phone: p.phone ?? '',

@@ -26,7 +26,9 @@
 			maxDistanceKm: data.profile.maxDistanceKm ?? 60,
 			availabilityDays: (data.profile.availabilityDays as number[]) ?? [],
 			availabilitySlots: (data.profile.availabilitySlots as string[]) ?? [],
-			budgetRanges: (data.profile.budgetRanges as string[]) ?? []
+			budgetRanges: (data.profile.budgetRanges as string[]) ?? [],
+			photoFile: null,
+			existingPhotoUrl: (data.profile as any).photoUrl ?? null
 		}))
 	);
 
@@ -103,6 +105,42 @@
 			if (formData.spots.length === 0) sectionErrors.spots = 'Ajoute au moins un spot';
 		}
 		return Object.keys(sectionErrors).length === 0;
+	}
+
+	function makeProfilEnhance() {
+		return ({ formData: fd, cancel }: { formData: FormData; cancel: () => void }) => {
+			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			if (!validateSection('profil')) {
+				cancel();
+				return;
+			}
+			fd.set('section', 'profil');
+			fd.set('formData', JSON.stringify(formData));
+			if (formData.photoFile) {
+				fd.append('profilePhoto', formData.photoFile);
+			}
+			savingSection = 'profil';
+			return async ({
+				result,
+				update
+			}: {
+				result: { type: string };
+				update: (opts?: { reset?: boolean }) => Promise<void>;
+			}) => {
+				savingSection = null;
+				if (result.type === 'success') {
+					savedSection = 'profil';
+					setTimeout(() => {
+						savedSection = null;
+					}, 2500);
+				} else {
+					await update({ reset: false });
+				}
+			};
+		};
 	}
 
 	function makeEnhance(sectionId: SectionId) {
@@ -221,49 +259,83 @@
 						</div>
 
 						<!-- Form -->
-						<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
-							<input type="hidden" name="section" value={s.id} />
-							<input type="hidden" name="formData" value={JSON.stringify(formData)} />
-
-							{#if s.id === 'profil'}
+						{#if s.id === 'profil'}
+							<form
+								method="POST"
+								action="?/update"
+								enctype="multipart/form-data"
+								use:enhance={makeProfilEnhance()}
+							>
 								<StepProfile />
-							{:else if s.id === 'disciplines'}
-								<StepDisciplines />
-							{:else if s.id === 'objectifs'}
-								<StepGoals />
-							{:else if s.id === 'preferences'}
-								<StepPreferences />
-							{/if}
-
-							<!-- Error -->
-							{#if (form as any)?.section === s.id && (form as any)?.error}
-								<div
-									class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
-								>
-									{(form as any).error}
-								</div>
-							{/if}
-
-							<!-- Save row -->
-							<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
-								{#if savedSection === s.id}
-									<span
-										class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+								{#if (form as any)?.section === 'profil' && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
 									>
-										✓ Modifications sauvegardées
-									</span>
-								{:else}
-									<span></span>
+										{(form as any).error}
+									</div>
 								{/if}
-								<button
-									type="submit"
-									disabled={savingSection !== null}
-									class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
-								>
-									{savingSection === s.id ? 'Sauvegarde…' : 'Enregistrer'}
-								</button>
-							</div>
-						</form>
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === 'profil'}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+									{:else}
+										<span></span>
+									{/if}
+									<button
+										type="submit"
+										disabled={savingSection !== null}
+										class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+									>
+										{savingSection === 'profil' ? 'Sauvegarde…' : 'Enregistrer'}
+									</button>
+								</div>
+							</form>
+						{:else}
+							<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
+								<input type="hidden" name="section" value={s.id} />
+								<input type="hidden" name="formData" value={JSON.stringify(formData)} />
+
+								{#if s.id === 'disciplines'}
+									<StepDisciplines />
+								{:else if s.id === 'objectifs'}
+									<StepGoals />
+								{:else if s.id === 'preferences'}
+									<StepPreferences />
+								{/if}
+
+								<!-- Error -->
+								{#if (form as any)?.section === s.id && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+									>
+										{(form as any).error}
+									</div>
+								{/if}
+
+								<!-- Save row -->
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === s.id}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+									{:else}
+										<span></span>
+									{/if}
+									<button
+										type="submit"
+										disabled={savingSection !== null}
+										class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+									>
+										{savingSection === s.id ? 'Sauvegarde…' : 'Enregistrer'}
+									</button>
+								</div>
+							</form>
+						{/if}
 					</section>
 				{/each}
 			</div>

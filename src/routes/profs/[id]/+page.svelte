@@ -36,6 +36,7 @@
 		levels={prof.levels}
 		phone={prof.phone}
 		email={prof.email}
+		photoUrl={prof.photoUrl}
 	/>
 </section>
 

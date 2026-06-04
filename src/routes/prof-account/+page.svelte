@@ -35,7 +35,9 @@
 				contactEmail: data.profile.contactEmail ?? '',
 				contactVisibility: data.profile.contactVisibility ?? 'phone_email',
 				responseTime: data.profile.responseTime ?? '',
-				gallery: []
+				gallery: [],
+				photoFile: null,
+				existingPhotoUrl: (data.profile as any).photoUrl ?? null
 			};
 		})
 	);
@@ -154,6 +156,42 @@
 				savingSection = null;
 				if (result.type === 'success') {
 					savedSection = 'galerie';
+					setTimeout(() => {
+						savedSection = null;
+					}, 2500);
+				} else {
+					await update({ reset: false });
+				}
+			};
+		};
+	}
+
+	function makeIdentityEnhance() {
+		return ({ formData: fd, cancel }: { formData: FormData; cancel: () => void }) => {
+			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			if (!validateSection('identite')) {
+				cancel();
+				return;
+			}
+			fd.set('section', 'identite');
+			fd.set('formData', JSON.stringify(formData));
+			if (formData.photoFile) {
+				fd.append('profilePhoto', formData.photoFile);
+			}
+			savingSection = 'identite';
+			return async ({
+				result,
+				update
+			}: {
+				result: { type: string };
+				update: (opts?: { reset?: boolean }) => Promise<void>;
+			}) => {
+				savingSection = null;
+				if (result.type === 'success') {
+					savedSection = 'identite';
 					setTimeout(() => {
 						savedSection = null;
 					}, 2500);
@@ -327,14 +365,46 @@
 									</button>
 								</div>
 							</form>
+						{:else if s.id === 'identite'}
+							<form
+								method="POST"
+								action="?/update"
+								enctype="multipart/form-data"
+								use:enhance={makeIdentityEnhance()}
+							>
+								<StepIdentity />
+								{#if (form as any)?.section === 'identite' && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+									>
+										{(form as any).error}
+									</div>
+								{/if}
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === 'identite'}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+									{:else}
+										<span></span>
+									{/if}
+									<button
+										type="submit"
+										disabled={savingSection !== null}
+										class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+									>
+										{savingSection === 'identite' ? 'Sauvegarde…' : 'Enregistrer'}
+									</button>
+								</div>
+							</form>
 						{:else}
 							<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
 								<input type="hidden" name="section" value={s.id} />
 								<input type="hidden" name="formData" value={JSON.stringify(formData)} />
 
-								{#if s.id === 'identite'}
-									<StepIdentity />
-								{:else if s.id === 'disciplines'}
+								{#if s.id === 'disciplines'}
 									<StepDisciplines />
 								{:else if s.id === 'certifications'}
 									<StepCerts />

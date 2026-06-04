@@ -1,6 +1,8 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { riderProfiles, ridersports, riderSpots } from '$lib/server/db/schema';
+import { riderProfiles, ridersports, riderSpots, users } from '$lib/server/db/schema';
+import { profilePhotoKey, galleryUrl, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -62,6 +64,19 @@ export const actions: Actions = {
 			availabilitySlots: data.availabilitySlots?.length ? JSON.stringify(data.availabilitySlots) : null,
 			budgetRanges: data.budgetRanges?.length ? JSON.stringify(data.budgetRanges) : null,
 		});
+
+		const bucket = event.platform?.env?.windprof_bucket;
+		const publicUrl = env.BUCKET_PUBLIC_URL;
+		if (bucket && publicUrl) {
+			const profilePhoto = form.get('profilePhoto') as File | null;
+			if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
+				const key = profilePhotoKey(userId, profilePhoto.type);
+				await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
+				const photoUrl = galleryUrl(publicUrl, key);
+				await event.locals.db.update(riderProfiles).set({ photoUrl }).where(eq(riderProfiles.id, profileId));
+				await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, userId));
+			}
+		}
 
 		if (data.sports?.length) {
 			await event.locals.db.insert(ridersports).values(

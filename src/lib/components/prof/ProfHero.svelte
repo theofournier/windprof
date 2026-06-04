@@ -12,7 +12,8 @@
 		sports,
 		levels,
 		phone,
-		email
+		email,
+		photoUrl = null
 	}: {
 		name: string;
 		location: string;
@@ -25,13 +26,37 @@
 		levels: string[];
 		phone: string;
 		email: string;
+		photoUrl?: string | null;
 	} = $props();
+
+	let initials = $derived(
+		name
+			.trim()
+			.split(' ')
+			.map((w) => w[0])
+			.slice(0, 2)
+			.join('')
+			.toUpperCase()
+	);
 </script>
 
 <div>
-	<h1 class="mb-2 font-display text-[38px] leading-[0.95] lg:text-[58px]">{name}</h1>
-
-	<div class="mb-5 font-sans text-base font-normal text-muted">{location}</div>
+	<!-- Photo + name row -->
+	<div class="mb-5 flex items-center gap-4">
+		{#if photoUrl}
+			<img src={photoUrl} alt={name} class="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-line" />
+		{:else}
+			<div
+				class="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent font-display text-2xl font-black text-white"
+			>
+				{initials}
+			</div>
+		{/if}
+		<div>
+			<h1 class="font-display text-[38px] leading-[0.95] lg:text-[52px]">{name}</h1>
+			<div class="mt-1 font-sans text-base font-normal text-muted">{location}</div>
+		</div>
+	</div>
 
 	<!-- Rating row -->
 	<div class="flex flex-wrap items-center gap-3 border-b border-ink/14 pb-5">

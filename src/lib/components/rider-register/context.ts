@@ -18,6 +18,8 @@ export type RiderFormData = {
 	availabilityDays: number[];
 	availabilitySlots: string[];
 	budgetRanges: string[];
+	photoFile: File | null;
+	existingPhotoUrl: string | null;
 };
 
 export type RiderRegisterCtx = {

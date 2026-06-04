@@ -23,6 +23,8 @@ export type ProfFormData = {
 	contactVisibility: ContactVisibility;
 	responseTime: ResponseTime | '';
 	gallery: File[];
+	photoFile: File | null;
+	existingPhotoUrl: string | null;
 };
 
 export type ProfRegisterCtx = {

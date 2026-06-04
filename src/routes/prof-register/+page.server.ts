@@ -1,7 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { profProfiles, profSports, profCertifications, profSpots, profPrices, profPhotos } from '$lib/server/db/schema';
-import { galleryKey, galleryUrl, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { profProfiles, profSports, profCertifications, profSpots, profPrices, profPhotos, users } from '$lib/server/db/schema';
+import { galleryKey, galleryUrl, profilePhotoKey, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -119,6 +119,15 @@ export const actions: Actions = {
 		const bucket = event.platform?.env?.windprof_bucket;
 		const publicUrl = env.BUCKET_PUBLIC_URL;
 		if (bucket && publicUrl) {
+			const profilePhoto = form.get('profilePhoto') as File | null;
+			if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
+				const key = profilePhotoKey(userId, profilePhoto.type);
+				await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
+				const photoUrl = galleryUrl(publicUrl, key);
+				await event.locals.db.update(profProfiles).set({ photoUrl }).where(eq(profProfiles.id, profileId));
+				await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, userId));
+			}
+
 			const files = form.getAll('gallery') as File[];
 			const validFiles = files
 				.filter((f) => f instanceof File && isAllowedImageType(f.type) && isValidSize(f.size))
