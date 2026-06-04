@@ -8,7 +8,8 @@
 		reviewCount,
 		sports,
 		price,
-		certifications
+		certifications,
+		photoUrl = null
 	}: {
 		id: string;
 		name: string;
@@ -19,6 +20,7 @@
 		sports: string[];
 		price: number;
 		certifications: string[];
+		photoUrl?: string | null;
 	} = $props();
 </script>
 
@@ -26,7 +28,10 @@
 	<article
 		class="flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm"
 	>
-		<div class="item-bg relative flex h-60">
+		<div class="item-bg relative flex h-60 overflow-hidden">
+			{#if photoUrl}
+				<img src={photoUrl} alt={name} class="absolute inset-0 h-full w-full object-cover" />
+			{/if}
 			{#if isVerified}
 				<span
 					class="absolute top-4 left-4 rounded-sm bg-ink px-2 py-1 font-mono text-micro font-bold tracking-wider text-white"
@@ -55,7 +60,7 @@
 					>
 				</div>
 				<div class="mb-4 flex flex-wrap gap-1.5">
-					{#each sports as sport}
+					{#each sports as sport (sport)}
 						<span
 							class="rounded border border-line bg-bg-card px-2 py-1 font-mono text-label font-semibold tracking-wider text-ink uppercase"
 						>

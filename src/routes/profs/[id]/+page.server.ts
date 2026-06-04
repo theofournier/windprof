@@ -70,6 +70,9 @@ export const load: PageServerLoad = async (event) => {
 				duration: pr.duration ?? '',
 				price: `${pr.priceEur}€`
 			})),
+			photos: p.photos
+				.sort((a, b) => a.displayOrder - b.displayOrder)
+				.map((ph) => ({ url: ph.url })),
 			spots: p.spots.map((s) => ({ name: s.name, isPrimary: s.isPrimary })),
 			reviews: p.reviews.map((r) => ({
 				name: r.riderName ?? 'Anonyme',

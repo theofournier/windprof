@@ -29,6 +29,8 @@ export const mapProfItem = (prof: ProfWithRelations) => {
         )
         : [];
 
+    const firstPhoto = prof.photos.sort((a, b) => a.displayOrder - b.displayOrder)[0]?.url ?? null;
+
     return {
         id: prof.id,
         name: `${prof.firstName} ${prof.lastName}`,
@@ -42,6 +44,7 @@ export const mapProfItem = (prof: ProfWithRelations) => {
         certifications: prof.certifications.map((c) => c.type),
         acceptedLevels,
         equipmentProvided: prof.equipmentProvided,
-        languages
+        languages,
+        photoUrl: firstPhoto
     };
 };

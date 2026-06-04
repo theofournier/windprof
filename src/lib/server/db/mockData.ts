@@ -1,4 +1,4 @@
-import type { ProfCertification, ProfPrice, ProfProfile, ProfSport, ProfSpot, Review } from "./schema";
+import type { ProfCertification, ProfPhoto, ProfPrice, ProfProfile, ProfSport, ProfSpot, Review } from "./schema";
 import type { ProfWithRelations } from "./relations.schema";
 
 const now = new Date("2025-01-01T00:00:00.000Z");
@@ -430,13 +430,30 @@ const reviews: Review[] = [
     { id: "r18", profId: "14", riderId: null, riderName: "Margot V.", riderLevel: "all", rating: 5, body: "Amandine est formidable, j'ai adoré mes cours à Hyères. Le spot est magnifique !", createdAt: now },
 ];
 
+const photos: ProfPhoto[] = [
+    // Jean Dupont (kitesurf / windsurf) — 4 photos, triggers "+2 PHOTOS" overlay
+    { id: "ph1", profId: "1", key: "profs/1/gallery/ph1.jpg", url: "https://images.unsplash.com/photo-1768639400733-45d6cead226a?w=1200&q=80&auto=format&fit=crop", displayOrder: 0, createdAt: now },
+    { id: "ph2", profId: "1", key: "profs/1/gallery/ph2.jpg", url: "https://images.unsplash.com/photo-1601144378611-48eb4755a8c8?w=1200&q=80&auto=format&fit=crop", displayOrder: 1, createdAt: now },
+    { id: "ph3", profId: "1", key: "profs/1/gallery/ph3.jpg", url: "https://images.unsplash.com/photo-1691156803402-4c55c9cb6bea?w=1200&q=80&auto=format&fit=crop", displayOrder: 2, createdAt: now },
+    { id: "ph4", profId: "1", key: "profs/1/gallery/ph4.jpg", url: "https://images.unsplash.com/photo-1733757276564-8762b8d63498?w=1200&q=80&auto=format&fit=crop", displayOrder: 3, createdAt: now },
+    // Sophie Durand (kitesurf / windsurf) — 2 photos
+    { id: "ph5", profId: "4", key: "profs/4/gallery/ph5.jpg", url: "https://images.unsplash.com/photo-1710161158760-9274dca99c26?w=1200&q=80&auto=format&fit=crop", displayOrder: 0, createdAt: now },
+    { id: "ph6", profId: "4", key: "profs/4/gallery/ph6.jpg", url: "https://images.unsplash.com/photo-1731969114548-9d8140e7dca3?w=1200&q=80&auto=format&fit=crop", displayOrder: 1, createdAt: now },
+    // Antoine Lefebvre (windsurf) — 3 photos
+    { id: "ph7", profId: "7", key: "profs/7/gallery/ph7.jpg", url: "https://images.unsplash.com/photo-1731969114548-9d8140e7dca3?w=1200&q=80&auto=format&fit=crop", displayOrder: 0, createdAt: now },
+    { id: "ph8", profId: "7", key: "profs/7/gallery/ph8.jpg", url: "https://images.unsplash.com/photo-1710161158760-9274dca99c26?w=1200&q=80&auto=format&fit=crop", displayOrder: 1, createdAt: now },
+    { id: "ph9", profId: "7", key: "profs/7/gallery/ph9.jpg", url: "https://images.unsplash.com/photo-1601144378611-48eb4755a8c8?w=1200&q=80&auto=format&fit=crop", displayOrder: 2, createdAt: now },
+
+    { id: "ph10", profId: "2", key: "profs/2/gallery/ph10.jpg", url: "https://images.unsplash.com/photo-1601144378611-48eb4755a8c8?w=1200&q=80&auto=format&fit=crop", displayOrder: 0, createdAt: now },
+];
+
 const buildProfWithRelations = (profile: ProfProfile): ProfWithRelations => ({
     ...profile,
     sports: sports.filter((s) => s.profId === profile.id),
     spots: spots.filter((s) => s.profId === profile.id),
     prices: prices.filter((p) => p.profId === profile.id),
     certifications: certifications.filter((c) => c.profId === profile.id),
-    photos: [],
+    photos: photos.filter((ph) => ph.profId === profile.id),
     reviews: reviews.filter((r) => r.profId === profile.id),
 });
 

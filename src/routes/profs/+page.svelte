@@ -22,7 +22,9 @@
 	const p0 = page.url.searchParams;
 	const singleSport = p0.get('sport');
 	let location = $state(p0.get('location') ?? '');
-	let sports = $state<string[]>(p0.getAll('sports').length > 0 ? p0.getAll('sports') : singleSport ? [singleSport] : []);
+	let sports = $state<string[]>(
+		p0.getAll('sports').length > 0 ? p0.getAll('sports') : singleSport ? [singleSport] : []
+	);
 	let levels = $state<string[]>(p0.getAll('levels'));
 	let sort = $state(p0.get('sort') ?? 'stars');
 	let priceMin = $state(Number(p0.get('priceMin') ?? PRICE_RANGE_MIN));
@@ -195,6 +197,7 @@
 							sports={prof.sports}
 							price={prof.price}
 							certifications={prof.certifications}
+							photoUrl={prof.photoUrl}
 						/>
 					{/each}
 				</div>

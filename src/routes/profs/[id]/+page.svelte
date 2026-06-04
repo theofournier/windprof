@@ -23,7 +23,7 @@
 <section
 	class="mx-auto grid max-w-360 grid-cols-1 gap-8 px-4 pt-7 pb-12 sm:px-8 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:px-14"
 >
-	<ProfGallery name={prof.name} />
+	<ProfGallery photos={prof.photos} />
 	<ProfHero
 		name={prof.name}
 		{location}
