@@ -1,7 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { riderProfiles, ridersports, riderSpots, users } from '$lib/server/db/schema';
-import { profilePhotoKey, galleryUrl, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { profilePhotoKey, bucketPublicUrl, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -72,7 +72,7 @@ export const actions: Actions = {
 			if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
 				const key = profilePhotoKey(userId, profilePhoto.type);
 				await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
-				const photoUrl = galleryUrl(publicUrl, key);
+				const photoUrl = bucketPublicUrl(publicUrl, key);
 				await event.locals.db.update(riderProfiles).set({ photoUrl }).where(eq(riderProfiles.id, profileId));
 				await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, userId));
 			}

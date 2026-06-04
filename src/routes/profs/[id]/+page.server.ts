@@ -71,9 +71,11 @@ export const load: PageServerLoad = async (event) => {
 			email: p.contactEmail ?? '',
 			sports: p.sports.map((d) => d.sport),
 			levels,
-			certifications: p.certifications.map((c) => ({
+			certifications: p.certifications
+			.filter((c) => c.status !== 'rejected')
+			.map((c) => ({
 				name: c.type,
-				year: c.year?.toString() ?? ''
+				isVerified: c.status === 'verified'
 			})),
 			prices: p.prices.map((pr) => ({
 				label: pr.description,

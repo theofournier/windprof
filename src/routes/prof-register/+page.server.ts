@@ -1,7 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { profProfiles, profSports, profCertifications, profSpots, profPrices, profPhotos, users } from '$lib/server/db/schema';
-import { galleryKey, galleryUrl, profilePhotoKey, uploadPhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { galleryKey, bucketPublicUrl, profilePhotoKey, certFileKey, uploadPhoto, isAllowedImageType, isAllowedCertType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -79,16 +79,35 @@ export const actions: Actions = {
 			);
 		}
 
+		const bucket = event.platform?.env?.windprof_bucket;
+		const publicUrl = env.BUCKET_PUBLIC_URL;
+
 		if (data.certifications?.length) {
-			await event.locals.db.insert(profCertifications).values(
-				data.certifications.map((c: any) => ({
-					id: crypto.randomUUID(),
-					profId: profileId,
-					type: c.type,
-					year: c.year || null,
-					status: 'pending' as const,
-				}))
+			const certRecords = await Promise.all(
+				data.certifications.map(async (c: any, i: number) => {
+					let fileName: string | null = null;
+					let fileUrl: string | null = null;
+					if (bucket && publicUrl) {
+						const file = form.get(`certFile_${i}`) as File | null;
+						if (file && file.size > 0 && isAllowedCertType(file.type) && isValidSize(file.size)) {
+							const key = certFileKey(profileId, i, file.type);
+							await uploadPhoto(bucket, key, file, file.type);
+							fileName = file.name;
+							fileUrl = bucketPublicUrl(publicUrl, key);
+						}
+					}
+					return {
+						id: crypto.randomUUID(),
+						profId: profileId,
+						type: c.type,
+						year: c.year || null,
+						fileName,
+						fileUrl,
+						status: 'pending' as const,
+					};
+				})
 			);
+			await event.locals.db.insert(profCertifications).values(certRecords);
 		}
 
 		if (data.spots?.length) {
@@ -116,14 +135,12 @@ export const actions: Actions = {
 			);
 		}
 
-		const bucket = event.platform?.env?.windprof_bucket;
-		const publicUrl = env.BUCKET_PUBLIC_URL;
 		if (bucket && publicUrl) {
 			const profilePhoto = form.get('profilePhoto') as File | null;
 			if (profilePhoto && profilePhoto.size > 0 && isAllowedImageType(profilePhoto.type) && isValidSize(profilePhoto.size)) {
 				const key = profilePhotoKey(userId, profilePhoto.type);
 				await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
-				const photoUrl = galleryUrl(publicUrl, key);
+				const photoUrl = bucketPublicUrl(publicUrl, key);
 				await event.locals.db.update(profProfiles).set({ photoUrl }).where(eq(profProfiles.id, profileId));
 				await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, userId));
 			}
@@ -142,7 +159,7 @@ export const actions: Actions = {
 							id: crypto.randomUUID(),
 							profId: profileId,
 							key,
-							url: galleryUrl(publicUrl, key),
+							url: bucketPublicUrl(publicUrl, key),
 							displayOrder: i,
 						};
 					})

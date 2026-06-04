@@ -10,7 +10,7 @@ export type ProfFormData = {
 	bio: string;
 	languages: string[];
 	sports: Array<{ sport: ProfSport; acceptedLevels: string[] }>;
-	certifications: Array<{ type: string; year: string }>;
+	certifications: Array<{ type: string; year: string; file: File | null; fileName?: string | null; fileUrl?: string | null; status?: 'pending' | 'verified' | 'rejected' | null }>;
 	city: string;
 	region: string;
 	spots: Array<{ name: string; isPrimary: boolean }>;

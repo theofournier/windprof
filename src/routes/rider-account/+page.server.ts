@@ -1,7 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { riderProfiles, ridersports, riderSpots, users } from '$lib/server/db/schema';
-import { profilePhotoKey, galleryUrl, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { profilePhotoKey, bucketPublicUrl, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -98,7 +98,7 @@ export const actions: Actions = {
 					}
 					const key = profilePhotoKey(event.locals.user.id, profilePhoto.type);
 					await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
-					const photoUrl = galleryUrl(publicUrl, key);
+					const photoUrl = bucketPublicUrl(publicUrl, key);
 					await event.locals.db.update(riderProfiles).set({ photoUrl }).where(eq(riderProfiles.id, riderId));
 					await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, event.locals.user.id));
 				}

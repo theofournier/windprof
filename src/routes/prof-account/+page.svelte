@@ -23,7 +23,7 @@
 				bio: data.profile.bio ?? '',
 				languages: (data.profile.languages as string[]) ?? [],
 				sports: data.sports as ProfFormData['sports'],
-				certifications: data.certifications as ProfFormData['certifications'],
+				certifications: data.certifications.map((c) => ({ ...c, file: null, fileName: c.fileName ?? null, fileUrl: c.fileUrl ?? null, status: c.status ?? null })) as ProfFormData['certifications'],
 				city: data.profile.city ?? '',
 				region: data.profile.region ?? '',
 				spots: data.spots as ProfFormData['spots'],
@@ -112,9 +112,6 @@
 				sectionErrors.sports = 'Sélectionne au moins une discipline';
 			else if (formData.sports.some((s) => s.acceptedLevels.length === 0))
 				sectionErrors.sportsLevels = 'Sélectionne au moins un niveau pour chaque discipline';
-		} else if (id === 'certifications') {
-			if (formData.certifications.length === 0)
-				sectionErrors.certifications = 'Ajoute au moins un diplôme';
 		} else if (id === 'spots') {
 			if (!formData.city.trim()) sectionErrors.city = 'La ville est requise';
 			if (formData.spots.length === 0) sectionErrors.spots = 'Ajoute au moins un spot';
@@ -192,6 +189,38 @@
 				savingSection = null;
 				if (result.type === 'success') {
 					savedSection = 'identite';
+					setTimeout(() => {
+						savedSection = null;
+					}, 2500);
+				} else {
+					await update({ reset: false });
+				}
+			};
+		};
+	}
+
+	function makeCertsEnhance() {
+		return ({ formData: fd, cancel }: { formData: FormData; cancel: () => void }) => {
+			if (savingSection !== null) {
+				cancel();
+				return;
+			}
+			fd.set('section', 'certifications');
+			fd.set('formData', JSON.stringify(formData));
+			formData.certifications.forEach((cert, i) => {
+				if (cert.file) fd.append(`certFile_${i}`, cert.file);
+			});
+			savingSection = 'certifications';
+			return async ({
+				result,
+				update
+			}: {
+				result: { type: string };
+				update: (opts?: { reset?: boolean }) => Promise<void>;
+			}) => {
+				savingSection = null;
+				if (result.type === 'success') {
+					savedSection = 'certifications';
 					setTimeout(() => {
 						savedSection = null;
 					}, 2500);
@@ -399,6 +428,42 @@
 									</button>
 								</div>
 							</form>
+						{:else if s.id === 'certifications'}
+							<form
+								method="POST"
+								action="?/update"
+								enctype="multipart/form-data"
+								use:enhance={makeCertsEnhance()}
+							>
+								<StepCerts />
+
+								{#if (form as any)?.section === 'certifications' && (form as any)?.error}
+									<div
+										class="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[14px] text-red-700"
+									>
+										{(form as any).error}
+									</div>
+								{/if}
+
+								<div class="mt-8 flex items-center justify-between border-b border-line pb-5">
+									{#if savedSection === 'certifications'}
+										<span
+											class="font-mono text-label font-semibold tracking-widest text-green-600 uppercase"
+										>
+											✓ Modifications sauvegardées
+										</span>
+									{:else}
+										<span></span>
+									{/if}
+									<button
+										type="submit"
+										disabled={savingSection !== null}
+										class="inline-flex cursor-pointer items-center gap-2.5 rounded-md bg-ink px-6 py-3 font-display text-[13.5px] font-bold tracking-wide text-white uppercase hover:opacity-85 disabled:opacity-50"
+									>
+										{savingSection === 'certifications' ? 'Sauvegarde…' : 'Enregistrer'}
+									</button>
+								</div>
+							</form>
 						{:else}
 							<form method="POST" action="?/update" use:enhance={makeEnhance(s.id)}>
 								<input type="hidden" name="section" value={s.id} />
@@ -406,8 +471,6 @@
 
 								{#if s.id === 'disciplines'}
 									<StepDisciplines />
-								{:else if s.id === 'certifications'}
-									<StepCerts />
 								{:else if s.id === 'spots'}
 									<StepSpots />
 								{:else if s.id === 'tarifs'}

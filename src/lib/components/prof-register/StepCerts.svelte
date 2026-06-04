@@ -5,23 +5,33 @@
 
 	const CERT_TYPES = [
 		'BPJEPS · Glisses Aérotractées',
-		'DE · Diplôme d\'État',
+		"DE · Diplôme d'État",
 		'IKO — Level 1/2/3',
 		'VDWS · Wind/Kitesurf',
 		'Autre'
 	];
 
 	let newType = $state(CERT_TYPES[0]);
+	let newCustomType = $state('');
 	let newYear = $state('');
+	let newFile: File | null = $state(null);
 
 	function addCert() {
-		if (!newType) return;
-		ctx.data.certifications.push({ type: newType, year: newYear.trim() });
+		const resolvedType = newType === 'Autre' ? newCustomType.trim() : newType;
+		if (!resolvedType) return;
+		ctx.data.certifications.push({ type: resolvedType, year: newYear.trim(), file: newFile });
 		newYear = '';
+		newFile = null;
+		newCustomType = '';
 	}
 
 	function removeCert(idx: number) {
 		ctx.data.certifications.splice(idx, 1);
+	}
+
+	function onFileChange(e: Event) {
+		const input = e.currentTarget as HTMLInputElement;
+		newFile = input.files?.[0] ?? null;
 	}
 </script>
 
@@ -49,16 +59,44 @@
 									OBTENU EN {cert.year}
 								</div>
 							{/if}
+							{#if cert.fileUrl}
+								<a
+									href={cert.fileUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="mt-0.5 inline-block font-mono text-label tracking-wide text-accent underline"
+								>
+									📎 {cert.fileName ?? cert.file?.name ?? 'Justificatif'}
+								</a>
+							{:else if cert.file}
+								<div class="mt-0.5 font-mono text-label tracking-wide text-muted">
+									📎 {cert.file.name}
+								</div>
+							{/if}
 						</div>
-						<span
-							class="inline-flex items-center gap-1.5 rounded-[4px] bg-accent-soft px-2.5 py-1 font-mono text-label font-semibold tracking-[0.04em] text-ink uppercase"
-						>
-							⏱ EN ATTENTE 48H
-						</span>
+						{#if cert.status === 'verified'}
+							<span
+								class="inline-flex items-center gap-1.5 rounded-[4px] bg-accent px-2.5 py-1 font-mono text-label font-semibold tracking-[0.04em] text-white uppercase"
+							>
+								✓ VÉRIFIÉ
+							</span>
+						{:else if cert.status === 'rejected'}
+							<span
+								class="inline-flex items-center gap-1.5 rounded-[4px] bg-red-100 px-2.5 py-1 font-mono text-label font-semibold tracking-[0.04em] text-red-700 uppercase"
+							>
+								✕ REFUSÉ
+							</span>
+						{:else}
+							<span
+								class="inline-flex items-center gap-1.5 rounded-[4px] bg-accent-soft px-2.5 py-1 font-mono text-label font-semibold tracking-[0.04em] text-ink uppercase"
+							>
+								⏱ EN ATTENTE
+							</span>
+						{/if}
 						<button
 							type="button"
 							onclick={() => removeCert(i)}
-							class="cursor-pointer font-mono text-label tracking-loose text-muted underline uppercase"
+							class="cursor-pointer font-mono text-label tracking-loose text-muted uppercase underline"
 						>
 							Retirer
 						</button>
@@ -73,9 +111,6 @@
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 			↳ AJOUTER UN DIPLÔME
 		</div>
-		{#if ctx.errors.certifications}
-			<p class="mb-3 font-mono text-label text-red-500">{ctx.errors.certifications}</p>
-		{/if}
 		<div class="mb-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
 			<div>
 				<label
@@ -87,7 +122,7 @@
 				<select
 					id="cert-type"
 					bind:value={newType}
-					class="w-full appearance-none rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full appearance-none rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 					style="background-image: linear-gradient(45deg, transparent 50%, #6F7785 50%), linear-gradient(135deg, #6F7785 50%, transparent 50%); background-position: calc(100% - 18px) 18px, calc(100% - 13px) 18px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 38px;"
 				>
 					{#each CERT_TYPES as t (t)}
@@ -107,7 +142,43 @@
 					type="text"
 					placeholder="2022"
 					bind:value={newYear}
-					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+				/>
+			</div>
+
+			{#if newType === 'Autre'}
+				<div class="sm:col-span-2">
+					<label
+						for="cert-custom"
+						class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase"
+					>
+						↳ NOM DU DIPLÔME
+					</label>
+					<input
+						id="cert-custom"
+						type="text"
+						placeholder="Ex : Brevet National de Sécurité et de Sauvetage Aquatique"
+						bind:value={newCustomType}
+						class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink transition-all outline-none focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
+					/>
+				</div>
+			{/if}
+
+			<div class="sm:col-span-2">
+				<label
+					for="cert-file"
+					class="mb-2.5 block font-mono text-label font-semibold tracking-widest text-accent uppercase"
+				>
+					↳ JUSTIFICATIF <span class="font-sans font-normal tracking-normal text-muted normal-case"
+						>(optionnel — PDF ou image)</span
+					>
+				</label>
+				<input
+					id="cert-file"
+					type="file"
+					accept=".pdf,image/jpeg,image/png,image/webp"
+					onchange={onFileChange}
+					class="w-full rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14px] text-ink transition-all outline-none file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-bg-dark file:px-3 file:py-1 file:font-mono file:text-label file:font-semibold file:uppercase focus:border-ink"
 				/>
 			</div>
 		</div>
@@ -137,8 +208,10 @@
 					Vérification manuelle · 48h ouvrées
 				</div>
 				<div class="text-body-sm leading-relaxed text-white/80">
-					Notre équipe contrôle chaque diplôme à la main. Tu reçois un mail dès l'activation du badge
-					<b class="text-white">✓ Vérifié</b>. En attendant, ton profil reste visible mais sans badge.
+					Notre équipe contrôle chaque diplôme à la main. Tu reçois un mail dès l'activation du
+					badge
+					<b class="text-white">✓ Vérifié</b>. En attendant, ton profil reste visible mais sans
+					badge.
 				</div>
 			</div>
 		</div>

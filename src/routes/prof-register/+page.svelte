@@ -55,9 +55,6 @@
 			if (formData.sports.length === 0) stepErrors.sports = 'Sélectionne au moins une discipline';
 			else if (formData.sports.some((s) => s.acceptedLevels.length === 0))
 				stepErrors.sportsLevels = 'Sélectionne au moins un niveau pour chaque discipline';
-		} else if (step === 2) {
-			if (formData.certifications.length === 0)
-				stepErrors.certifications = 'Ajoute au moins un diplôme';
 		} else if (step === 3) {
 			if (!formData.city.trim()) stepErrors.city = 'La ville est requise';
 			if (formData.spots.length === 0) stepErrors.spots = 'Ajoute au moins un spot';
@@ -183,6 +180,9 @@
 					for (const file of formData.gallery) {
 						fd.append('gallery', file);
 					}
+					formData.certifications.forEach((cert, i) => {
+						if (cert.file) fd.append(`certFile_${i}`, cert.file);
+					});
 					return async ({ result, update }) => {
 						if (result.type === 'redirect') submitted = true;
 						await update();

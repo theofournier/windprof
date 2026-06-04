@@ -9,7 +9,7 @@ import {
 	profPhotos,
 	users
 } from '$lib/server/db/schema';
-import { galleryKey, galleryUrl, profilePhotoKey, uploadPhoto, deletePhoto, isAllowedImageType, isValidSize } from '$lib/server/r2';
+import { galleryKey, bucketPublicUrl, profilePhotoKey, certFileKey, uploadPhoto, deletePhoto, isAllowedImageType, isAllowedCertType, isValidSize } from '$lib/server/r2';
 import { env } from '$env/dynamic/private';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -64,7 +64,10 @@ export const load: PageServerLoad = async (event) => {
 		})),
 		certifications: certifications.map((c) => ({
 			type: c.type,
-			year: c.year?.toString() ?? ''
+			year: c.year?.toString() ?? '',
+			fileName: c.fileName ?? null,
+			fileUrl: c.fileUrl ?? null,
+			status: c.status
 		})),
 		spots: spots.map((s) => ({
 			name: s.name,
@@ -129,7 +132,7 @@ export const actions: Actions = {
 					}
 					const key = profilePhotoKey(event.locals.user.id, profilePhoto.type);
 					await uploadPhoto(bucket, key, profilePhoto, profilePhoto.type);
-					const photoUrl = galleryUrl(publicUrl, key);
+					const photoUrl = bucketPublicUrl(publicUrl, key);
 					await event.locals.db.update(profProfiles).set({ photoUrl }).where(eq(profProfiles.id, profId));
 					await event.locals.db.update(users).set({ image: photoUrl }).where(eq(users.id, event.locals.user.id));
 				}
@@ -147,17 +150,43 @@ export const actions: Actions = {
 				);
 			}
 		} else if (section === 'certifications') {
+			const existing = await event.locals.db
+				.select()
+				.from(profCertifications)
+				.where(eq(profCertifications.profId, profId))
+				.all();
+			const existingByType = new Map(existing.map((c) => [c.type, c]));
+
 			await event.locals.db.delete(profCertifications).where(eq(profCertifications.profId, profId));
 			if (data.certifications?.length) {
-				await event.locals.db.insert(profCertifications).values(
-					data.certifications.map((c: any) => ({
-						id: crypto.randomUUID(),
-						profId,
-						type: c.type,
-						year: c.year ? parseInt(c.year) : null,
-						status: 'pending' as const
-					}))
+				const bucket = event.platform?.env?.windprof_bucket;
+				const publicUrl = env.BUCKET_PUBLIC_URL;
+				const certRecords = await Promise.all(
+					data.certifications.map(async (c: any, i: number) => {
+						const prev = existingByType.get(c.type);
+						let fileName: string | null = prev?.fileName ?? null;
+						let fileUrl: string | null = prev?.fileUrl ?? null;
+						if (bucket && publicUrl) {
+							const file = form.get(`certFile_${i}`) as File | null;
+							if (file && file.size > 0 && isAllowedCertType(file.type) && isValidSize(file.size)) {
+								const key = certFileKey(profId, i, file.type);
+								await uploadPhoto(bucket, key, file, file.type);
+								fileName = file.name;
+								fileUrl = bucketPublicUrl(publicUrl, key);
+							}
+						}
+						return {
+							id: crypto.randomUUID(),
+							profId,
+							type: c.type,
+							year: c.year ? parseInt(c.year) : null,
+							fileName,
+							fileUrl,
+							status: (prev?.status ?? 'pending') as 'pending' | 'verified' | 'rejected'
+						};
+					})
 				);
+				await event.locals.db.insert(profCertifications).values(certRecords);
 			}
 		} else if (section === 'spots') {
 			if (!data.city?.trim()) {
@@ -265,7 +294,7 @@ export const actions: Actions = {
 							id: crypto.randomUUID(),
 							profId,
 							key,
-							url: galleryUrl(publicUrl, key),
+							url: bucketPublicUrl(publicUrl, key),
 							displayOrder: currentCount + i,
 						};
 					})
