@@ -3,11 +3,18 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Navbar from '$lib/components/navbar/Navbar.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
+	import { page } from '$app/state';
 
 	let { children, data } = $props();
+
+	let isAdmin = $derived(page.url.pathname.startsWith('/admin'));
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-<Navbar user={data.user} />
+{#if !isAdmin}
+	<Navbar user={data.user} />
+{/if}
 {@render children()}
-<Footer />
+{#if !isAdmin}
+	<Footer />
+{/if}
