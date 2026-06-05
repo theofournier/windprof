@@ -16,6 +16,7 @@
 
 	let loggedIn = $derived(user !== null);
 	let isProf = $derived(user?.type === 'prof');
+	let isAdmin = $derived(user?.role === 'admin');
 	let initials = $derived(user?.name.trim().slice(0, 1).toUpperCase() ?? '?');
 
 	async function signOut() {
@@ -135,6 +136,17 @@
 								Paramètres
 							</a>
 
+							{#if isAdmin}
+								<hr class="border-line" />
+								<a
+									href="/admin"
+									onclick={() => (dropdownOpen = false)}
+									class="block px-4 py-2.5 font-display text-sm font-semibold text-accent uppercase hover:bg-ink/5"
+								>
+									Admin
+								</a>
+							{/if}
+
 							<!-- Sign out -->
 							<button
 								onclick={signOut}
@@ -195,6 +207,15 @@
 					>
 						Paramètres
 					</a>
+					{#if isAdmin}
+						<a
+							href="/admin"
+							onclick={() => (menuOpen = false)}
+							class="mt-2 block rounded-md border border-accent/40 bg-white px-4 py-2.5 text-center font-display text-sm font-semibold text-accent uppercase hover:bg-accent/5"
+						>
+							Admin
+						</a>
+					{/if}
 					<button
 						onclick={signOut}
 						class="mt-3 w-full cursor-pointer rounded-md bg-red-500 px-4 py-3 text-center font-display text-sm font-bold text-white uppercase"

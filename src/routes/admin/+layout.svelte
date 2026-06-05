@@ -30,7 +30,10 @@
 	<!-- Sidebar -->
 	<aside class="sticky top-0 flex h-screen w-58 shrink-0 flex-col bg-ink text-white">
 		<!-- Logo -->
-		<div class="mb-1.5 flex items-center gap-2.25 border-b border-white/6 px-5.5 pt-5 pb-4.5">
+		<a
+			href="/admin"
+			class="mb-1.5 flex items-center gap-2.25 border-b border-white/6 px-5.5 pt-5 pb-4.5"
+		>
 			<img src={logo} alt="Windprof" width="22" height="22" />
 			<span class="font-display text-[17px] font-black tracking-[-0.04em] text-white uppercase">
 				Windprof
@@ -40,7 +43,7 @@
 			>
 				ADM
 			</span>
-		</div>
+		</a>
 
 		<!-- Nav -->
 		<nav class="flex-1">
@@ -102,8 +105,8 @@
 					</div>
 				</div>
 				<a
-					href="/logout"
-					title="Déconnexion"
+					href="/"
+					title="To home"
 					class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded border border-line bg-white text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
 				>
 					<svg width="13" height="13" viewBox="0 0 16 16" fill="none">

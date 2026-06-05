@@ -17,6 +17,7 @@ export const load: PageServerLoad = async (event) => {
 	const p = await event.locals.db.query.profProfiles.findFirst({
 		where: eq(profProfiles.id, event.params.id),
 		with: {
+			user: { columns: { banned: true, banExpires: true } },
 			sports: true,
 			spots: true,
 			prices: true,
@@ -28,7 +29,8 @@ export const load: PageServerLoad = async (event) => {
 		},
 	});
 
-	if (!p || !p.isPublished) {
+	const isBanned = p?.user?.banned && (!p.user.banExpires || p.user.banExpires > new Date());
+	if (!p || !p.isPublished || isBanned) {
 		error(404, 'Prof not found');
 	}
 

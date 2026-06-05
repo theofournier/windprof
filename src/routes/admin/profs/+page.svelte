@@ -71,6 +71,10 @@
 	]);
 </script>
 
+<svelte:head>
+	<title>Profs - Admin - Windprof</title>
+</svelte:head>
+
 <div class="mb-5.5 flex items-end justify-between">
 	<div>
 		<div class="mb-2 font-mono text-label font-bold tracking-widest text-accent uppercase">

@@ -13,9 +13,11 @@ const SKIP_PROFILE_CHECK = [
 ];
 
 export const load: LayoutServerLoad = async (event) => {
-    const profs = await event.locals.db.query.profProfiles.findMany({
+    const now = new Date();
+    const allProfs = await event.locals.db.query.profProfiles.findMany({
         where: eq(profProfiles.isPublished, true),
         with: {
+            user: { columns: { banned: true, banExpires: true } },
             sports: true,
             spots: true,
             prices: true,
@@ -26,6 +28,9 @@ export const load: LayoutServerLoad = async (event) => {
             reviews: true,
         },
     });
+    const profs = allProfs
+        .filter(p => !p.user?.banned || (p.user.banExpires !== null && p.user.banExpires <= now))
+        .map(({ user: _user, ...rest }) => rest);
     const user = event.locals.user ?? null;
 
     if (user) {

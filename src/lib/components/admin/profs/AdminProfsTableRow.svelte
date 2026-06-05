@@ -167,10 +167,20 @@
 	<td class={tdBase}>
 		<div class="flex justify-end gap-1">
 			<a
-				href="/profs/{prof.id}"
+				href="/admin/profs/{prof.id}"
 				title="Voir la fiche publique"
 				class="inline-flex h-7 w-7 items-center justify-center rounded border border-line bg-white text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
 			>
+				<svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+					<path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+				</svg>
+			</a>
+			<a
+				href="/profs/{prof.id}"
+				title="Voir la fiche publique"
+				class="inline-flex h-7 items-center justify-center rounded border border-line bg-white px-2 text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
+			>
+				Public
 				<svg width="12" height="12" viewBox="0 0 16 16" fill="none">
 					<path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
 				</svg>
