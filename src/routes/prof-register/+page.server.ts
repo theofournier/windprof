@@ -51,6 +51,7 @@ export const actions: Actions = {
 		await event.locals.db.insert(profProfiles).values({
 			id: profileId,
 			userId,
+			isPublished: true,
 			firstName: data.firstName.trim(),
 			lastName: data.lastName.trim(),
 			bio: data.bio?.trim() || null,

@@ -56,7 +56,8 @@ export const load: PageServerLoad = async (event) => {
 		profile: {
 			...profile,
 			languages: profile.languages ? (JSON.parse(profile.languages) as string[]) : [],
-			websites: profile.websites ? (JSON.parse(profile.websites) as string[]) : []
+			websites: profile.websites ? (JSON.parse(profile.websites) as string[]) : [],
+			isPublished: profile.isPublished
 		},
 		sports: sports.map((s) => ({
 			sport: s.sport,
@@ -316,5 +317,24 @@ export const actions: Actions = {
 		}
 
 		return { success: true, section };
+	},
+
+	togglePublish: async (event) => {
+		if (!event.locals.user) redirect(303, '/login');
+
+		const profile = await event.locals.db
+			.select()
+			.from(profProfiles)
+			.where(eq(profProfiles.userId, event.locals.user.id))
+			.get();
+
+		if (!profile) redirect(303, '/prof-register');
+
+		await event.locals.db
+			.update(profProfiles)
+			.set({ isPublished: !profile.isPublished })
+			.where(eq(profProfiles.id, profile.id));
+
+		return { success: true, section: 'publish' };
 	}
 };

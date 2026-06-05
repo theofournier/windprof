@@ -10,6 +10,7 @@
 	import StepPrices from '$lib/components/prof-register/StepPrices.svelte';
 	import StepContact from '$lib/components/prof-register/StepContact.svelte';
 	import StepGallery, { type GalleryState } from '$lib/components/prof-register/StepGallery.svelte';
+	import PublishToggle from '$lib/components/prof-account/PublishToggle.svelte';
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -23,7 +24,13 @@
 				bio: data.profile.bio ?? '',
 				languages: (data.profile.languages as string[]) ?? [],
 				sports: data.sports as ProfFormData['sports'],
-				certifications: data.certifications.map((c) => ({ ...c, file: null, fileName: c.fileName ?? null, fileUrl: c.fileUrl ?? null, status: c.status ?? null })) as ProfFormData['certifications'],
+				certifications: data.certifications.map((c) => ({
+					...c,
+					file: null,
+					fileName: c.fileName ?? null,
+					fileUrl: c.fileUrl ?? null,
+					status: c.status ?? null
+				})) as ProfFormData['certifications'],
 				city: data.profile.city ?? '',
 				region: data.profile.region ?? '',
 				spots: data.spots as ProfFormData['spots'],
@@ -56,7 +63,8 @@
 		},
 		goTo() {},
 		next() {},
-		prev() {}
+		prev() {},
+		submitting: false
 	});
 
 	const sections = [
@@ -286,12 +294,16 @@
 				{formData.lastName}
 			</h1>
 
-			<a
-				href={resolve('/profs/[id]', { id: data.profile.id })}
-				class="font-mono text-label font-semibold tracking-widest text-muted uppercase transition-colors hover:text-ink"
-			>
-				↗ Voir ma fiche
-			</a>
+			<div class="flex items-center gap-4">
+				<PublishToggle isPublished={data.profile.isPublished} />
+
+				<a
+					href={resolve('/profs/[id]', { id: data.profile.id })}
+					class="font-mono text-label font-semibold tracking-widest text-muted uppercase transition-colors hover:text-ink"
+				>
+					↗ Voir ma fiche
+				</a>
+			</div>
 		</div>
 
 		<a
