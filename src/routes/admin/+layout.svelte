@@ -8,7 +8,8 @@
 		{ k: 'dash', n: 'Tableau de bord', path: '/admin', icon: '◉' },
 		{ k: 'profs', n: 'Moniteurs', path: '/admin/profs', icon: '⚐' },
 		{ k: 'riders', n: 'Riders', path: '/admin/riders', icon: '◈' },
-		{ k: 'users', n: 'Sans profil', path: '/admin/users', icon: '○' }
+		{ k: 'users', n: 'Sans profil', path: '/admin/users', icon: '○' },
+		{ k: 'reviews', n: 'Avis', path: '/admin/reviews', icon: '★' }
 	];
 
 	const isActive = (path: string) => {

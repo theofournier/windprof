@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { profCertifications, profProfiles } from '$lib/server/db/schema';
+import { profCertifications, profProfiles, reviews } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -118,5 +118,15 @@ export const actions: Actions = {
 		});
 
 		redirect(303, '/admin/profs');
+	},
+
+	deleteReview: async ({ request, locals }) => {
+		const data = await request.formData();
+		const reviewId = data.get('reviewId') as string;
+		if (!reviewId) return fail(400, { error: 'reviewId manquant' });
+
+		await locals.db.delete(reviews).where(eq(reviews.id, reviewId));
+
+		return { success: true };
 	}
 };

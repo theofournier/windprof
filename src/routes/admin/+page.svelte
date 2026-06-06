@@ -66,4 +66,17 @@
 			→
 		</span>
 	</a>
+	<a
+		href="/admin/reviews"
+		class="group relative flex flex-col gap-2 bg-white p-[24px_20px] text-ink no-underline transition-colors duration-100 hover:bg-[#fbf8f1]"
+	>
+		<div class="mb-1 text-[18px] opacity-50">★</div>
+		<div class="font-mono text-[10.5px] font-bold tracking-widest text-accent">AVIS</div>
+		<div class="text-body-sm leading-normal text-[#4A5260]">Gérer les avis reçus.</div>
+		<span
+			class="absolute right-5 bottom-5 text-[16px] text-accent transition-transform duration-150 group-hover:translate-x-1"
+		>
+			→
+		</span>
+	</a>
 </div>
