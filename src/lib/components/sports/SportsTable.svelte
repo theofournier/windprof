@@ -131,19 +131,6 @@
 						</td>
 					{/each}
 				</tr>
-
-				<tr>
-					<td
-						class="bg-bg p-4 align-middle font-mono text-micro font-semibold tracking-loose text-ink/55 uppercase"
-					>
-						Spots référencés
-					</td>
-					{#each sports as d}
-						<td class="bg-white p-4 align-middle">
-							<span class="font-display text-2xl">{d.spots}</span>
-						</td>
-					{/each}
-				</tr>
 			</tbody>
 		</table>
 	</div>

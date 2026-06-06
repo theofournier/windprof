@@ -5,9 +5,6 @@
 
 	let { profs, profCount }: { profs: ProfWithRelations[]; profCount: number } = $props();
 	let profItems = $derived(profs.slice(0, 4).map(mapProfItem));
-
-	const filters = ['Tous', 'Kite', 'Wing', 'Wind'];
-	let activeFilter = $state('Tous');
 </script>
 
 <section class="mx-auto max-w-360 px-5 py-10 sm:px-10 lg:px-14">
@@ -23,22 +20,6 @@
 					cette semaine.</span
 				>
 			</h2>
-		</div>
-		<!-- Filter tabs -->
-		<div
-			class="inline-flex gap-1 self-start rounded-full border border-line bg-white p-1 shadow-sm sm:self-auto"
-		>
-			{#each filters as f (f)}
-				<button
-					onclick={() => (activeFilter = f)}
-					class="rounded-full px-4 py-1.5 font-mono text-label font-semibold tracking-wider uppercase transition-colors {activeFilter ===
-					f
-						? 'bg-ink text-white'
-						: 'text-muted hover:text-ink'}"
-				>
-					{f}
-				</button>
-			{/each}
 		</div>
 	</div>
 

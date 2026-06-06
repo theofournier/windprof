@@ -4,7 +4,6 @@ export type Sport = {
 	tagline: string;
 	blurb: string;
 	moniteurs: number;
-	spots: number;
 	windMin: number;
 	windMax: number;
 	windSweet: string;
@@ -13,7 +12,6 @@ export type Sport = {
 	level: string;
 	gear: string[];
 	certifs: string[];
-	bestSpots: string[];
 	season: number[];
 	priceRange: string;
 	icon: 'kite' | 'wing' | 'wind';

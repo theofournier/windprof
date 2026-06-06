@@ -51,20 +51,14 @@
 		</div>
 
 		<!-- Stats strip -->
-		<div class="mb-8 grid grid-cols-2 overflow-hidden rounded-lg bg-ink text-white sm:grid-cols-4">
-			<div class="border-b border-white/8 p-6 sm:border-r sm:border-b-0">
+		<div class="mb-8 grid grid-cols-3 overflow-hidden rounded-lg bg-ink text-white">
+			<div class="border-r border-white/8 p-6">
 				<p class="mb-2 font-display text-[42px] leading-none text-accent-soft">
 					{sport.moniteurs}
 				</p>
 				<p class="font-mono text-micro tracking-label text-white/55 uppercase">moniteurs</p>
 			</div>
-			<div class="border-b border-l border-white/8 p-6 sm:border-r sm:border-b-0">
-				<p class="mb-2 font-display text-[42px] leading-none text-accent-soft">
-					{sport.spots}
-				</p>
-				<p class="font-mono text-micro tracking-label text-white/55 uppercase">spots</p>
-			</div>
-			<div class="border-r border-white/8 p-6 sm:border-r">
+			<div class="border-r border-white/8 p-6">
 				<p class="mb-2 font-display text-[42px] leading-none text-accent-soft">
 					{sport.windSweet}
 				</p>
@@ -78,8 +72,8 @@
 			</div>
 		</div>
 
-		<!-- Four detail columns -->
-		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		<!-- Detail columns -->
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 			<!-- Matériel -->
 			<div class="rounded-lg border border-line bg-white p-6">
 				<p class="mb-3.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
@@ -116,22 +110,6 @@
 						Diplômes contrôlés manuellement sous 48h. Badge ✓ Vérifié sur la fiche.
 					</p>
 				</div>
-			</div>
-
-			<!-- Spots phares -->
-			<div class="rounded-lg border border-line bg-white p-6">
-				<p class="mb-3.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
-					↳ Spots phares
-				</p>
-				{#each sport.bestSpots as spot, i}
-					<div
-						class="flex items-center justify-between py-2.5 text-sm {i > 0
-							? 'border-t border-line/50'
-							: ''}"
-					>
-						<span>{spot}</span>
-					</div>
-				{/each}
 			</div>
 
 			<!-- Saison + prix -->
