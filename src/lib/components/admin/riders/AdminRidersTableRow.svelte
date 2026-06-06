@@ -40,7 +40,10 @@
 <tr class="group">
 	<!-- Name -->
 	<td class="{tdBase} text-ink" class:shadow-[inset_3px_0_0_#E8724C]={isSuspended}>
-		<div class="flex items-center gap-2.5">
+		<a
+			href="/admin/riders/{rider.id}"
+			class="flex items-center gap-2.5 no-underline"
+		>
 			<div
 				class="flex h-[30px] w-[30px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-dark font-display text-[11px] font-bold text-[#4A5260]"
 			>
@@ -51,7 +54,7 @@
 				{/if}
 			</div>
 			<div>
-				<div class="flex items-center gap-1.5 text-[13px] font-semibold">
+				<div class="flex items-center gap-1.5 text-[13px] font-semibold text-ink hover:underline">
 					{rider.firstName}
 					{rider.lastName ?? ''}
 					{#if isSuspended}
@@ -64,7 +67,7 @@
 				</div>
 				<div class="mt-px font-mono text-[10px] tracking-[0.06em] text-muted">{rider.city}</div>
 			</div>
-		</div>
+		</a>
 	</td>
 
 	<!-- Email -->
@@ -135,18 +138,4 @@
 		{/if}
 	</td>
 
-	<!-- Actions -->
-	<td class={tdBase}>
-		<div class="flex justify-end gap-1">
-			<a
-				href="/admin/riders/{rider.id}"
-				title="Voir la fiche rider"
-				class="inline-flex h-7 w-7 items-center justify-center rounded border border-line bg-white text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
-			>
-				<svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-					<path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-				</svg>
-			</a>
-		</div>
-	</td>
 </tr>

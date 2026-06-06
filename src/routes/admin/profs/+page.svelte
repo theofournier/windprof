@@ -40,7 +40,7 @@
 				if (statusFilter === 'pending' && certStatus(prof) !== 'pending') return false;
 				if (statusFilter === 'not_verified' && prof.isVerified) return false;
 				if (statusFilter === 'reported' && !hasPendingReport(prof)) return false;
-			if (statusFilter === 'confirmed' && !hasConfirmedReport(prof)) return false;
+				if (statusFilter === 'confirmed' && !hasConfirmedReport(prof)) return false;
 			}
 			if (searchQuery) {
 				const q = searchQuery.toLowerCase();
@@ -93,9 +93,6 @@
 
 <div class="mb-5.5 flex items-end justify-between">
 	<div>
-		<div class="mb-2 font-mono text-label font-bold tracking-widest text-accent uppercase">
-			↳ ADMIN · MONITEURS
-		</div>
 		<h1
 			class="m-0 font-display text-[42px] leading-none font-black tracking-tight text-ink uppercase"
 		>

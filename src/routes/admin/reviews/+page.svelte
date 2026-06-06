@@ -67,7 +67,9 @@
 		},
 		{
 			lbl: '30 DERNIERS JOURS',
-			val: data.reviews.filter((r) => new Date(r.createdAt).getTime() > thirtyDaysAgo).length.toString(),
+			val: data.reviews
+				.filter((r) => new Date(r.createdAt).getTime() > thirtyDaysAgo)
+				.length.toString(),
 			delta: 'nouveaux avis récents',
 			dir: 'up'
 		}
@@ -80,9 +82,6 @@
 
 <div class="mb-5.5 flex items-end justify-between">
 	<div>
-		<div class="mb-2 font-mono text-label font-bold tracking-widest text-accent uppercase">
-			↳ ADMIN · AVIS
-		</div>
 		<h1
 			class="m-0 font-display text-[42px] leading-none font-black tracking-tight text-ink uppercase"
 		>
@@ -107,5 +106,7 @@
 	<span class="text-ink/20">·</span>
 	<span>{ratingCounts['5']} cinq étoiles</span>
 	<span class="text-ink/20">·</span>
-	<span>{data.reviews.filter((r) => r.body && r.body.trim().length > 0).length} avec commentaire</span>
+	<span
+		>{data.reviews.filter((r) => r.body && r.body.trim().length > 0).length} avec commentaire</span
+	>
 </div>

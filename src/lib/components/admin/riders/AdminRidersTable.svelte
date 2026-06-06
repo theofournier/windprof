@@ -11,8 +11,7 @@
 		'Spot préféré',
 		'Avis',
 		'Inscription',
-		'Statut',
-		''
+		'Statut'
 	];
 </script>
 
@@ -35,7 +34,7 @@
 			{:else}
 				<tr>
 					<td
-						colspan="8"
+						colspan="7"
 						class="px-4 py-12 text-center font-mono text-caption tracking-loose uppercase text-muted"
 					>
 						Aucun rider trouvé.

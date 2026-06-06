@@ -47,7 +47,10 @@
 <tr class="group">
 	<!-- Name -->
 	<td class="{tdBase} text-ink" class:shadow-[inset_3px_0_0_#E8724C]={hasPending || pendingReports > 0}>
-		<div class="flex items-center gap-2.5">
+		<a
+			href="/admin/profs/{prof.id}"
+			class="flex items-center gap-2.5 no-underline"
+		>
 			<div
 				class="flex h-7.5 w-7.5 shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg-dark font-display text-label font-bold text-[#4A5260]"
 			>
@@ -58,7 +61,7 @@
 				{/if}
 			</div>
 			<div>
-				<div class="flex items-center gap-1.5 text-body-sm font-semibold">
+				<div class="flex items-center gap-1.5 text-body-sm font-semibold text-ink hover:underline">
 					{prof.firstName}
 					{prof.lastName}
 					{#if prof.isVerified}
@@ -91,7 +94,7 @@
 				</div>
 				<div class="mt-px font-mono text-micro tracking-[0.06em] text-muted">{prof.city}</div>
 			</div>
-		</div>
+		</a>
 	</td>
 
 	<!-- Email -->
@@ -196,28 +199,4 @@
 		{formattedDate}
 	</td>
 
-	<!-- Actions -->
-	<td class={tdBase}>
-		<div class="flex justify-end gap-1">
-			<a
-				href="/admin/profs/{prof.id}"
-				title="Voir la fiche admin"
-				class="inline-flex h-7 w-7 items-center justify-center rounded border border-line bg-white text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
-			>
-				<svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-					<path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-				</svg>
-			</a>
-			<a
-				href="/profs/{prof.id}"
-				title="Voir la fiche publique"
-				class="inline-flex h-7 items-center justify-center rounded border border-line bg-white px-2 text-[#4A5260] no-underline hover:bg-bg hover:text-ink"
-			>
-				Public
-				<svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-					<path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-				</svg>
-			</a>
-		</div>
-	</td>
 </tr>

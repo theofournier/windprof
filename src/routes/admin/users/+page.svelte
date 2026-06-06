@@ -75,13 +75,10 @@
 
 <div class="mb-5.5 flex items-end justify-between">
 	<div>
-		<div class="mb-2 font-mono text-label font-bold tracking-widest text-accent uppercase">
-			↳ ADMIN · UTILISATEURS
-		</div>
 		<h1
 			class="m-0 font-display text-[42px] leading-none font-black tracking-tight text-ink uppercase"
 		>
-			Sans profil.
+			Utilisateurs.
 		</h1>
 		<p class="mt-2.5 text-body-sm text-[#4A5260]">
 			Comptes créés sans profil rider ou moniteur complété.

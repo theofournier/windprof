@@ -13,8 +13,7 @@
 		'Note',
 		'Publié',
 		'Signalements',
-		'Inscription',
-		''
+		'Inscription'
 	];
 </script>
 
@@ -37,7 +36,7 @@
 			{:else}
 				<tr>
 					<td
-						colspan="10"
+						colspan="9"
 						class="px-4 py-12 text-center font-mono text-caption tracking-loose uppercase text-muted"
 					>
 						Aucun moniteur trouvé.
