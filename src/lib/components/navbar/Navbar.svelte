@@ -80,7 +80,6 @@
 		>
 			{@render links('/profs', 'Moniteurs')}
 			{@render links('/sports', 'Disciplines')}
-			<!--{@render links('/spots', 'Spots')}-->
 			{@render links('/become-prof', 'Devenir moniteur')}
 		</div>
 
@@ -186,7 +185,6 @@
 		<div class="relative z-10 flex flex-col border-t border-white/10 px-5 pb-6 sm:hidden">
 			{@render mobileLinks('/profs', 'Moniteurs')}
 			{@render mobileLinks('/sports', 'Disciplines')}
-			{@render mobileLinks('/spots', 'Spots')}
 			{@render mobileLinks('/become-prof', 'Devenir moniteur')}
 
 			<!-- Mobile auth section -->

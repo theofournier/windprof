@@ -53,54 +53,7 @@
 			</div>
 
 			<!-- Right column -->
-			<div class="flex flex-col gap-4">
-				<!-- Wind data mini-cards grid
-				<div class="grid grid-cols-2 gap-3">
-					{#each [{ spot: 'LEUCATE', kt: 24, dir: 'N/NE', status: 'IDÉAL' }, { spot: 'TARIFA', kt: 27, dir: 'W', status: 'IDÉAL' }, { spot: 'LA TORCHE', kt: 18, dir: 'W/SW', status: 'OK' }, { spot: 'WISSANT', kt: 22, dir: 'SW', status: 'IDÉAL' }] as card (card.spot)}
-						<a
-							href="/spots/{card.spot}"
-							class="rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/40"
-						>
-							<div
-								class="mb-1 font-mono text-label font-semibold tracking-wider text-white/40 uppercase"
-							>
-								{card.spot}
-							</div>
-							<div class="font-display text-[48px] leading-none font-black text-white">
-								{card.kt}
-								<span
-									class="font-mono text-label font-semibold tracking-wider text-white/50 uppercase"
-								>
-									kt ·
-									<span class="font-mono text-xl font-semibold tracking-wider text-white uppercase"
-										>{card.dir}
-									</span>
-								</span>
-							</div>
-							<div
-								class="mt-2 font-mono text-label font-semibold tracking-wider uppercase {card.status ===
-								'IDÉAL'
-									? 'text-accent'
-									: 'text-accent-soft'}"
-							>
-								{card.status}
-							</div>
-						</a>
-					{/each}
-				</div>
-
-				Source + link
-				<div class="flex items-center justify-between">
-					<span class="font-mono text-label font-semibold tracking-wider text-white/30 uppercase"
-						>SOURCE · METEO-CONSULT · WINDY</span
-					>
-					<a
-						href="/spots"
-						class="font-mono text-label font-semibold tracking-wider text-accent-soft uppercase transition-colors hover:text-accent"
-						>VOIR LES 84 SPOTS →</a
-					>
-				</div> -->
-			</div>
+			<div class="flex flex-col gap-4"></div>
 		</div>
 	</div>
 </section>

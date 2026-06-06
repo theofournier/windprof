@@ -22,7 +22,6 @@
 		<div class="flex flex-col">
 			<div class="mb-3.5 font-mono text-label tracking-label text-white/40">PRODUIT</div>
 			<a href="/profs" class="mb-2 text-body-sm">Moniteurs</a>
-			<!-- <a href="/spots" class="mb-2 text-body-sm">Spots</a> -->
 			<a href="/become-prof" class="mb-2 text-body-sm">Devenir moniteur</a>
 		</div>
 
