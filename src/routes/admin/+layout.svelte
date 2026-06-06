@@ -7,7 +7,8 @@
 	const navItems = [
 		{ k: 'dash', n: 'Tableau de bord', path: '/admin', icon: '◉' },
 		{ k: 'profs', n: 'Moniteurs', path: '/admin/profs', icon: '⚐' },
-		{ k: 'riders', n: 'Riders', path: '/admin/riders', icon: '◈' }
+		{ k: 'riders', n: 'Riders', path: '/admin/riders', icon: '◈' },
+		{ k: 'users', n: 'Sans profil', path: '/admin/users', icon: '○' }
 	];
 
 	const isActive = (path: string) => {
