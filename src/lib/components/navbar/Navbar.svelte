@@ -193,15 +193,15 @@
 					<a
 						href={isProf ? '/prof-account' : '/account'}
 						onclick={() => (menuOpen = false)}
-						class="block rounded-md bg-white px-4 py-3 text-center font-display text-sm font-bold text-ink uppercase"
+						class="block rounded-md border border-white/10 bg-white/10 px-4 py-3 text-center backdrop-blur-sm transition-colors hover:bg-white/15"
 					>
-						<p class="font-display text-sm font-semibold text-ink">{user?.name}</p>
-						<p class="text-xs text-ink/50">{user?.email}</p>
+						<p class="font-display text-sm font-semibold text-white">{user?.name}</p>
+						<p class="text-xs text-white/50">{user?.email}</p>
 					</a>
 					<a
 						href="/account/settings"
 						onclick={() => (menuOpen = false)}
-						class="mt-2 block rounded-md border border-line bg-white px-4 py-2.5 text-center font-display text-sm font-semibold text-muted uppercase hover:text-ink"
+						class="mt-2 block rounded-md border border-white/10 bg-white/5 px-4 py-2.5 text-center font-display text-sm font-semibold text-white/60 uppercase transition-colors hover:bg-white/10 hover:text-white"
 					>
 						Paramètres
 					</a>
@@ -209,14 +209,14 @@
 						<a
 							href="/admin"
 							onclick={() => (menuOpen = false)}
-							class="mt-2 block rounded-md border border-accent/40 bg-white px-4 py-2.5 text-center font-display text-sm font-semibold text-accent uppercase hover:bg-accent/5"
+							class="mt-2 block rounded-md border border-accent/30 bg-accent/10 px-4 py-2.5 text-center font-display text-sm font-semibold text-accent uppercase transition-colors hover:bg-accent/20"
 						>
 							Admin
 						</a>
 					{/if}
 					<button
 						onclick={signOut}
-						class="mt-3 w-full cursor-pointer rounded-md bg-red-500 px-4 py-3 text-center font-display text-sm font-bold text-white uppercase"
+						class="mt-3 w-full cursor-pointer rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-center font-display text-sm font-bold text-red-400 uppercase transition-colors hover:bg-red-500/20"
 					>
 						Se déconnecter
 					</button>

@@ -25,6 +25,9 @@ export const actions: Actions = {
 			});
 		} catch (err) {
 			if (err instanceof APIError) {
+				if (err.body?.code === 'BANNED_USER') {
+					return fail(403, { error: `Ton compte a été suspendu. Contacte le support si tu penses qu'il s'agit d'une erreur.`, email });
+				}
 				return fail(400, { error: 'Email ou mot de passe incorrect.', email });
 			}
 			throw err;
