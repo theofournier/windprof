@@ -65,7 +65,7 @@
 	<!-- Spots -->
 	<div>
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
-			↳ SPOTS OÙ TU RIDES *
+			↳ SPOTS OÙ TU RIDES
 		</div>
 		<div class="mb-3 font-mono text-label tracking-wide text-muted uppercase">
 			⌥ SAISIE LIBRE · MVP 2 : CARTE INTERACTIVE AVEC RAYON DE RECHERCHE
@@ -74,8 +74,7 @@
 			<div class="mb-3 flex flex-col gap-2">
 				{#each ctx.data.spots as spot, i (i)}
 					<div
-						class="grid items-center gap-3.5 rounded-lg border border-line bg-white px-4.5 py-3.5"
-						style="grid-template-columns: auto 1fr auto auto"
+						class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-3.5 rounded-lg border border-line bg-white px-4.5 py-3.5"
 					>
 						<button
 							type="button"
@@ -103,16 +102,13 @@
 				{/each}
 			</div>
 		{/if}
-		{#if ctx.errors.spots}
-			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.spots}</p>
-		{/if}
 		<div class="flex gap-2">
 			<input
 				type="text"
 				placeholder="Leucate — La Franqui"
 				bind:value={newSpotName}
 				onkeydown={(e) => e.key === 'Enter' && (e.preventDefault(), addSpot())}
-				class="flex-1 rounded-md border bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] {ctx.errors.spots && ctx.data.spots.length === 0 ? 'border-red-400 focus:border-red-400' : 'border-line focus:border-ink'}"
+				class="flex-1 rounded-md border border-line bg-white px-3.5 py-3 font-sans text-[14.5px] text-ink outline-none transition-all focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)]"
 			/>
 			<button
 				type="button"
@@ -132,21 +128,20 @@
 				— aide à filtrer les moniteurs proches
 			</span>
 		</div>
-		<div class="flex items-center gap-4.5 rounded-lg border border-line bg-white px-5.5 py-4.5">
-			<div
-				class="font-display text-[42px] font-black leading-none text-accent"
-				style="min-width: 130px"
-			>
+		<div class="rounded-lg border border-line bg-white px-5.5 py-4.5">
+			<div class="mb-3 font-display text-[42px] font-black leading-none text-accent">
 				{ctx.data.maxDistanceKm} km
 			</div>
-			<input
-				type="range"
-				min="10"
-				max="300"
-				bind:value={ctx.data.maxDistanceKm}
-				class="flex-1 accent-accent"
-			/>
-			<div class="font-mono text-label tracking-loose text-muted">10 — 300 KM</div>
+			<div class="flex items-center gap-3">
+				<input
+					type="range"
+					min="10"
+					max="300"
+					bind:value={ctx.data.maxDistanceKm}
+					class="flex-1 accent-accent"
+				/>
+				<div class="shrink-0 font-mono text-label tracking-loose text-muted">10 — 300 KM</div>
+			</div>
 		</div>
 	</div>
 
@@ -202,7 +197,7 @@
 				— indicatif · Windprof ne prend aucune commission, tu négocies en direct
 			</span>
 		</div>
-		<div class="grid grid-cols-4 gap-2.5">
+		<div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
 			{#each BUDGETS as b (b.value)}
 				{@const on = ctx.data.budgetRanges.includes(b.value)}
 				<div

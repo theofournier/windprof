@@ -19,8 +19,7 @@
 <div class="grid gap-3.5">
 	<!-- Profile header card -->
 	<div
-		class="grid items-center gap-4.5 rounded-[10px] border border-line bg-white px-5.5 py-4.5"
-		style="grid-template-columns: auto 1fr"
+		class="grid grid-cols-[auto_1fr] items-center gap-4.5 rounded-[10px] border border-line bg-white px-5.5 py-4.5"
 	>
 		<div
 			class="h-20 w-20 rounded-full"

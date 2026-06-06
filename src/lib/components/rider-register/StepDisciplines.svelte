@@ -47,7 +47,7 @@
 		{#if ctx.errors.sports}
 			<p class="mb-2 font-mono text-label text-red-500">{ctx.errors.sports}</p>
 		{/if}
-		<div class="grid grid-cols-3 gap-3">
+		<div class="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
 			{#each DISCIPLINES as d (d.sport)}
 				{@const on = isSelected(d.sport)}
 				<div
@@ -56,17 +56,17 @@
 					tabindex="0"
 					onclick={() => toggleSport(d.sport)}
 					onkeydown={(e) => e.key === 'Enter' && toggleSport(d.sport)}
-					class="relative cursor-pointer rounded-[10px] border p-5 {on
+					class="relative cursor-pointer rounded-[10px] border p-3.5 sm:p-5 {on
 						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 						: 'border-line bg-bg-card'}"
 				>
 					{#if on}
 						<span
-							class="absolute top-3.5 right-3.5 flex h-5.5 w-5.5 items-center justify-center rounded-[4px] bg-accent text-body-sm font-bold text-white"
+							class="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-[4px] bg-accent text-label font-bold text-white sm:top-3.5 sm:right-3.5 sm:h-5.5 sm:w-5.5 sm:text-body-sm"
 							>✓</span
 						>
 					{/if}
-					<div class="mb-2 font-display text-[22px] font-black tracking-snug uppercase">{d.label}</div>
+					<div class="mb-1.5 font-display text-[18px] font-black tracking-snug uppercase sm:mb-2 sm:text-[22px]">{d.label}</div>
 					<p class="m-0 text-body-sm leading-relaxed text-muted">{d.desc}</p>
 				</div>
 			{/each}
@@ -89,7 +89,7 @@
 			<div class="mb-3 font-mono text-[10.5px] tracking-wide text-muted uppercase">
 				⌥ Si tu as plusieurs disciplines, on te demandera le niveau pour chacune
 			</div>
-			<div class="grid grid-cols-4 gap-2.5">
+			<div class="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-2.5">
 				{#each LEVELS as lvl (lvl.value)}
 					{@const on = entry.level === lvl.value}
 					<div
@@ -98,13 +98,13 @@
 						tabindex="0"
 						onclick={() => setLevel(entry.sport, lvl.value)}
 						onkeydown={(e) => e.key === 'Enter' && setLevel(entry.sport, lvl.value)}
-						class="cursor-pointer rounded-[10px] border p-4 {on
+						class="cursor-pointer rounded-[10px] border p-3 sm:p-4 {on
 							? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 							: 'border-line bg-bg-card'}"
 					>
 						<div class="mb-1.5 flex items-center gap-2">
 							<span
-								class="flex h-4.5 w-4.5 items-center justify-center rounded-full text-[9px] font-bold text-white {on
+								class="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full text-[9px] font-bold text-white {on
 									? 'bg-accent'
 									: 'border-[1.5px] border-line bg-transparent'}"
 							>

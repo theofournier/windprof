@@ -26,7 +26,10 @@
 
 			<dt class={kvDt}>Email</dt>
 			<dd class="text-[13.5px] text-ink">
-				<span class="font-mono text-[12.5px]">{prof.contactEmail ?? prof.user?.email ?? '—'}</span>
+				<span class="font-mono text-[12.5px]">{prof.user?.email ?? '—'}</span>
+				{#if prof.contactEmail}
+					<span class="font-mono text-[12.5px]">({prof.contactEmail})</span>
+				{/if}
 				{#if prof.user?.emailVerified}
 					<span class="ml-2 font-mono text-[10.5px] font-bold tracking-loose text-[#1f6f47]"
 						>● VÉRIFIÉ</span

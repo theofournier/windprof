@@ -76,41 +76,42 @@
 		<div class="overflow-hidden overflow-x-auto rounded-[10px] border border-line">
 			{#each ctx.data.prices as row, i (i)}
 				<div
-					class="grid items-center gap-3 px-5 py-3.5 {i < ctx.data.prices.length - 1
+					class="px-4 py-3 sm:grid sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-center sm:gap-3 sm:px-5 sm:py-3.5 {i < ctx.data.prices.length - 1
 						? 'border-b border-line'
 						: ''}"
-					style="grid-template-columns: 2fr 1fr 1fr auto"
 				>
 					<input
 						type="text"
 						placeholder="Cours individuel · kitesurf"
 						bind:value={row.description}
-						class="border-none bg-transparent p-0 font-sans text-[14px] font-semibold outline-none {ctx
+						class="mb-2 w-full rounded-[4px] border bg-white px-2.5 py-1.5 font-sans text-[14px] font-semibold outline-none transition-shadow focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] sm:mb-0 {ctx
 							.errors.pricesDesc && !row.description.trim()
-							? 'text-red-400 placeholder:text-red-300'
-							: 'text-ink'}"
+							? 'border-red-400 text-red-400 placeholder:text-red-300 focus:border-red-400'
+							: 'border-ink/25 text-ink focus:border-ink'}"
 					/>
-					<input
-						type="text"
-						placeholder="1h30"
-						bind:value={row.duration}
-						class="rounded-[4px] border border-line bg-white px-2.5 py-1.5 font-mono text-caption tracking-wide text-muted outline-none"
-					/>
-					<div class="flex items-center justify-end gap-1.5">
+					<div class="flex items-center gap-2 sm:contents">
 						<input
-							type="number"
-							min="0"
-							bind:value={row.priceEur}
-							class="w-20 rounded-[4px] border border-line bg-white px-2.5 py-1.5 text-right font-display text-[18px] font-black tracking-tight outline-none"
+							type="text"
+							placeholder="1h30"
+							bind:value={row.duration}
+							class="w-16 shrink-0 rounded-[4px] border border-line bg-white px-2.5 py-1.5 font-mono text-caption tracking-wide text-muted outline-none sm:w-auto"
 						/>
-						<span class="font-display text-[18px] font-black tracking-tight text-muted">€</span>
+						<div class="ml-auto flex items-center gap-1.5 sm:ml-0 sm:justify-end">
+							<input
+								type="number"
+								min="0"
+								bind:value={row.priceEur}
+								class="w-16 rounded-[4px] border border-ink/25 bg-white px-2.5 py-1.5 text-right font-display text-[18px] font-black tracking-tight outline-none transition-shadow focus:border-ink focus:shadow-[0_0_0_3px_rgba(14,26,43,.08)] sm:w-20"
+							/>
+							<span class="font-display text-[18px] font-black tracking-tight text-muted">€</span>
+						</div>
+						<button
+							type="button"
+							onclick={() => removePrice(i)}
+							class="cursor-pointer font-mono text-label tracking-loose text-muted uppercase"
+							>X</button
+						>
 					</div>
-					<button
-						type="button"
-						onclick={() => removePrice(i)}
-						class="cursor-pointer font-mono text-label tracking-loose text-muted uppercase"
-						>X</button
-					>
 				</div>
 			{/each}
 			<div class="border-t border-line bg-bg-dark px-5 py-3.5">

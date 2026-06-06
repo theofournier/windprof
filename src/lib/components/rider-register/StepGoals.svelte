@@ -61,10 +61,9 @@
 					tabindex="0"
 					onclick={() => toggleGoal(g.n)}
 					onkeydown={(e) => e.key === 'Enter' && toggleGoal(g.n)}
-					class="grid cursor-pointer items-start rounded-[10px] border p-4 {on
+					class="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 rounded-[10px] border p-4 {on
 						? 'border-ink bg-white shadow-[inset_0_0_0_1px_var(--color-ink)]'
 						: 'border-line bg-bg-card'}"
-					style="grid-template-columns: auto 1fr; gap: 12px"
 				>
 					<span
 						class="mt-0.5 flex h-5 w-5 items-center justify-center rounded-[4px] text-caption font-bold text-white {on
@@ -90,7 +89,7 @@
 				— tu pourras toujours choisir autre chose au moment de réserver
 			</span>
 		</div>
-		<div class="grid grid-cols-4 gap-2.5">
+		<div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
 			{#each FORMATS as f (f.value)}
 				{@const on = ctx.data.formatPreferences.includes(f.value)}
 				<div
@@ -127,7 +126,7 @@
 				— le moniteur saura quoi proposer
 			</span>
 		</div>
-		<div class="grid grid-cols-3 gap-2.5">
+		<div class="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
 			{#each EQUIPMENT as m (m.value)}
 				{@const on = ctx.data.equipmentPreference === m.value}
 				<div

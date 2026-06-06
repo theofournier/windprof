@@ -99,7 +99,7 @@
 
 	<!-- Email -->
 	<td class="{tdBase} font-mono text-label tracking-[0.01em] text-[#4A5260]">
-		{prof.contactEmail ?? prof.user?.email ?? '—'}
+		{prof.user?.email ?? '—'}
 	</td>
 
 	<!-- Sports -->

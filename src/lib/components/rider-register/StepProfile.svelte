@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="grid items-start gap-8" style="grid-template-columns: 180px 1fr">
+<div class="grid grid-cols-1 items-start gap-8 sm:grid-cols-[180px_1fr]">
 	<!-- Photo upload -->
 	<div>
 		<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">

@@ -81,8 +81,7 @@
 			<div class="mb-3 flex flex-col gap-2">
 				{#each ctx.data.spots as spot, i (i)}
 					<div
-						class="grid items-center gap-3.5 rounded-lg border border-line bg-white px-4.5 py-3.5"
-						style="grid-template-columns: auto 1fr auto auto"
+						class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-3.5 rounded-lg border border-line bg-white px-4.5 py-3.5"
 					>
 						<button
 							type="button"

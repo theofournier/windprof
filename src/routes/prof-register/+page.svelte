@@ -157,6 +157,11 @@
 			<div class="mb-2.5 font-mono text-[11px] font-semibold tracking-widest text-accent uppercase">
 				↳ ÉTAPE {stepNumbers[step]} / 08
 			</div>
+			<div class="mb-5 flex gap-0.75 lg:hidden">
+				{#each Array.from({ length: 8 }) as _, i}
+					<div class="h-1 flex-1 rounded-xs {i <= step ? 'bg-accent' : 'bg-line'}"></div>
+				{/each}
+			</div>
 			<h1
 				class="m-0 mb-3 font-display text-[36px] leading-[0.95] font-black tracking-tight uppercase sm:text-[44px] lg:text-[54px]"
 			>

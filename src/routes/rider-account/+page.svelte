@@ -101,8 +101,6 @@
 				sectionErrors.sportsLevel = 'Indique ton niveau pour chaque discipline sélectionnée';
 		} else if (id === 'objectifs') {
 			if (formData.goals.length === 0) sectionErrors.goals = 'Sélectionne au moins un objectif';
-		} else if (id === 'preferences') {
-			if (formData.spots.length === 0) sectionErrors.spots = 'Ajoute au moins un spot';
 		}
 		return Object.keys(sectionErrors).length === 0;
 	}

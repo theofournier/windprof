@@ -45,7 +45,7 @@
 			if (searchQuery) {
 				const q = searchQuery.toLowerCase();
 				const name = `${prof.firstName} ${prof.lastName}`.toLowerCase();
-				const email = (prof.contactEmail ?? '').toLowerCase();
+				const email = (prof.user?.email ?? '').toLowerCase();
 				const city = (prof.city ?? '').toLowerCase();
 				if (!name.includes(q) && !email.includes(q) && !city.includes(q)) return false;
 			}

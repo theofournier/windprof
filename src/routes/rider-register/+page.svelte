@@ -52,8 +52,6 @@
 				stepErrors.sportsLevel = 'Indique ton niveau pour chaque discipline sélectionnée';
 		} else if (step === 2) {
 			if (formData.goals.length === 0) stepErrors.goals = 'Sélectionne au moins un objectif';
-		} else if (step === 3) {
-			if (formData.spots.length === 0) stepErrors.spots = 'Ajoute au moins un spot';
 		}
 		return Object.keys(stepErrors).length === 0;
 	}
@@ -126,17 +124,24 @@
 
 <div class="min-h-screen bg-bg">
 	<div
-		class="mx-auto grid items-start gap-12 px-14 pt-10 pb-20"
-		style="max-width: 1320px; grid-template-columns: 280px 1fr"
+		class="mx-auto px-4 pt-6 pb-16 sm:px-8 lg:grid lg:grid-cols-[280px_1fr] lg:items-start lg:gap-12 lg:px-14 lg:pt-10 lg:pb-20"
+		style="max-width: 1320px"
 	>
-		<RiderRegisterSidebar />
+		<div class="hidden lg:block">
+			<RiderRegisterSidebar />
+		</div>
 
 		<main class="min-w-0">
 			<div class="mb-2.5 font-mono text-label font-semibold tracking-widest text-accent uppercase">
 				↳ ÉTAPE {stepNumbers[step]} / 05
 			</div>
+			<div class="mb-5 flex gap-0.75 lg:hidden">
+				{#each Array.from({ length: 5 }) as _, i}
+					<div class="h-1 flex-1 rounded-xs {i <= step ? 'bg-accent' : 'bg-line'}"></div>
+				{/each}
+			</div>
 			<h1
-				class="m-0 mb-3 font-display text-[54px] leading-[0.95] font-black tracking-tight uppercase"
+				class="m-0 mb-3 font-display text-[36px] leading-[0.95] font-black tracking-tight uppercase sm:text-[44px] lg:text-[54px]"
 			>
 				{stepTitles[step]}
 			</h1>

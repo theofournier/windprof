@@ -197,7 +197,7 @@
 			class="pointer-events-none absolute inset-0 opacity-50"
 			style="background-image: repeating-linear-gradient(108deg, transparent 0 22px, rgba(255,255,255,.045) 22px 23px), repeating-linear-gradient(108deg, transparent 0 90px, rgba(255,255,255,.08) 90px 91px); mask-image: linear-gradient(95deg, transparent 0%, black 20%, black 80%, transparent 100%);"
 		></div>
-		<div class="relative grid items-center gap-4.5" style="grid-template-columns: auto 1fr">
+		<div class="relative grid grid-cols-[auto_1fr] items-center gap-4.5">
 			<div
 				class="flex h-10.5 w-10.5 items-center justify-center rounded-full bg-accent text-xl font-bold text-white"
 			>

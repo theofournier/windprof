@@ -115,13 +115,13 @@
 						tabindex="0"
 						onclick={() => toggleLevel(entry.sport, lvl.value)}
 						onkeydown={(e) => e.key === 'Enter' && toggleLevel(entry.sport, lvl.value)}
-						class="cursor-pointer rounded-[10px] border p-4.5 {on
+						class="cursor-pointer rounded-[10px] border p-3 sm:p-4.5 {on
 							? 'border-ink bg-white'
 							: 'border-line bg-bg-card'}"
 					>
 						<div class="mb-1.5 flex items-center gap-2">
 							<span
-								class="flex h-4.5 w-4.5 items-center justify-center rounded-[4px] text-label font-bold text-white {on
+								class="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-[4px] text-label font-bold text-white {on
 									? 'bg-accent'
 									: 'border-[1.5px] border-line bg-transparent'}"
 							>
