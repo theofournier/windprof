@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
 	import WindLines from '../global/WindLines.svelte';
+
+	let { profCount }: { profCount: number } = $props();
 </script>
 
 <section class="hero-section relative">
@@ -12,7 +14,7 @@
 				<!-- Pill badges -->
 				<div class="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
 					<span class="font-mono text-label font-semibold tracking-wider text-accent-soft uppercase"
-						>592 MONITEURS · 0 INTERMÉDIAIRES</span
+						>{profCount} MONITEURS · 0 INTERMÉDIAIRES</span
 					>
 				</div>
 

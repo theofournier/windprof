@@ -8,6 +8,19 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
+
+	const profCount = $derived(data.profs.length);
+	const sportCounts = $derived(
+		data.profs.reduce(
+			(acc, prof) => {
+				for (const s of prof.sports) {
+					acc[s.sport] = (acc[s.sport] ?? 0) + 1;
+				}
+				return acc;
+			},
+			{} as Record<string, number>
+		)
+	);
 </script>
 
 <svelte:head>
@@ -15,10 +28,10 @@
 </svelte:head>
 
 <div>
-	<HomeHero />
-	<HomeSports />
+	<HomeHero {profCount} />
+	<HomeSports {sportCounts} />
 	<HomeHowItWorks />
-	<HomeFeaturedProfs profs={data.profs} />
+	<HomeFeaturedProfs profs={data.profs} {profCount} />
 	<HomeTestimonials />
 	<HomeBecomeProfCTA />
 </div>

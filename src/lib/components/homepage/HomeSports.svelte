@@ -3,6 +3,8 @@
 	import kitesurfLogo from '$lib/assets/kitesurf.svg';
 	import wingfoilfLogo from '$lib/assets/wingfoil.svg';
 	import windsurfLogo from '$lib/assets/windsurf.svg';
+
+	let { sportCounts }: { sportCounts: Record<string, number> } = $props();
 </script>
 
 {#snippet sportCard(
@@ -98,7 +100,7 @@
 		{@render sportCard(
 			'01',
 			kitesurfLogo,
-			'312',
+			String(sportCounts['kitesurf'] ?? 0),
 			'Kitesurf',
 			'Aile, planche, lignes. Le plus enseigné du réseau.',
 			'/sports#kitesurf',
@@ -108,7 +110,7 @@
 		{@render sportCard(
 			'02',
 			wingfoilfLogo,
-			'184',
+			String(sportCounts['wingfoil'] ?? 0),
 			'Wingfoil',
 			'Wing à la main, foil sous les pieds. Discipline en explosion.',
 			'/sports#wingfoil',
@@ -118,7 +120,7 @@
 		{@render sportCard(
 			'03',
 			windsurfLogo,
-			'96',
+			String(sportCounts['windsurf'] ?? 0),
 			'Windsurf',
 			"L'école originelle. Foil, freeride, vagues — tout y passe.",
 			'/sports#windsurf',

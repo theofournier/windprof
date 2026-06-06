@@ -3,7 +3,7 @@
 	import { mapProfItem } from '$lib/utils/mapProfItem';
 	import ProfsItem from '../profs/ProfsItem.svelte';
 
-	let { profs }: { profs: ProfWithRelations[] } = $props();
+	let { profs, profCount }: { profs: ProfWithRelations[]; profCount: number } = $props();
 	let profItems = $derived(profs.slice(0, 4).map(mapProfItem));
 
 	const filters = ['Tous', 'Kite', 'Wing', 'Wind'];
@@ -55,6 +55,7 @@
 				sports={prof.sports}
 				price={prof.price}
 				certifications={prof.certifications}
+				photoUrl={prof.photoUrl}
 			/>
 		{/each}
 	</div>
@@ -65,7 +66,7 @@
 			href="/profs"
 			class="inline-flex items-center justify-center rounded-md border bg-accent px-8 py-4 font-display text-sm font-black tracking-tight text-white uppercase transition-opacity hover:opacity-80"
 		>
-			Voir les 592 moniteurs →
+			Voir les {profCount} moniteurs →
 		</a>
 	</div>
 </section>
