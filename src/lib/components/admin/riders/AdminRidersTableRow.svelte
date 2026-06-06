@@ -17,6 +17,12 @@
 		`${rider.firstName[0] ?? ''}${(rider.lastName ?? '')[0] ?? ''}`.toUpperCase()
 	);
 
+	const avgRating = $derived(
+		rider.reviews.length > 0
+			? (rider.reviews.reduce((sum, r) => sum + r.rating, 0) / rider.reviews.length).toFixed(1)
+			: null
+	);
+
 	const formattedDate = $derived(
 		rider.createdAt
 			? new Date(rider.createdAt).toLocaleDateString('fr-FR', {
@@ -99,6 +105,8 @@
 			<div class="flex items-baseline gap-1">
 				<span class="text-[13px] font-bold">{rider.reviews.length}</span>
 				<span class="font-mono text-[10px] text-muted">avis</span>
+				<span class="ml-1 font-mono text-[10.5px] text-accent">★</span>
+				<span class="font-mono text-[10.5px] font-semibold text-ink">{avgRating}</span>
 			</div>
 		{:else}
 			<span class="font-mono text-[10.5px] text-[#9aa1ad]">—</span>

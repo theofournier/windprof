@@ -3,6 +3,12 @@
 	import { sectionHeader, tag } from './types';
 
 	let { rider }: { rider: AdminRiderDetail } = $props();
+
+	const avgRating = $derived(
+		rider.reviews.length > 0
+			? (rider.reviews.reduce((sum, r) => sum + r.rating, 0) / rider.reviews.length).toFixed(1)
+			: null
+	);
 </script>
 
 <section class="border border-ink/10 bg-white">
@@ -12,6 +18,12 @@
 				>Avis laissés</span
 			>
 			<span class="text-[12px] text-muted">{rider.reviews.length} avis sur des moniteurs</span>
+			{#if avgRating}
+				<span class="flex items-baseline gap-1">
+					<span class="text-body-sm text-accent">★</span>
+					<span class="text-body-sm font-bold text-ink">{avgRating}</span>
+				</span>
+			{/if}
 		</div>
 	</div>
 
