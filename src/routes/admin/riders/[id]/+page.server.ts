@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import { riderProfiles, reviews } from '$lib/server/db/schema';
+import { desc, eq } from 'drizzle-orm';
+import { riderProfiles, reports, reviews } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -19,7 +19,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	if (!rider) error(404, 'Rider introuvable');
 
-	return { rider };
+	const submittedReports = await locals.db.query.reports.findMany({
+		where: eq(reports.userId, rider.userId),
+		with: { profProfile: true },
+		orderBy: [desc(reports.createdAt)]
+	});
+
+	return { rider, submittedReports };
 };
 
 export const actions: Actions = {

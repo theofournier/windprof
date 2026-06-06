@@ -19,11 +19,18 @@
 	let statusFilter = $state<Filter_>('all');
 	let searchQuery = $state('');
 
+	const hasPendingReport = (prof: (typeof data.profs)[0]) =>
+		prof.reports.some((r) => r.status === 'pending');
+	const hasConfirmedReport = (prof: (typeof data.profs)[0]) =>
+		!hasPendingReport(prof) && prof.reports.some((r) => r.status === 'reviewed');
+
 	const statusCounts = $derived<StatusCounts>({
 		all: data.profs.length,
 		verified: data.profs.filter((p) => p.isVerified).length,
 		pending: data.profs.filter((p) => certStatus(p) === 'pending').length,
-		not_verified: data.profs.filter((p) => !p.isVerified).length
+		not_verified: data.profs.filter((p) => !p.isVerified).length,
+		reported: data.profs.filter(hasPendingReport).length,
+		confirmed: data.profs.filter(hasConfirmedReport).length
 	});
 
 	const filtered = $derived(
@@ -32,6 +39,8 @@
 				if (statusFilter === 'verified' && !prof.isVerified) return false;
 				if (statusFilter === 'pending' && certStatus(prof) !== 'pending') return false;
 				if (statusFilter === 'not_verified' && prof.isVerified) return false;
+				if (statusFilter === 'reported' && !hasPendingReport(prof)) return false;
+			if (statusFilter === 'confirmed' && !hasConfirmedReport(prof)) return false;
 			}
 			if (searchQuery) {
 				const q = searchQuery.toLowerCase();
@@ -67,6 +76,13 @@
 			val: data.profs.filter((p) => p.isPublished).length.toString(),
 			delta: 'visibles sur la plateforme',
 			dir: 'flat'
+		},
+		{
+			lbl: 'SIGNALEMENTS',
+			val: statusCounts.reported.toString(),
+			delta: 'signalements en attente',
+			dir: statusCounts.reported > 0 ? 'flag' : 'flat',
+			accent: statusCounts.reported > 0
 		}
 	]);
 </script>

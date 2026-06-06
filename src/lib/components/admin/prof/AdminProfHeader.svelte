@@ -17,6 +17,8 @@
 	const rating = $derived(computeAvgRating(prof.reviews));
 	const isBanned = $derived(prof.user?.banned ?? false);
 	const ago = $derived(registeredAgo(prof.createdAt));
+	const pendingReports = $derived((prof.reports ?? []).filter((r) => r.status === 'pending').length);
+	const reviewedReports = $derived((prof.reports ?? []).filter((r) => r.status === 'reviewed').length);
 </script>
 
 <div
@@ -118,6 +120,39 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Report alerts -->
+	{#if pendingReports > 0}
+		<div
+			class="flex items-center gap-3 border-t border-[#b34e3e]/30 bg-[rgba(179,78,62,0.06)] px-7 py-3"
+		>
+			<span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-[#b34e3e] font-display text-[11px] font-black text-white">⚑</span>
+			<p class="text-[12.5px] font-semibold text-[#9a3a2c]">
+				{pendingReports} signalement{pendingReports > 1 ? 's' : ''} en attente de traitement
+			</p>
+			<a
+				href="#signalements"
+				class="ml-auto font-mono text-[10.5px] tracking-[0.06em] text-[#9a3a2c] no-underline underline-offset-2 hover:underline uppercase"
+			>
+				Voir ↓
+			</a>
+		</div>
+	{:else if reviewedReports > 0}
+		<div
+			class="flex items-center gap-3 border-t border-[#8a6300]/20 bg-[rgba(242,181,68,0.08)] px-7 py-3"
+		>
+			<span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm bg-[#8a6300]/20 font-display text-[11px] font-black text-[#8a6300]">⚑</span>
+			<p class="text-[12.5px] font-semibold text-[#8a6300]">
+				{reviewedReports} signalement{reviewedReports > 1 ? 's' : ''} confirmé{reviewedReports > 1 ? 's' : ''} sur ce profil
+			</p>
+			<a
+				href="#signalements"
+				class="ml-auto font-mono text-[10.5px] tracking-[0.06em] text-[#8a6300] no-underline underline-offset-2 hover:underline uppercase"
+			>
+				Voir ↓
+			</a>
+		</div>
+	{/if}
 
 	<!-- Quick actions -->
 	<div class="flex flex-wrap items-center gap-2 border-t border-ink/8 bg-white px-7 py-3.5">

@@ -1,6 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { profProfiles, riderProfiles, reviews } from '$lib/server/db/schema';
+import { profProfiles, riderProfiles, reviews, reports } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 function relativeDate(date: Date): string {
@@ -172,8 +172,18 @@ export const actions: Actions = {
 			return fail(400, { error: 'Adresse email invalide.' });
 		}
 
-		// TODO: replace with Resend email to admin
-		console.log('[REPORT]', { profId, reason, description, reporterEmail: email });
+		try {
+			await event.locals.db.insert(reports).values({
+				id: crypto.randomUUID(),
+				profId,
+				userId: event.locals.user?.id ?? null,
+				reporterEmail: email,
+				reason,
+				description: description || null,
+			});
+		} catch {
+			return fail(500, { error: 'Impossible d\'enregistrer votre signalement. Veuillez réessayer.' });
+		}
 
 		return { success: true };
 	}

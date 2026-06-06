@@ -3,7 +3,19 @@ import type { ProfSport } from '$lib/server/db/prof/profSports.schema';
 import type { ProfSpot } from '$lib/server/db/prof/profSpots.schema';
 import type { ProfCertification } from '$lib/server/db/prof/profCertifications.schema';
 import type { Review } from '$lib/server/db/review/reviews.schema';
+import type { Report } from '$lib/server/db/report/reports.schema';
 import type { User } from '$lib/server/db/auth.schema';
+import type { ProfProfile as ProfProfileType } from '$lib/server/db/prof/profProfiles.schema';
+import type { RiderProfile } from '$lib/server/db/rider/riderProfiles.schema';
+
+export type ProfReportUser = User & {
+	profProfile: ProfProfileType | null;
+	riderProfile: RiderProfile | null;
+};
+
+export type ProfReport = Report & {
+	user: ProfReportUser | null;
+};
 
 export type AdminProfDetail = ProfProfile & {
 	user: User;
@@ -11,6 +23,7 @@ export type AdminProfDetail = ProfProfile & {
 	spots: ProfSpot[];
 	certifications: ProfCertification[];
 	reviews: Review[];
+	reports: ProfReport[];
 };
 
 export const SPORT_LABELS: Record<string, string> = {

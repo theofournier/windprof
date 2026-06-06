@@ -9,7 +9,8 @@
 		{ k: 'profs', n: 'Moniteurs', path: '/admin/profs', icon: '⚐' },
 		{ k: 'riders', n: 'Riders', path: '/admin/riders', icon: '◈' },
 		{ k: 'users', n: 'Sans profil', path: '/admin/users', icon: '○' },
-		{ k: 'reviews', n: 'Avis', path: '/admin/reviews', icon: '★' }
+		{ k: 'reviews', n: 'Avis', path: '/admin/reviews', icon: '★' },
+		{ k: 'reports', n: 'Signalements', path: '/admin/reports', icon: '⚑' }
 	];
 
 	const isActive = (path: string) => {
@@ -50,11 +51,6 @@
 
 		<!-- Nav -->
 		<nav class="flex-1">
-			<div
-				class="px-5.5 pt-4.5 pb-2 font-mono text-micro tracking-[0.18em] text-white/30 uppercase"
-			>
-				↳ Navigation
-			</div>
 			{#each navItems as item}
 				<a
 					href={item.path}
@@ -68,13 +64,6 @@
 				</a>
 			{/each}
 		</nav>
-
-		<!-- Version -->
-		<div
-			class="border-t border-white/6 px-5.5 py-3.5 font-mono text-micro tracking-loose text-white/30"
-		>
-			v 1.0 · console admin
-		</div>
 	</aside>
 
 	<!-- Main -->

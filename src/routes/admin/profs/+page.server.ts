@@ -10,6 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			spots: true,
 			certifications: true,
 			reviews: true,
+			reports: true,
 		},
 		orderBy: [desc(profProfiles.createdAt)],
 	});

@@ -3,6 +3,7 @@ import type { ProfSport } from '$lib/server/db/prof/profSports.schema';
 import type { ProfSpot } from '$lib/server/db/prof/profSpots.schema';
 import type { ProfCertification } from '$lib/server/db/prof/profCertifications.schema';
 import type { Review } from '$lib/server/db/review/reviews.schema';
+import type { Report } from '$lib/server/db/report/reports.schema';
 import type { User } from '$lib/server/db/auth.schema';
 
 export type AdminProf = ProfProfile & {
@@ -11,9 +12,10 @@ export type AdminProf = ProfProfile & {
 	spots: ProfSpot[];
 	certifications: ProfCertification[];
 	reviews: Review[];
+	reports: Report[];
 };
 
-export type Filter = 'all' | 'verified' | 'pending' | 'not_verified';
+export type Filter = 'all' | 'verified' | 'pending' | 'not_verified' | 'reported' | 'confirmed';
 
 export type StatusCounts = Record<Filter, number>;
 

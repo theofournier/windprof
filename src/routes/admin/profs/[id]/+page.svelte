@@ -4,6 +4,8 @@
 	import AdminProfCertifications from '$lib/components/admin/prof/AdminProfCertifications.svelte';
 	import AdminProfDisciplines from '$lib/components/admin/prof/AdminProfDisciplines.svelte';
 	import AdminProfReviews from '$lib/components/admin/prof/AdminProfReviews.svelte';
+	import AdminProfReports from '$lib/components/admin/prof/AdminProfReports.svelte';
+	import AdminProfSubmittedReports from '$lib/components/admin/prof/AdminProfSubmittedReports.svelte';
 	import AdminProfSidebar from '$lib/components/admin/prof/AdminProfSidebar.svelte';
 	import AdminProfRejectModal from '$lib/components/admin/prof/AdminProfRejectModal.svelte';
 	import AdminProfSuspendModal from '$lib/components/admin/prof/AdminProfSuspendModal.svelte';
@@ -39,6 +41,8 @@
 			<AdminProfCertifications {prof} onreject={openReject} />
 			<AdminProfDisciplines {prof} />
 			<AdminProfReviews {prof} />
+			<AdminProfReports {prof} />
+			<AdminProfSubmittedReports reports={data.submittedReports} />
 		</div>
 		<AdminProfSidebar {prof} />
 	</div>

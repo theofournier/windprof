@@ -4,7 +4,10 @@
 	let { kpis }: { kpis: Kpi[] } = $props();
 </script>
 
-<div class="mb-6 grid grid-cols-4 gap-px border border-ink/10 bg-ink/10">
+<div
+	class="mb-6 grid gap-px border border-ink/10 bg-ink/10"
+	style="grid-template-columns: repeat({kpis.length}, minmax(0, 1fr))"
+>
 	{#each kpis as kpi}
 		<div
 			class="flex flex-col gap-1.5 bg-white p-[18px_20px]"

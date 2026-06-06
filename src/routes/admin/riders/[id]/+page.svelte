@@ -3,6 +3,7 @@
 	import AdminRiderIdentity from '$lib/components/admin/rider/AdminRiderIdentity.svelte';
 	import AdminRiderDisciplines from '$lib/components/admin/rider/AdminRiderDisciplines.svelte';
 	import AdminRiderReviews from '$lib/components/admin/rider/AdminRiderReviews.svelte';
+	import AdminRiderReports from '$lib/components/admin/rider/AdminRiderReports.svelte';
 	import AdminRiderSidebar from '$lib/components/admin/rider/AdminRiderSidebar.svelte';
 	import AdminRiderSuspendModal from '$lib/components/admin/rider/AdminRiderSuspendModal.svelte';
 	import AdminRiderDeleteModal from '$lib/components/admin/rider/AdminRiderDeleteModal.svelte';
@@ -25,11 +26,12 @@
 		ondelete={() => (deleteOpen = true)}
 	/>
 
-	<div class="grid [grid-template-columns:1fr_380px] gap-[18px]">
-		<div class="flex flex-col gap-[18px]">
+	<div class="grid grid-cols-[1fr_380px] gap-4.5">
+		<div class="flex flex-col gap-4.5">
 			<AdminRiderIdentity {rider} />
 			<AdminRiderDisciplines {rider} />
 			<AdminRiderReviews {rider} />
+			<AdminRiderReports reports={data.submittedReports} />
 		</div>
 		<AdminRiderSidebar {rider} />
 	</div>

@@ -15,7 +15,9 @@
 		{ k: 'all', l: 'Tous' },
 		{ k: 'pending', l: 'En attente' },
 		{ k: 'verified', l: 'Vérifiés' },
-		{ k: 'not_verified', l: 'Non vérifiés' }
+		{ k: 'not_verified', l: 'Non vérifiés' },
+		{ k: 'reported', l: 'Signalés' },
+		{ k: 'confirmed', l: 'Confirmés' }
 	];
 </script>
 
@@ -46,8 +48,10 @@
 				: 'border-line bg-white text-[#4A5260] hover:bg-bg'}"
 			onclick={() => (statusFilter = f.k)}
 		>
-			{#if f.k === 'pending'}
+			{#if f.k === 'pending' || f.k === 'reported'}
 				<span class="h-1.25 w-1.25 rounded-full bg-accent"></span>
+			{:else if f.k === 'confirmed'}
+				<span class="h-1.25 w-1.25 rounded-full bg-[#8a6300]"></span>
 			{/if}
 			{f.l}
 			<span class="ml-0.5 border-l border-current pl-1.5 text-[10.5px] opacity-60">

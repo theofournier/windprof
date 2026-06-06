@@ -13,4 +13,6 @@ export * from './rider/riderSpots.schema';
 
 export * from './review/reviews.schema';
 
+export * from './report/reports.schema';
+
 export * from './relations.schema';

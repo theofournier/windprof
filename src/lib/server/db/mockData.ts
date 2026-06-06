@@ -455,6 +455,7 @@ const buildProfWithRelations = (profile: ProfProfile): ProfWithRelations => ({
     certifications: certifications.filter((c) => c.profId === profile.id),
     photos: photos.filter((ph) => ph.profId === profile.id),
     reviews: reviews.filter((r) => r.profId === profile.id),
+    reports: [],
 });
 
 export const getProfs = async (): Promise<ProfWithRelations[]> => {

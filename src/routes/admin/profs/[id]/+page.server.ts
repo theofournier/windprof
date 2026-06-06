@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import { profCertifications, profProfiles, reviews } from '$lib/server/db/schema';
+import { desc, eq } from 'drizzle-orm';
+import { profCertifications, profProfiles, reports, reviews } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -11,13 +11,27 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			sports: true,
 			spots: { orderBy: (s, { asc }) => [asc(s.displayOrder)] },
 			certifications: { orderBy: (c, { asc }) => [asc(c.createdAt)] },
-			reviews: { orderBy: (r, { desc }) => [desc(r.createdAt)] }
+			reviews: { orderBy: (r, { desc }) => [desc(r.createdAt)] },
+			reports: {
+				with: {
+					user: {
+						with: { profProfile: true, riderProfile: true }
+					}
+				},
+				orderBy: (r, { desc }) => [desc(r.createdAt)]
+			}
 		}
 	});
 
 	if (!prof) error(404, 'Moniteur introuvable');
 
-	return { prof };
+	const submittedReports = await locals.db.query.reports.findMany({
+		where: eq(reports.userId, prof.userId),
+		with: { profProfile: true },
+		orderBy: [desc(reports.createdAt)]
+	});
+
+	return { prof, submittedReports };
 };
 
 export const actions: Actions = {
@@ -126,6 +140,36 @@ export const actions: Actions = {
 		if (!reviewId) return fail(400, { error: 'reviewId manquant' });
 
 		await locals.db.delete(reviews).where(eq(reviews.id, reviewId));
+
+		return { success: true };
+	},
+
+	markReviewed: async ({ request, locals }) => {
+		const data = await request.formData();
+		const reportId = data.get('reportId') as string;
+		if (!reportId) return fail(400, { error: 'reportId manquant' });
+
+		await locals.db.update(reports).set({ status: 'reviewed' }).where(eq(reports.id, reportId));
+
+		return { success: true };
+	},
+
+	dismissReport: async ({ request, locals }) => {
+		const data = await request.formData();
+		const reportId = data.get('reportId') as string;
+		if (!reportId) return fail(400, { error: 'reportId manquant' });
+
+		await locals.db.update(reports).set({ status: 'dismissed' }).where(eq(reports.id, reportId));
+
+		return { success: true };
+	},
+
+	deleteReport: async ({ request, locals }) => {
+		const data = await request.formData();
+		const reportId = data.get('reportId') as string;
+		if (!reportId) return fail(400, { error: 'reportId manquant' });
+
+		await locals.db.delete(reports).where(eq(reports.id, reportId));
 
 		return { success: true };
 	}

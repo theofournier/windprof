@@ -1,21 +1,10 @@
 <script lang="ts">
-	import type { AdminProf } from './types';
-	import AdminProfsTableRow from './AdminProfsTableRow.svelte';
+	import type { AdminReport } from './types';
+	import AdminReportsTableRow from './AdminReportsTableRow.svelte';
 
-	let { profs, total }: { profs: AdminProf[]; total: number } = $props();
+	let { reports, total }: { reports: AdminReport[]; total: number } = $props();
 
-	const cols = [
-		'Moniteur',
-		'Email',
-		'Sports',
-		'Spots',
-		'Diplômes',
-		'Note',
-		'Publié',
-		'Signalements',
-		'Inscription',
-		''
-	];
+	const cols = ['Date', 'Moniteur', 'Raison', 'Description', 'Signaleur', 'Statut', ''];
 </script>
 
 <div class="border border-t-0 border-ink/10 bg-white">
@@ -32,15 +21,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each profs as prof (prof.id)}
-				<AdminProfsTableRow {prof} />
+			{#each reports as report (report.id)}
+				<AdminReportsTableRow {report} />
 			{:else}
 				<tr>
 					<td
-						colspan="10"
+						colspan="7"
 						class="px-4 py-12 text-center font-mono text-caption tracking-loose uppercase text-muted"
 					>
-						Aucun moniteur trouvé.
+						Aucun signalement trouvé.
 					</td>
 				</tr>
 			{/each}
@@ -49,7 +38,7 @@
 
 	<div class="flex items-center border-t border-ink/[0.07] bg-[#fbf8f1] px-4 py-3.5">
 		<div class="font-mono text-label tracking-[0.06em] text-[#4A5260]">
-			<b class="text-ink">{profs.length}</b> sur <b class="text-ink">{total}</b> moniteurs
+			<b class="text-ink">{reports.length}</b> sur <b class="text-ink">{total}</b> signalements
 		</div>
 	</div>
 </div>

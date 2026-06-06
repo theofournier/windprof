@@ -17,6 +17,8 @@ import { profPhotos } from "./prof/profPhotos.schema";
 import type { ProfPhoto } from "./prof/profPhotos.schema";
 import { reviews } from "./review/reviews.schema";
 import type { Review } from "./review/reviews.schema";
+import { reports } from "./report/reports.schema";
+import type { Report } from "./report/reports.schema";
 import { ridersports } from "./rider/riderSports.schema";
 import type { RiderSport } from "./rider/riderSports.schema";
 import { riderSpots } from "./rider/riderSpots.schema";
@@ -58,6 +60,18 @@ export const profProfilesRelations = relations(profProfiles, ({ one, many }) => 
     certifications: many(profCertifications),
     photos: many(profPhotos),
     reviews: many(reviews),
+    reports: many(reports),
+}));
+
+export const reportsRelations = relations(reports, ({ one }) => ({
+    profProfile: one(profProfiles, {
+        fields: [reports.profId],
+        references: [profProfiles.id],
+    }),
+    user: one(users, {
+        fields: [reports.userId],
+        references: [users.id],
+    }),
 }));
 
 export const profPhotosRelations = relations(profPhotos, ({ one }) => ({
@@ -151,6 +165,11 @@ export type ProfWithRelations = ProfProfile & {
     certifications: ProfCertification[];
     photos: ProfPhoto[];
     reviews: Review[];
+    reports: Report[];
+};
+
+export type ReportWithRelations = Report & {
+    profProfile: ProfProfile;
 };
 
 export type RiderWithRelations = RiderProfile & {
